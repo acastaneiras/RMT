@@ -6,7 +6,7 @@ RMT (Red's Material Tool for ray-mmd) is a tool which allows you to create and e
 
 ## How to Use
 
-* [Download RMT v1](https://github.com/Syloid/RMT/releases/download/v1/RMT.zip).
+* [Download RMT-v1.0](https://github.com/Syloid/RMT/releases/download/v1.0/RMT-v1.0.zip).
 * Place the .zip file into your **/Extension** Folder from ray-mmd and then **Extract to \RMT**.
 ```
 Example: F:\MikuMikuDanceE_v926\UserFile\Accessory\ray-mmd-1.5.0\Extension\RMT
