@@ -7,20 +7,24 @@ RMT (Red's Material Tool for ray-mmd) is a tool which allows you to create and e
 ## How to Use
 
 * [Download RMT v1](https://github.com/Syloid/RMT/releases/download/v1/RMT.zip).
-* Place the .zip file into your */Extension* Folder from ray-mmd and Extract to *\RMT*.
+* Place the .zip file into your **/Extension** Folder from ray-mmd and then **Extract to \RMT**.
 ```
 Example: F:\MikuMikuDanceE_v926\UserFile\Accessory\ray-mmd-1.5.0\Extension\RMT
 ```
-* **Read** the *RMT guide.pdf* inside the folder.
+* **Read** the *RMT Guide.pdf* inside the folder.
 * Have fun.
 
 ## Prerequisites
-* Have [Java](https://java.com/es/download/) Installed .
+* Have [Java](https://java.com/es/download/) installed on your computer.
 
 ## Requeriments
 * [MikuMikuDance](http://www.geocities.jp/higuchuu4/index_e.htm) (x64) 
 * [MikuMikuEffect](http://ch.nicovideo.jp/beta183/blomaga/ar491222) (x64)
 * [Ray-MMD](https://github.com/ray-cast/ray-mmd)
+
+### Notes
+
+That's my first 'useful' and also my first GUI application so If you notice some bugs don't hesitate to Open a new issue.  
 
 ### Credits
 
@@ -28,8 +32,8 @@ Example: F:\MikuMikuDanceE_v926\UserFile\Accessory\ray-mmd-1.5.0\Extension\RMT
 
 ### Authors
 
-* **[RedEyedJealousy/Syloid](https://github.com/Syloid)**
+* **[RedEyedJealousy/Syloid](https://github.com/Syloid).**
 
 ### License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for more details.
