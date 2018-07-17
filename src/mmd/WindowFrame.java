@@ -113,7 +113,7 @@ public class WindowFrame extends javax.swing.JFrame {
         getContentPane().add(PARALLAX);
         PARALLAX.setBounds(386, 382, 172, 45);
 
-        SMOOTHNESSMETALNESS.setText("SMOOTHNES& METALNESS");
+        SMOOTHNESSMETALNESS.setText("SMOOTHNESS & METALNESS");
         SMOOTHNESSMETALNESS.setMaximumSize(new java.awt.Dimension(172, 30));
         SMOOTHNESSMETALNESS.setMinimumSize(new java.awt.Dimension(172, 30));
         SMOOTHNESSMETALNESS.setOpaque(false);
@@ -209,7 +209,6 @@ public class WindowFrame extends javax.swing.JFrame {
         FINISHED.setContentAreaFilled(false);
         FINISHED.setMaximumSize(new java.awt.Dimension(172, 30));
         FINISHED.setMinimumSize(new java.awt.Dimension(172, 30));
-        FINISHED.setOpaque(false);
         FINISHED.setPreferredSize(new java.awt.Dimension(172, 30));
         FINISHED.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -228,9 +227,8 @@ public class WindowFrame extends javax.swing.JFrame {
         });
         getContentPane().add(gotofolder1);
         gotofolder1.setBounds(817, 20, 110, 32);
-		if(bgExists("bg/bgDIM.png")){
-			jLabel2.setIcon(bg);
-		}
+
+        jLabel2.setIcon(bg);
         jLabel2.addComponentListener(new java.awt.event.ComponentAdapter() {
             public void componentMoved(java.awt.event.ComponentEvent evt) {
                 jLabel2ComponentMoved(evt);

@@ -100,7 +100,7 @@
     </Component>
     <Component class="javax.swing.JButton" name="SMOOTHNESSMETALNESS">
       <Properties>
-        <Property name="text" type="java.lang.String" value="SMOOTHNES&amp; METALNESS"/>
+        <Property name="text" type="java.lang.String" value="SMOOTHNESS &amp; METALNESS"/>
         <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
           <Dimension value="[172, 30]"/>
         </Property>
