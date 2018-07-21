@@ -28,15 +28,20 @@
 package mmd;
 
 import java.awt.BorderLayout;
-import java.awt.Component;
+import java.awt.Dialog;
 import java.awt.Dimension;
+import java.awt.Image;
+import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.Toolkit;
+import java.awt.Window;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -47,6 +52,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
+import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -59,22 +65,21 @@ import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import static mmd.MaterialMakerv2.callMenu;
 
-public class SpecularAndOcclusion extends javax.swing.JFrame {
+public class SpecularAndSmoothness extends javax.swing.JFrame {
 
     public static MaterialMakerv2 foo = new MaterialMakerv2();
     public static WindowFrame wf = new WindowFrame();
 
-    String SpecularScale = getSpecular();
+    String SpecularScale = getSpecularScale();
+    String SmoothnessScale = getSmoothnessScale();
     String SpecularLoop = String.valueOf(getSpecularLoop());
-    String Occlusion = getOcclusion();
-    String OcclusionLoop = String.valueOf(getOcclusionLoop());
-    ///////////////////////////////////////////////////////////
-    String lastSpecularScale = getSpecular();
+    String SmoothnessLoop = String.valueOf(getSmoothnessLoop());
+    String AlbedoMapFile1;
+    ////////////////////////////////////////////////////////////////
+    String lastSmoothnessScale = getSmoothnessScale();
+    String lastSmoothnessLoop = String.valueOf(getSmoothnessLoop());
+    String lastSpecularScale = getSpecularScale();
     String lastSpecularLoop = String.valueOf(getSpecularLoop());
-    String lastOcclusion = getOcclusion();
-    String lastOcclusionLoop = String.valueOf(getOcclusionLoop());
-
-    final static int Yaxis = 335;
 
     /*Specular*/
     private static int CatchSpecularMapFrom;
@@ -86,15 +91,69 @@ public class SpecularAndOcclusion extends javax.swing.JFrame {
     private static String CatchSpecularScale;
     private static float CatchSpecularLoop;
 
-    /*Occlusion*/
-    private static int CatchOcclusionMapFrom;
-    private static int CatchOcclusionMapType;
-    private static int CatchOcclusionMapUVFlip;
-    private static int CatchOcclusionMapSwizzle;
-    private static int CatchOcclusionMapApplyScale;
-    private static String CatchOcclusionMapFile = null;
-    private static String CatchOcclusionScale;
-    private static float CatchOcclusionLoop;
+    /*Smoothness*/
+    private static int CatchSmoothnessMapFrom;
+    private static int CatchSmoothnessMapUVFlip;
+    private static int CatchSmoothnessMapSwizzle;
+    private static int CatchSmoothnessMapApplyScale;
+    private static String CatchSmoothnessMapFile = null;
+    private static String CatchSmoothnessScale;
+    private static float CatchSmoothnessLoop;
+    public int errors = 0;
+    JFrame ErrorWindow = new JFrame();
+
+    public void SomethingWentWrong() {
+        if (errors == 1) {
+            JLabel ErrorWindowText = new JLabel();
+            //ErrorWindowText.
+            ErrorWindowText.setText("<HTML><div style='padding-left:30px;'>Something went wrong while trying to load <i>SpecularAndOcclussion Section</i>...<br><br>"
+                    + "Please make sure the file you are trying to open doesn't <b>exceed the limit for each parameter</b>, usually this happens when you are trying to open "
+                    + "a .fx file where some of it's parameters has <b>higher values</b> than supposed to be<br><br>"
+                    + "<b>Limits for Specular: </b><br>"
+                    + "<ul>"
+                    + "<li>SpecularMapFrom: 0 - 8</li>"
+                    + "<li>SpecularMapType: 0 - 1</li>"
+                    + "<li>SpecularMapUVFlip: 0 - 3</li>"
+                    + "<li>SpecularMapApplySwizzle: 0 - 3</li>"
+                    + "<li>SpecularMapApplyScale: 0 - 2</li>"
+                    + "<br>"
+                    + "</ul>"
+                    + "<b>Limits for Smoothness:</b>"
+                    + "<ul>"
+                    + "<li>SmoothnessMapFrom: 0 - 8</li>"
+                    + "<li>SmoothnessMapType: 0 - 1</li>"
+                    + "<li>SmoothnessMapUVFlip: 0 - 3</li>"
+                    + "<li>SmoothnessMapApplySwizzle: 0 - 3</li>"
+                    + "<li>SmoothnessMapApplyScale: 0 - 2</li>"
+                    + "<br>"
+                    + "</ul>"
+                    + "</div></HTML>");
+            ErrorWindow.setLayout(new BorderLayout());
+            ErrorWindow.setSize(700, 350);
+            ErrorWindow.setLocationRelativeTo(this);
+            ErrorWindow.setResizable(true);
+            ErrorWindow.setAlwaysOnTop(true);
+            ErrorWindow.setVisible(true);
+            ErrorWindow.add(ErrorWindowText);
+            ErrorWindow.setName("help");
+            ErrorWindow.setTitle("Something went wrong");
+            ErrorWindow.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+            ErrorWindow.addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosing(WindowEvent we) {
+                    ErrorWindow.dispose();
+                }
+            });
+
+            try {
+                InputStream imgStream = getClass().getResourceAsStream("/icon/ico.png");
+                BufferedImage myImg = ImageIO.read(imgStream);
+                ErrorWindow.setIconImage(myImg);
+            } catch (IOException ex) {
+                Logger.getLogger(AlbedoSection.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
 
     public int getSpecularMapFrom() {
         BufferedReader AlbedotoEdit_Br = null;
@@ -106,11 +165,11 @@ public class SpecularAndOcclusion extends javax.swing.JFrame {
             String s = "";
 
             s = AlbedotoEdit_Br.readLine();
-            
             while (s != null) {
                 if (s.contains("#define SPECULAR_MAP_FROM")) {
 
                     CatchSpecularMapFrom = Integer.parseInt(s.replaceAll("[\\D]", ""));
+
                 }
                 s = AlbedotoEdit_Br.readLine();
             }
@@ -142,7 +201,6 @@ public class SpecularAndOcclusion extends javax.swing.JFrame {
             while (s != null) {
                 if (s.contains("#define SPECULAR_MAP_TYPE")) {
                     CatchSpecularMapType = Integer.parseInt(s.replaceAll("[\\D]", ""));
-
                 }
                 s = AlbedotoEdit_Br.readLine();
             }
@@ -293,7 +351,7 @@ public class SpecularAndOcclusion extends javax.swing.JFrame {
         return CatchSpecularMapFile;
     }
 
-    public String getSpecular() {
+    public String getSpecularScale() {
         BufferedReader AlbedotoEdit_Br = null;
         try {
             FileReader AlbedotoEdit_fr = new FileReader(foo.getFilePath());
@@ -344,7 +402,7 @@ public class SpecularAndOcclusion extends javax.swing.JFrame {
             s = AlbedotoEdit_Br.readLine();
 
             while (s != null) {
-                if (s.contains(" specularMapLoopNum")) {
+                if (s.contains("specularMapLoopNum =")) {
                     String txt = "";
                     for (int i = s.indexOf('=') + 1; i < s.length() - 1; i++) {
                         if (s.charAt(i) == '"' || s.charAt(i) == ';' || s.charAt(i) == ' ') {
@@ -372,8 +430,8 @@ public class SpecularAndOcclusion extends javax.swing.JFrame {
         return CatchSpecularLoop;
     }
 
-    //Occlusion
-    public int getOcclusionMapFrom() {
+    //Smoothness
+    public int getSmoothnessMapFrom() {
         BufferedReader AlbedotoEdit_Br = null;
         try {
             FileReader AlbedotoEdit_fr = new FileReader(foo.getFilePath());
@@ -383,12 +441,10 @@ public class SpecularAndOcclusion extends javax.swing.JFrame {
             String s = "";
 
             s = AlbedotoEdit_Br.readLine();
-            
             while (s != null) {
-                if (s.contains("#define OCCLUSION_MAP_FROM")) {
+                if (s.contains("#define SMOOTHNESS_MAP_FROM")) {
 
-                    CatchOcclusionMapFrom = Integer.parseInt(s.replaceAll("[\\D]", ""));
-
+                    CatchSmoothnessMapFrom = Integer.parseInt(s.replaceAll("[\\D]", ""));
                 }
                 s = AlbedotoEdit_Br.readLine();
             }
@@ -404,10 +460,10 @@ public class SpecularAndOcclusion extends javax.swing.JFrame {
                 Logger.getLogger(WindowFrame.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        return CatchOcclusionMapFrom;
+        return CatchSmoothnessMapFrom;
     }
 
-    public int getOcclusionMapUVFlip() {
+    public int getSmoothnessMapType() {
         BufferedReader AlbedotoEdit_Br = null;
         try {
             FileReader AlbedotoEdit_fr = new FileReader(foo.getFilePath());
@@ -418,8 +474,39 @@ public class SpecularAndOcclusion extends javax.swing.JFrame {
             s = AlbedotoEdit_Br.readLine();
 
             while (s != null) {
-                if (s.contains("#define OCCLUSION_MAP_UV_FLIP")) {
-                    CatchOcclusionMapUVFlip = Integer.parseInt(s.replaceAll("[\\D]", ""));
+                if (s.contains("#define SMOOTHNESS_MAP_TYPE")) {
+                    CatchSpecularMapType = Integer.parseInt(s.replaceAll("[\\D]", ""));
+                }
+                s = AlbedotoEdit_Br.readLine();
+            }
+
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(WindowFrame.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(WindowFrame.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                AlbedotoEdit_Br.close();
+            } catch (Exception e) {
+
+            }
+        }
+        return CatchSpecularMapType;
+    }
+
+    public int getSmoothnessMapUVFlip() {
+        BufferedReader AlbedotoEdit_Br = null;
+        try {
+            FileReader AlbedotoEdit_fr = new FileReader(foo.getFilePath());
+            AlbedotoEdit_Br = new BufferedReader(AlbedotoEdit_fr);
+
+            String s = "";
+
+            s = AlbedotoEdit_Br.readLine();
+
+            while (s != null) {
+                if (s.contains("#define SMOOTHNESS_MAP_UV_FLIP")) {
+                    CatchSmoothnessMapUVFlip = Integer.parseInt(s.replaceAll("[\\D]", ""));
                 }
                 s = AlbedotoEdit_Br.readLine();
             }
@@ -434,10 +521,10 @@ public class SpecularAndOcclusion extends javax.swing.JFrame {
             }
         }
 
-        return CatchOcclusionMapUVFlip;
+        return CatchSmoothnessMapUVFlip;
     }
 
-    public int getOcclusionMapSwizzle() {
+    public int getSmoothnessMapSwizzle() {
         BufferedReader AlbedotoEdit_Br = null;
         try {
             FileReader AlbedotoEdit_fr = new FileReader(foo.getFilePath());
@@ -448,8 +535,8 @@ public class SpecularAndOcclusion extends javax.swing.JFrame {
             s = AlbedotoEdit_Br.readLine();
 
             while (s != null) {
-                if (s.contains("#define OCCLUSION_MAP_SWIZZLE")) {
-                    CatchOcclusionMapSwizzle = Integer.parseInt(s.replaceAll("[\\D]", ""));
+                if (s.contains("#define SMOOTHNESS_MAP_SWIZZLE")) {
+                    CatchSmoothnessMapSwizzle = Integer.parseInt(s.replaceAll("[\\D]", ""));
                 }
                 s = AlbedotoEdit_Br.readLine();
             }
@@ -464,10 +551,10 @@ public class SpecularAndOcclusion extends javax.swing.JFrame {
             }
         }
 
-        return CatchOcclusionMapSwizzle;
+        return CatchSmoothnessMapSwizzle;
     }
 
-    public int getOcclusionMapType() {
+    public int getSmoothnessMapApplyScale() {
         BufferedReader AlbedotoEdit_Br = null;
         try {
             FileReader AlbedotoEdit_fr = new FileReader(foo.getFilePath());
@@ -478,8 +565,8 @@ public class SpecularAndOcclusion extends javax.swing.JFrame {
             s = AlbedotoEdit_Br.readLine();
 
             while (s != null) {
-                if (s.contains("#define OCCLUSION_MAP_APPLY_SCALE")) {
-                    CatchOcclusionMapType = Integer.parseInt(s.replaceAll("[\\D]", ""));
+                if (s.contains("#define SMOOTHNESS_MAP_APPLY_SCALE")) {
+                    CatchSmoothnessMapApplyScale = Integer.parseInt(s.replaceAll("[\\D]", ""));
                 }
                 s = AlbedotoEdit_Br.readLine();
             }
@@ -494,40 +581,10 @@ public class SpecularAndOcclusion extends javax.swing.JFrame {
             }
         }
 
-        return CatchOcclusionMapType;
+        return CatchSmoothnessMapApplyScale;
     }
 
-    public int getOcclusionMapApplyScale() {
-        BufferedReader AlbedotoEdit_Br = null;
-        try {
-            FileReader AlbedotoEdit_fr = new FileReader(foo.getFilePath());
-            AlbedotoEdit_Br = new BufferedReader(AlbedotoEdit_fr);
-
-            String s = "";
-
-            s = AlbedotoEdit_Br.readLine();
-
-            while (s != null) {
-                if (s.contains("#define OCCLUSION_MAP_APPLY_SCALE")) {
-                    CatchOcclusionMapApplyScale = Integer.parseInt(s.replaceAll("[\\D]", ""));
-                }
-                s = AlbedotoEdit_Br.readLine();
-            }
-
-        } catch (Exception e) {
-
-        } finally {
-            try {
-                AlbedotoEdit_Br.close();
-            } catch (IOException ex) {
-                Logger.getLogger(WindowFrame.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-
-        return CatchOcclusionMapApplyScale;
-    }
-
-    public String getOcclusionMapFile() {
+    public String getSmoothnessMapFile() {
         BufferedReader AlbedotoEdit_Br = null;
 
         try {
@@ -540,17 +597,17 @@ public class SpecularAndOcclusion extends javax.swing.JFrame {
             s = AlbedotoEdit_Br.readLine();
 
             while (s != null) {
-                if (s.contains("#define OCCLUSION_MAP_FILE")) {
-                    CatchOcclusionMapFile = "";
+                if (s.contains("#define SMOOTHNESS_MAP_FILE")) {
+                    CatchSmoothnessMapFile = "";
                     for (int i = s.indexOf('"') + 1; i < s.length() - 1; i++) {
                         if (s.charAt(i) == '"' || s.charAt(i) == ';') {
 
                         } else {
-                            CatchOcclusionMapFile += s.charAt(i);
+                            CatchSmoothnessMapFile += s.charAt(i);
                         }
                     }
 
-                    CatchOcclusionMapFile = CatchOcclusionMapFile.replace("null", "");
+                    CatchSmoothnessMapFile = CatchSmoothnessMapFile.replace("null", "");
                 }
                 s = AlbedotoEdit_Br.readLine();
             }
@@ -566,10 +623,10 @@ public class SpecularAndOcclusion extends javax.swing.JFrame {
 
             }
         }
-        return CatchOcclusionMapFile;
+        return CatchSmoothnessMapFile;
     }
 
-    public String getOcclusion() {
+    public String getSmoothnessScale() {
         BufferedReader AlbedotoEdit_Br = null;
         try {
             FileReader AlbedotoEdit_fr = new FileReader(foo.getFilePath());
@@ -580,7 +637,7 @@ public class SpecularAndOcclusion extends javax.swing.JFrame {
             s = AlbedotoEdit_Br.readLine();
 
             while (s != null) {
-                if (s.contains("occlusion ")) {
+                if (s.contains("smoothness =")) {
                     String txt = "";
                     for (int i = s.indexOf('=') + 1; i < s.length() - 1; i++) {
                         if (s.charAt(i) == '"' || s.charAt(i) == ';' || s.charAt(i) == ' ') {
@@ -589,7 +646,7 @@ public class SpecularAndOcclusion extends javax.swing.JFrame {
                             txt += s.charAt(i);
                         }
                     }
-                    CatchOcclusionScale = (txt);
+                    CatchSmoothnessScale = (txt);
 
                 }
                 s = AlbedotoEdit_Br.readLine();
@@ -606,10 +663,10 @@ public class SpecularAndOcclusion extends javax.swing.JFrame {
 
             }
         }
-        return CatchOcclusionScale;
+        return CatchSmoothnessScale;
     }
 
-    public float getOcclusionLoop() {
+    public float getSmoothnessLoop() {
         BufferedReader AlbedotoEdit_Br = null;
         try {
             FileReader AlbedotoEdit_fr = new FileReader(foo.getFilePath());
@@ -620,7 +677,7 @@ public class SpecularAndOcclusion extends javax.swing.JFrame {
             s = AlbedotoEdit_Br.readLine();
 
             while (s != null) {
-                if (s.contains(" occlusionMapLoopNum")) {
+                if (s.contains("smoothnessMapLoopNum")) {
                     String txt = "";
                     for (int i = s.indexOf('=') + 1; i < s.length() - 1; i++) {
                         if (s.charAt(i) == '"' || s.charAt(i) == ';' || s.charAt(i) == ' ') {
@@ -629,7 +686,7 @@ public class SpecularAndOcclusion extends javax.swing.JFrame {
                             txt += s.charAt(i);
                         }
                     }
-                    CatchOcclusionLoop = Float.parseFloat(txt);
+                    CatchSmoothnessLoop = Float.parseFloat(txt);
                 }
                 s = AlbedotoEdit_Br.readLine();
             }
@@ -645,26 +702,24 @@ public class SpecularAndOcclusion extends javax.swing.JFrame {
 
             }
         }
-        return CatchOcclusionLoop;
+        return CatchSmoothnessLoop;
     }
 
     /**
      * Creates new form WindowFrame
      */
-    public SpecularAndOcclusion() {//Constructor
+    public SpecularAndSmoothness() {//Constructor
 
         initComponents();//Generated by the GUI mostly
         myInitComponents(); //Specular Loop
-        myInitComponents2(); //Occlusion Loop
+        myInitComponents2(); //Smoothness Loop
         myInitComponents3(); //Specular Scale
-        myInitComponents4(); //Occlusion Scale
+        myInitComponents4(); //Smoothness Scale
     }
 
     public void myInitComponents() {
-
         final DecimalFormat df = new DecimalFormat("0.####");
         final JTextField text = new JTextField(20);
-
         final DoubleJSlider slider = new DoubleJSlider(-6400, 6400, 0, 100);
         slider.addChangeListener(new ChangeListener() {
             @Override
@@ -684,13 +739,20 @@ public class SpecularAndOcclusion extends javax.swing.JFrame {
                             String catchNew = "";
                             while (line != null) {
                                 if (line.contains("specularMapLoopNum")) {
+                                    String old = line;
                                     catchOld = line; //auxiliar line
                                     String aux = "";
-                                    for (int i = catchOld.indexOf('=') + 1; i < catchOld.length() - 1; i++) {
-                                        aux += catchOld.charAt(i);
+                                    for (int i = line.indexOf('=') + 1; i < line.length() - 1; i++) {
+                                        aux += line.charAt(i);
                                     }
                                     catchOld = aux;
-                                    if (!catchOld.equalsIgnoreCase(SpecularLoop)) {
+
+                                    if (SpecularLoop == null) {
+                                        SpecularLoop = String.valueOf(getSpecularLoop());
+                                    }
+                                    if (catchOld.equalsIgnoreCase(SpecularLoop)) {
+                                        line = old;
+                                    } else {
                                         SpecularLoop = SpecularLoop.replace(",", ".");
                                         catchNew = SpecularLoop; //catchnewdigit
                                         line = "const float2 specularMapLoopNum = " + catchNew + ';';
@@ -713,30 +775,36 @@ public class SpecularAndOcclusion extends javax.swing.JFrame {
                 } catch (Exception ex) {
                 }
             }
-        });
-        text.addKeyListener(new KeyAdapter() {
+        }
+        );
+        text.addKeyListener(
+                new KeyAdapter() {
             @Override
-            public void keyReleased(KeyEvent ke) {
+            public void keyReleased(KeyEvent ke
+            ) {
                 String typed = text.getText();
-                /*
-                if(!typed.matches("\\d+(\\.\\d*)?")) {
+
+                if (!typed.matches("\\d+(\\.\\d*)?")) {
                     return;
-                }*/
+                }
                 double value = Double.parseDouble(typed) * slider.scale;
                 slider.setValue((int) value);
                 SpecularLoop = text.getText();
             }
-        });
+        }
+        );
         float catchvalue;
         catchvalue = Float.parseFloat("" + getSpecularLoop()) * slider.scale;
+
         slider.setPaintTrack(true);
         slider.setPaintLabels(true);
-        slider.setBounds(48, 399, 200, 30);
+        slider.setBounds(48, 390, 200, 30);
         slider.setPaintTicks(true);
         slider.setValue((int) catchvalue);
-        text.setBounds(256, 399, 50, 20);
+        text.setBounds(256, 390, 50, 20);
 
         add(text);
+
         add(slider);
     }
 
@@ -746,15 +814,26 @@ public class SpecularAndOcclusion extends javax.swing.JFrame {
         final JTextField text = new JTextField(20);
 
         final DoubleJSlider slider = new DoubleJSlider(-6400, 6400, 0, 100);
+        float catchvalue;
+        catchvalue = Float.parseFloat("" + getSmoothnessLoop()) * slider.scale;
+        slider.setPaintTrack(true);
+        slider.setPaintLabels(true);
+        slider.setBounds(497, 390, 200, 30);
+        slider.setPaintTicks(true);
+        slider.setValue((int) catchvalue);
+        text.setBounds(703, 390, 50, 20);
+        text.setText(df.format(slider.getScaledValue()));
+        add(text);
+        add(slider);
         slider.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent e) {
                 try {
 
                     text.setText(df.format(slider.getScaledValue()));
-                    OcclusionLoop = text.getText();
-                    if (!slider.getValueIsAdjusting() && !OcclusionLoop.equalsIgnoreCase(lastOcclusionLoop)) {
-                        lastOcclusionLoop = OcclusionLoop;
+                    SmoothnessLoop = text.getText();
+                    if (!slider.getValueIsAdjusting() && !SmoothnessLoop.equalsIgnoreCase(lastSmoothnessLoop)) {
+                        lastSmoothnessLoop = SmoothnessLoop;
                         try {
                             BufferedReader br = null;
                             br = new BufferedReader(new FileReader(foo.getFileToEdit()));
@@ -763,17 +842,24 @@ public class SpecularAndOcclusion extends javax.swing.JFrame {
                             String catchOld = "";
                             String catchNew = "";
                             while (line != null) {
-                                if (line.contains("occlusionMapLoopNum")) {
+                                if (line.contains("smoothnessMapLoopNum")) {
+                                    String old = line;
                                     catchOld = line; //auxiliar line
                                     String aux = "";
-                                    for (int i = catchOld.indexOf('=') + 1; i < catchOld.length() - 1; i++) {
-                                        aux += catchOld.charAt(i);
+                                    for (int i = line.indexOf('=') + 1; i < line.length() - 1; i++) {
+                                        aux += line.charAt(i);
                                     }
                                     catchOld = aux;
-                                    if (!catchOld.equalsIgnoreCase(OcclusionLoop)) {
-                                        OcclusionLoop = OcclusionLoop.replace(",", ".");
-                                        catchNew = OcclusionLoop; //catchnewdigit
-                                        line = "const float occlusionMapLoopNum = " + catchNew + ';';
+
+                                    if (SmoothnessLoop == null) {
+                                        SmoothnessLoop = String.valueOf(getSmoothnessLoop());
+                                    }
+                                    if (catchOld.equalsIgnoreCase(SmoothnessLoop)) {
+                                        line = old;
+                                    } else {
+                                        SmoothnessLoop = SmoothnessLoop.replace(",", ".");
+                                        catchNew = SmoothnessLoop; //catchnewdigit
+                                        line = "const float smoothnessMapLoopNum = " + catchNew + ';';
                                     }
                                 }
                                 oldtext += line + "\r\n";
@@ -790,6 +876,7 @@ public class SpecularAndOcclusion extends javax.swing.JFrame {
 
                         }
                     }
+
                 } catch (Exception ex) {
                 }
             }
@@ -798,26 +885,16 @@ public class SpecularAndOcclusion extends javax.swing.JFrame {
             @Override
             public void keyReleased(KeyEvent ke) {
                 String typed = text.getText();
-                /*
-                if(!typed.matches("\\d+(\\.\\d*)?")) {
+
+                if (!typed.matches("\\d+(\\.\\d*)?")) {
                     return;
-                }*/
+                }
                 double value = Double.parseDouble(typed) * slider.scale;
                 slider.setValue((int) value);
-                OcclusionLoop = text.getText();
+                SmoothnessLoop = text.getText();
             }
         });
-        float catchvalue;
-        catchvalue = Float.parseFloat("" + getOcclusionLoop()) * slider.scale;
-        slider.setPaintTrack(true);
-        slider.setPaintLabels(true);
-        slider.setBounds(502, 399, 200, 30);
-        slider.setPaintTicks(true);
-        slider.setValue((int) catchvalue);
-        text.setBounds(708, 399, 50, 20);
 
-        add(text);
-        add(slider);
     }
 
     public void myInitComponents3() {
@@ -826,6 +903,18 @@ public class SpecularAndOcclusion extends javax.swing.JFrame {
         final JTextField text = new JTextField(20);
 
         final DoubleJSlider slider = new DoubleJSlider(0, 100, 0, 100);
+        float catchvalue;
+        catchvalue = Float.parseFloat("" + getSpecularScale()) * slider.scale;
+        slider.setPaintTrack(true);
+        slider.setPaintLabels(true);
+        slider.setBounds(48, 326, 200, 30);
+        slider.setPaintTicks(true);
+        slider.setValue((int) catchvalue);
+        text.setBounds(256, 326, 50, 20);
+
+        add(text);
+        add(slider);
+        text.setText(df.format(slider.getScaledValue()));
         slider.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent e) {
@@ -843,14 +932,21 @@ public class SpecularAndOcclusion extends javax.swing.JFrame {
                             String catchOld = "";
                             String catchNew = "";
                             while (line != null) {
-                                if (line.contains("specular ")) {
+                                if (line.contains("float3 specular")) {
+                                    String old = line;
                                     catchOld = line; //auxiliar line
                                     String aux = "";
-                                    for (int i = catchOld.indexOf('=') + 1; i < catchOld.length() - 1; i++) {
-                                        aux += catchOld.charAt(i);
+                                    for (int i = line.indexOf('=') + 1; i < line.length() - 1; i++) {
+                                        aux += line.charAt(i);
                                     }
                                     catchOld = aux;
-                                    if (!catchOld.equalsIgnoreCase(SpecularScale)) {
+
+                                    if (SpecularScale == null) {
+                                        SpecularScale = getSpecularScale();
+                                    }
+                                    if (catchOld.equalsIgnoreCase(SpecularScale)) {
+                                        line = old;
+                                    } else {
                                         SpecularScale = SpecularScale.replace(",", ".");
                                         catchNew = SpecularScale; //catchnewdigit
                                         line = "const float3 specular = " + catchNew + ';';
@@ -879,26 +975,16 @@ public class SpecularAndOcclusion extends javax.swing.JFrame {
             @Override
             public void keyReleased(KeyEvent ke) {
                 String typed = text.getText();
-                /*
-                if(!typed.matches("\\d+(\\.\\d*)?")) {
+
+                if (!typed.matches("\\d+(\\.\\d*)?")) {
                     return;
-                }*/
+                }
                 double value = Double.parseDouble(typed) * slider.scale;
                 slider.setValue((int) value);
                 SpecularScale = text.getText();
             }
         });
-        float catchvalue;
-        catchvalue = Float.parseFloat("" + getSpecular()) * slider.scale;
-        slider.setPaintTrack(true);
-        slider.setPaintLabels(true);
-        slider.setBounds(48, Yaxis, 200, 30);
-        slider.setPaintTicks(true);
-        slider.setValue((int) catchvalue);
-        text.setBounds(258, Yaxis, 50, 20);
 
-        add(text);
-        add(slider);
     }
 
     public void myInitComponents4() {
@@ -907,15 +993,28 @@ public class SpecularAndOcclusion extends javax.swing.JFrame {
         final JTextField text = new JTextField(20);
 
         final DoubleJSlider slider = new DoubleJSlider(0, 100, 0, 100);
+        float catchvalue;
+        catchvalue = Float.parseFloat("" + getSmoothnessScale()) * slider.scale;
+        slider.setPaintTrack(true);
+        slider.setPaintLabels(true);
+        slider.setBounds(497, 325, 200, 30);
+        slider.setPaintTicks(true);
+        slider.setValue((int) catchvalue);
+        text.setBounds(703, 325, 50, 20);
+        text.setText(df.format(slider.getScaledValue()));
+
+        add(text);
+        add(slider);
         slider.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent e) {
                 try {
 
                     text.setText(df.format(slider.getScaledValue()));
-                    Occlusion = text.getText();
-                    if (!slider.getValueIsAdjusting() && !Occlusion.equalsIgnoreCase(lastOcclusion)) {
-                        lastOcclusion = Occlusion;
+                    SmoothnessScale = text.getText();
+
+                    if (!slider.getValueIsAdjusting() && !SmoothnessScale.equalsIgnoreCase(lastSmoothnessScale)) {
+                        lastSmoothnessScale = SmoothnessScale;
                         try {
                             BufferedReader br = null;
                             br = new BufferedReader(new FileReader(foo.getFileToEdit()));
@@ -924,17 +1023,25 @@ public class SpecularAndOcclusion extends javax.swing.JFrame {
                             String catchOld = "";
                             String catchNew = "";
                             while (line != null) {
-                                if (line.contains("occlusion ")) {
+                                if (line.contains("smoothness =")) {
+                                    String old = line;
                                     catchOld = line; //auxiliar line
                                     String aux = "";
-                                    for (int i = catchOld.indexOf('=') + 1; i < catchOld.length() - 1; i++) {
-                                        aux += catchOld.charAt(i);
+                                    for (int i = line.indexOf('=') + 1; i < line.length() - 1; i++) {
+                                        aux += line.charAt(i);
                                     }
                                     catchOld = aux;
-                                    if (!catchOld.equalsIgnoreCase(Occlusion)) {
-                                        Occlusion = Occlusion.replace(",", ".");
-                                        catchNew = Occlusion; //catchnewdigit
-                                        line = "const float occlusion = " + catchNew + ';';
+
+                                    if (SmoothnessScale == null) {
+                                        SmoothnessScale = getSmoothnessScale();
+                                    }
+                                    if (catchOld.equalsIgnoreCase(SmoothnessScale)) {
+
+                                        line = old;
+                                    } else {
+                                        SmoothnessScale = SmoothnessScale.replace(",", ".");
+                                        catchNew = SmoothnessScale; //catchnewdigit
+                                        line = "const float smoothness = " + catchNew + ';';
                                     }
                                 }
                                 oldtext += line + "\r\n";
@@ -960,26 +1067,15 @@ public class SpecularAndOcclusion extends javax.swing.JFrame {
             @Override
             public void keyReleased(KeyEvent ke) {
                 String typed = text.getText();
-                /*
-                if(!typed.matches("\\d+(\\.\\d*)?")) {
+
+                if (!typed.matches("\\d+(\\.\\d*)?")) {
                     return;
-                }*/
+                }
                 double value = Double.parseDouble(typed) * slider.scale;
                 slider.setValue((int) value);
-                Occlusion = text.getText();
+                SmoothnessScale = text.getText();
             }
         });
-        float catchvalue;
-        catchvalue = Float.parseFloat("" + getOcclusion()) * slider.scale;
-        slider.setPaintTrack(true);
-        slider.setPaintLabels(true);
-        slider.setBounds(502, Yaxis, 200, 30);
-        slider.setPaintTicks(true);
-        slider.setValue((int) catchvalue);
-        text.setBounds(708, Yaxis, 50, 20);
-
-        add(text);
-        add(slider);
 
     }
 
@@ -1026,40 +1122,42 @@ public class SpecularAndOcclusion extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         SpecularMapSwizzle = new javax.swing.JComboBox<>();
+        SpecularMapApplyScale = new javax.swing.JComboBox<>();
         AlbedoMapUVFlipHelp1 = new javax.swing.JButton();
         AlbedoMapUVFlipHelp2 = new javax.swing.JButton();
         jLabel10 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
-        OcclusionMapUVFlip = new javax.swing.JComboBox<>();
+        SmoothnessMapUVFlip = new javax.swing.JComboBox<>();
         AlbedoMapHelp1 = new javax.swing.JButton();
         AlbedoMapUVFlipHelp3 = new javax.swing.JButton();
         AlbedoMapFileHelp1 = new javax.swing.JButton();
         albedoHelp1 = new javax.swing.JButton();
         AlbedoMapLoopHelp1 = new javax.swing.JButton();
         jLabel12 = new javax.swing.JLabel();
-        OcclusionMapFrom = new javax.swing.JComboBox<>();
+        SmoothnessMapFrom = new javax.swing.JComboBox<>();
         jLabel13 = new javax.swing.JLabel();
         jLabel14 = new javax.swing.JLabel();
         changeFile1 = new javax.swing.JButton();
         jLabel15 = new javax.swing.JLabel();
         jLabel16 = new javax.swing.JLabel();
-        OcclusionMapSwizzle = new javax.swing.JComboBox<>();
+        SmoothnessMapSwizzle = new javax.swing.JComboBox<>();
+        SmoothnessMapApplyScale = new javax.swing.JComboBox<>();
         AlbedoMapUVFlipHelp4 = new javax.swing.JButton();
         AlbedoMapUVFlipHelp5 = new javax.swing.JButton();
-        jLabel7 = new javax.swing.JLabel();
-        OcclusionMapType = new javax.swing.JComboBox<>();
-        AlbedoMapHelp4 = new javax.swing.JButton();
-        OcclusionMapApplyScale = new javax.swing.JComboBox<>();
-        SpecularMapApplyScale = new javax.swing.JComboBox<>();
         SpecularMapFile = new javax.swing.JTextField();
-        OcclusionMapFile = new javax.swing.JTextField();
+        SmoothnessMapFile = new javax.swing.JTextField();
         back1 = new javax.swing.JButton();
+        jLabel17 = new javax.swing.JLabel();
+        SmoothnessMapType = new javax.swing.JComboBox<>();
+        AlbedoMapHelp4 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
+        jButton4 = new javax.swing.JButton();
+        jButton5 = new javax.swing.JButton();
 
         jMenu1.setText("jMenu1");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Edit Specular and Occlusion");
+        setTitle("Edit Specular and Smoothness");
         setAutoRequestFocus(false);
         setResizable(false);
         setSize(new java.awt.Dimension(960, 540));
@@ -1067,7 +1165,12 @@ public class SpecularAndOcclusion extends javax.swing.JFrame {
         jLabel1.setText("<html><b>SPECULAR MAP FROM</b></html>");
 
         SpecularMapFrom.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "0", "1", "2", "3", "4", "5", "6", "7", "8" }));
-        SpecularMapFrom.setSelectedIndex(getSpecularMapFrom());
+        try{
+            SpecularMapFrom.setSelectedIndex(getSpecularMapFrom());
+        }catch(Exception e){
+            errors+=1;
+            SomethingWentWrong();
+        }
         SpecularMapFrom.setToolTipText("");
         SpecularMapFrom.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
@@ -1101,7 +1204,12 @@ public class SpecularAndOcclusion extends javax.swing.JFrame {
         jLabel9.setText("<html><b>SPECULAR MAP LOOP</b></html>");
 
         SpecularMapUVFlip.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "0", "1", "2", "3" }));
-        SpecularMapUVFlip.setSelectedIndex(getSpecularMapUVFlip());
+        try{
+            SpecularMapUVFlip.setSelectedIndex(getSpecularMapUVFlip());
+        }catch(Exception e){
+            errors+=1;
+            SomethingWentWrong();
+        }
         SpecularMapUVFlip.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 SpecularMapUVFlipItemStateChanged(evt);
@@ -1151,7 +1259,12 @@ public class SpecularAndOcclusion extends javax.swing.JFrame {
         jLabel3.setText("<html><b>SPECULAR MAP TYPE</b></html>");
 
         SpecularMapType.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "0", "1", "2", "3", "4" }));
-        SpecularMapType.setSelectedIndex(getSpecularMapType());
+        try{
+            SpecularMapType.setSelectedIndex(getSpecularMapType());
+        }catch(Exception e){
+            errors+=1;
+            SomethingWentWrong();
+        }
         SpecularMapType.setToolTipText("");
         SpecularMapType.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
@@ -1176,7 +1289,12 @@ public class SpecularAndOcclusion extends javax.swing.JFrame {
         jLabel5.setText("<html><b>SPECULAR MAP APPLY SCALE</b></html>");
 
         SpecularMapSwizzle.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "0", "1", "2", "3" }));
-        SpecularMapSwizzle.setSelectedIndex(getSpecularMapSwizzle());
+        try{
+            SpecularMapSwizzle.setSelectedIndex(getSpecularMapSwizzle());
+        }catch(Exception e){
+            errors+=1;
+            SomethingWentWrong();
+        }
         SpecularMapSwizzle.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 SpecularMapSwizzleItemStateChanged(evt);
@@ -1185,6 +1303,24 @@ public class SpecularAndOcclusion extends javax.swing.JFrame {
         SpecularMapSwizzle.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 SpecularMapSwizzleActionPerformed(evt);
+            }
+        });
+
+        SpecularMapApplyScale.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "0", "1", "2" }));
+        try{
+            SpecularMapApplyScale.setSelectedIndex(getSpecularMapApplyScale());
+        }catch(Exception e){
+            errors+=1;
+            SomethingWentWrong();
+        }
+        SpecularMapApplyScale.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                SpecularMapApplyScaleItemStateChanged(evt);
+            }
+        });
+        SpecularMapApplyScale.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                SpecularMapApplyScaleActionPerformed(evt);
             }
         });
 
@@ -1202,20 +1338,25 @@ public class SpecularAndOcclusion extends javax.swing.JFrame {
             }
         });
 
-        jLabel10.setText("<html><b>OCCLUSION MAP SCALE</b></html>");
+        jLabel10.setText("<html><b>SMOOTHNESS MAP SCALE</b></html>");
 
-        jLabel11.setText("<html><b>OCCLUSION MAP LOOP</b></html>");
+        jLabel11.setText("<html><b>SMOOTHNESS MAP LOOP</b></html>");
 
-        OcclusionMapUVFlip.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "0", "1", "2", "3" }));
-        OcclusionMapUVFlip.setSelectedIndex(getOcclusionMapUVFlip());
-        OcclusionMapUVFlip.addItemListener(new java.awt.event.ItemListener() {
+        SmoothnessMapUVFlip.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "0", "1", "2", "3" }));
+        try{
+            SmoothnessMapUVFlip.setSelectedIndex(getSmoothnessMapUVFlip());
+        }catch(Exception e){
+            errors+=1;
+            SomethingWentWrong();
+        }
+        SmoothnessMapUVFlip.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                OcclusionMapUVFlipItemStateChanged(evt);
+                SmoothnessMapUVFlipItemStateChanged(evt);
             }
         });
-        OcclusionMapUVFlip.addActionListener(new java.awt.event.ActionListener() {
+        SmoothnessMapUVFlip.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                OcclusionMapUVFlipActionPerformed(evt);
+                SmoothnessMapUVFlipActionPerformed(evt);
             }
         });
 
@@ -1254,25 +1395,30 @@ public class SpecularAndOcclusion extends javax.swing.JFrame {
             }
         });
 
-        jLabel12.setText("<html><b>OCCLUSION MAP FROM</b></html>");
+        jLabel12.setText("<html><b>SMOOTHNESS MAP FROM</b></html>");
 
-        OcclusionMapFrom.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "0", "1", "2", "3", "4", "5", "6", "7", "8" }));
-        OcclusionMapFrom.setSelectedIndex(getOcclusionMapFrom());
-        OcclusionMapFrom.setToolTipText("");
-        OcclusionMapFrom.addItemListener(new java.awt.event.ItemListener() {
+        SmoothnessMapFrom.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9" }));
+        try{
+            SmoothnessMapFrom.setSelectedIndex(getSmoothnessMapFrom());
+        }catch(Exception e){
+            errors+=1;
+            SomethingWentWrong();
+        }
+        SmoothnessMapFrom.setToolTipText("");
+        SmoothnessMapFrom.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                OcclusionMapFromItemStateChanged(evt);
+                SmoothnessMapFromItemStateChanged(evt);
             }
         });
-        OcclusionMapFrom.addActionListener(new java.awt.event.ActionListener() {
+        SmoothnessMapFrom.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                OcclusionMapFromActionPerformed(evt);
+                SmoothnessMapFromActionPerformed(evt);
             }
         });
 
-        jLabel13.setText("<html><b>OCCLUSION MAP UV FLIP</b></html>");
+        jLabel13.setText("<html><b>SMOOTHNESS MAP UV FLIP</b></html>");
 
-        jLabel14.setText("<html><b>OCCLUSION MAP FILE</b></html>");
+        jLabel14.setText("<html><b>SMOOTHNESS MAP FILE</b></html>");
 
         changeFile1.setText("...");
         changeFile1.addChangeListener(new javax.swing.event.ChangeListener() {
@@ -1286,20 +1432,43 @@ public class SpecularAndOcclusion extends javax.swing.JFrame {
             }
         });
 
-        jLabel15.setText("<html><b>OCCLUSION MAP SWIZZLE</b></html>");
+        jLabel15.setText("<html><b>SMOOTHNESS MAP SWIZZLE</b></html>");
 
-        jLabel16.setText("<html><b>OCCLUSION MAP APPLY SCALE</b></html>");
+        jLabel16.setText("<html><b>SMOOTHNESS MAP APPLY SCALE</b></html>");
 
-        OcclusionMapSwizzle.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "0", "1", "2", "3" }));
-        OcclusionMapSwizzle.setSelectedIndex(getOcclusionMapSwizzle());
-        OcclusionMapSwizzle.addItemListener(new java.awt.event.ItemListener() {
+        SmoothnessMapSwizzle.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "0", "1", "2", "3" }));
+        try{
+            SmoothnessMapSwizzle.setSelectedIndex(getSmoothnessMapSwizzle());
+        }catch(Exception e){
+            errors+=1;
+            SomethingWentWrong();
+        }
+        SmoothnessMapSwizzle.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                OcclusionMapSwizzleItemStateChanged(evt);
+                SmoothnessMapSwizzleItemStateChanged(evt);
             }
         });
-        OcclusionMapSwizzle.addActionListener(new java.awt.event.ActionListener() {
+        SmoothnessMapSwizzle.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                OcclusionMapSwizzleActionPerformed(evt);
+                SmoothnessMapSwizzleActionPerformed(evt);
+            }
+        });
+
+        SmoothnessMapApplyScale.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "0", "1", "2" }));
+        try{
+            SmoothnessMapApplyScale.setSelectedIndex(getSmoothnessMapApplyScale());
+        }catch(Exception e){
+            errors+=1;
+            SomethingWentWrong();
+        }
+        SmoothnessMapApplyScale.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                SmoothnessMapApplyScaleItemStateChanged(evt);
+            }
+        });
+        SmoothnessMapApplyScale.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                SmoothnessMapApplyScaleActionPerformed(evt);
             }
         });
 
@@ -1317,58 +1486,21 @@ public class SpecularAndOcclusion extends javax.swing.JFrame {
             }
         });
 
-        jLabel7.setText("<html><b>OCCLUSION MAP TYPE</b></html>");
+        try{
+            SpecularMapFile.setEditable(false);
+            SpecularMapFile.setText(getSpecularMapFile());
+        }catch(Exception e){
+            errors+=1;
+            SomethingWentWrong();
+        }
 
-        OcclusionMapType.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "0", "1" }));
-        OcclusionMapType.setSelectedIndex(getOcclusionMapType());
-        OcclusionMapType.setToolTipText("");
-        OcclusionMapType.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                OcclusionMapTypeItemStateChanged(evt);
-            }
-        });
-        OcclusionMapType.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                OcclusionMapTypeActionPerformed(evt);
-            }
-        });
-
-        AlbedoMapHelp4.setText("Help");
-        AlbedoMapHelp4.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                AlbedoMapHelp4ActionPerformed(evt);
-            }
-        });
-
-        OcclusionMapApplyScale.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "0", "1" }));
-        OcclusionMapApplyScale.setSelectedIndex(getOcclusionMapApplyScale());
-        OcclusionMapApplyScale.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                OcclusionMapApplyScaleItemStateChanged(evt);
-            }
-        });
-        OcclusionMapApplyScale.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                OcclusionMapApplyScaleActionPerformed(evt);
-            }
-        });
-
-        SpecularMapApplyScale.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "0", "1", "2", "3" }));
-        SpecularMapApplyScale.setSelectedIndex(getSpecularMapApplyScale());
-        SpecularMapApplyScale.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                SpecularMapApplyScaleItemStateChanged(evt);
-            }
-        });
-        SpecularMapApplyScale.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                SpecularMapApplyScaleActionPerformed(evt);
-            }
-        });
-
-        SpecularMapFile.setText(getSpecularMapFile());
-
-        OcclusionMapFile.setText(getOcclusionMapFile());
+        try{
+            SmoothnessMapFile.setEditable(false);
+            SmoothnessMapFile.setText(getSmoothnessMapFile());
+        }catch(Exception e){
+            errors+=1;
+            SomethingWentWrong();
+        }
 
         back1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/bg/back.png"))); // NOI18N
         back1.setBorder(null);
@@ -1376,6 +1508,34 @@ public class SpecularAndOcclusion extends javax.swing.JFrame {
         back1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 back1ActionPerformed(evt);
+            }
+        });
+
+        jLabel17.setText("<html><b>SMOOTHNESS MAP TYPE</b></html>");
+
+        SmoothnessMapType.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "0", "1", "2" }));
+        try{
+            SmoothnessMapType.setSelectedIndex(getSmoothnessMapType());
+        }catch(Exception e){
+            errors+=1;
+            SomethingWentWrong();
+        }
+        SmoothnessMapType.setToolTipText("");
+        SmoothnessMapType.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                SmoothnessMapTypeItemStateChanged(evt);
+            }
+        });
+        SmoothnessMapType.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                SmoothnessMapTypeActionPerformed(evt);
+            }
+        });
+
+        AlbedoMapHelp4.setText("Help");
+        AlbedoMapHelp4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                AlbedoMapHelp4ActionPerformed(evt);
             }
         });
 
@@ -1390,189 +1550,205 @@ public class SpecularAndOcclusion extends javax.swing.JFrame {
             }
         });
 
+        jButton4.setText("Preview");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
+
+        jButton5.setText("Preview");
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(54, 54, 54)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(albedoHelp)
-                                .addGap(252, 252, 252))
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(AlbedoMapLoopHelp)))
-                        .addGroup(layout.createSequentialGroup()
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 286, Short.MAX_VALUE)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                .addComponent(back1, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 139, Short.MAX_VALUE)
+                                .addComponent(changeFile, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGap(256, 256, 256)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                            .addComponent(SpecularMapApplyScale, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(SpecularMapSwizzle, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(SpecularMapUVFlip, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(SpecularMapType, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(SpecularMapFrom, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                        .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(AlbedoMapLoopHelp))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                        .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(albedoHelp))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                                         .addComponent(SpecularMapFile, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(changeFile, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(AlbedoMapFileHelp)
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                        .addComponent(AlbedoMapHelp, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(AlbedoMapUVFlipHelp)
-                                        .addComponent(AlbedoMapHelp3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(AlbedoMapUVFlipHelp1)
-                                        .addComponent(AlbedoMapUVFlipHelp2)))))
-                        .addGap(60, 60, 60)))
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jButton4)))
+                                .addGap(0, 123, Short.MAX_VALUE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(AlbedoMapFileHelp))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGroup(layout.createSequentialGroup()
+                                            .addComponent(back1, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                            .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addGap(95, 95, 95)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addComponent(SpecularMapFrom, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(SpecularMapType, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(SpecularMapUVFlip, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(SpecularMapSwizzle, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(SpecularMapApplyScale, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(AlbedoMapHelp, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(AlbedoMapUVFlipHelp)
+                            .addComponent(AlbedoMapHelp3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(AlbedoMapUVFlipHelp1)
+                            .addComponent(AlbedoMapUVFlipHelp2))))
+                .addGap(54, 54, 54)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(albedoHelp1)
+                            .addGap(1, 1, 1))
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                            .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                            .addComponent(AlbedoMapLoopHelp1)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(SmoothnessMapFile, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton5))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(SmoothnessMapFrom, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel17, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(SmoothnessMapType, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(SmoothnessMapUVFlip, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(SmoothnessMapSwizzle, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(changeFile1, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(AlbedoMapFileHelp1))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                        .addGroup(layout.createSequentialGroup()
-                                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addComponent(jLabel12, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addComponent(jLabel7, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                .addGroup(layout.createSequentialGroup()
-                                                    .addGap(95, 95, 95)
-                                                    .addComponent(OcclusionMapFrom, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                    .addComponent(OcclusionMapType, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                                        .addComponent(OcclusionMapUVFlip, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(OcclusionMapSwizzle, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(OcclusionMapApplyScale, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(AlbedoMapHelp1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(AlbedoMapUVFlipHelp3)
-                                    .addComponent(AlbedoMapUVFlipHelp4)
-                                    .addComponent(AlbedoMapUVFlipHelp5)
-                                    .addComponent(AlbedoMapHelp4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                        .addGap(54, 54, 54))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(OcclusionMapFile, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(albedoHelp1)
-                                    .addGap(1, 1, 1))
-                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                    .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(AlbedoMapLoopHelp1))))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                                .addComponent(changeFile1, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 63, Short.MAX_VALUE)
+                                .addComponent(SmoothnessMapApplyScale, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(AlbedoMapHelp1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(AlbedoMapUVFlipHelp3)
+                            .addComponent(AlbedoMapUVFlipHelp4)
+                            .addComponent(AlbedoMapUVFlipHelp5)
+                            .addComponent(AlbedoMapFileHelp1)
+                            .addComponent(AlbedoMapHelp4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                .addGap(53, 57, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(12, 12, 12)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(back1, javax.swing.GroupLayout.DEFAULT_SIZE, 43, Short.MAX_VALUE)
-                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(47, 47, 47)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(SpecularMapFrom, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(AlbedoMapHelp)
-                        .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(OcclusionMapFrom, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(AlbedoMapHelp1)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(SpecularMapType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(AlbedoMapHelp3)
-                    .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(OcclusionMapType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(AlbedoMapHelp4))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
+                        .addGap(12, 12, 12)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(back1, javax.swing.GroupLayout.DEFAULT_SIZE, 43, Short.MAX_VALUE)
+                            .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(31, 31, 31)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(SmoothnessMapFrom, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(AlbedoMapHelp1)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(89, 89, 89)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(SpecularMapFrom, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(AlbedoMapHelp)
+                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGap(6, 6, 6)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(SmoothnessMapFile, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jButton5)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(SpecularMapType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(AlbedoMapHelp3)
+                                .addComponent(jLabel17, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(SmoothnessMapType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(AlbedoMapHelp4)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(SpecularMapUVFlip, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(AlbedoMapUVFlipHelp))
+                            .addComponent(AlbedoMapUVFlipHelp)
+                            .addComponent(SmoothnessMapUVFlip, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(AlbedoMapUVFlipHelp3)
+                            .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(SpecularMapSwizzle, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(AlbedoMapUVFlipHelp2))
+                            .addComponent(AlbedoMapUVFlipHelp2)
+                            .addComponent(SmoothnessMapSwizzle, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(AlbedoMapUVFlipHelp5))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(SpecularMapApplyScale, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(AlbedoMapUVFlipHelp1)
-                            .addComponent(SpecularMapApplyScale, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(SmoothnessMapApplyScale, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(AlbedoMapUVFlipHelp4))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(changeFile)
-                            .addComponent(AlbedoMapFileHelp))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(SpecularMapFile, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(OcclusionMapUVFlip, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(AlbedoMapUVFlipHelp3))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(OcclusionMapSwizzle, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(AlbedoMapUVFlipHelp5))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(AlbedoMapUVFlipHelp4)
-                            .addComponent(OcclusionMapApplyScale, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(AlbedoMapFileHelp)
                             .addComponent(changeFile1)
                             .addComponent(AlbedoMapFileHelp1))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(OcclusionMapFile, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(SpecularMapFile, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jButton4))))
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -1590,7 +1766,7 @@ public class SpecularAndOcclusion extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(AlbedoMapLoopHelp1))))
-                .addContainerGap(79, Short.MAX_VALUE))
+                .addGap(86, 86, 86))
         );
 
         pack();
@@ -1614,10 +1790,8 @@ public class SpecularAndOcclusion extends javax.swing.JFrame {
         FileFilter imageFilter = new FileNameExtensionFilter("Images", "jpg", "png", "gif", "bmp", "tga", "targa", "dds", "tif", "tiff", "jpeg", "pcd");
         fileChooser.setFileFilter(imageFilter);
 
-        Component areaTexto = null;
-
         try {
-            int selection = fileChooser.showOpenDialog(areaTexto);
+            int selection = fileChooser.showOpenDialog(this);
             String filePath = fileChooser.getSelectedFile().getAbsolutePath();
             filePath = filePath.replace("\\", "/");
 
@@ -1627,6 +1801,7 @@ public class SpecularAndOcclusion extends javax.swing.JFrame {
                 if (SpecularMapFrom.getSelectedIndex() != 1) {
                     SpecularMapFrom.setSelectedIndex(1);
                 }
+
                 try {
                     BufferedReader br = null;
                     br = new BufferedReader(new FileReader(foo.getFileToEdit()));
@@ -1672,10 +1847,9 @@ public class SpecularAndOcclusion extends javax.swing.JFrame {
 
     private void AlbedoMapHelpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AlbedoMapHelpActionPerformed
 
-        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         JFrame AlbedoMapHelp = new JFrame();
         JLabel AlbedoMapHelpText = new JLabel();
-
+        AlbedoMapHelp.setName("help");
         AlbedoMapHelpText.setText("<HTML><div><pre style='font-family: Arial;'><center>You can use a color and texture to change colors in your model by set the code to the ALBEDO_MAP_FROM.<br><br>"
                 + "<b>Tips 1 :</b> The albedo is also called Base Color, default data will fetched params from texture from the pmx.<br>"
                 + "<b>Tips 2 :</b> Do not enter a path with HDR file, that will be ignore the HDR and linear color-space<br>"
@@ -1692,8 +1866,8 @@ public class SpecularAndOcclusion extends javax.swing.JFrame {
                 + "    <li>8 : Params fetch from Specular Color from the pmx.</li><br>"
                 + "    <li><strike>9 : Params fetch from Specular Power from the pmx. (this option can only be used for specular)</strike>, doesn't work on Specular</li></ul></pre><br><br></HTML>");
         AlbedoMapHelp.setLayout(new BorderLayout());
-        AlbedoMapHelp.setLocation(dim.width / 2 - this.getSize().width / 2, dim.height / 2 - this.getSize().height / 2);
         AlbedoMapHelp.setSize(700, 550);
+        AlbedoMapHelp.setLocationRelativeTo(this);
         AlbedoMapHelp.setResizable(true);
         AlbedoMapHelp.setVisible(true);
         AlbedoMapHelp.add(AlbedoMapHelpText);
@@ -1710,17 +1884,16 @@ public class SpecularAndOcclusion extends javax.swing.JFrame {
 
     private void AlbedoMapUVFlipHelpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AlbedoMapUVFlipHelpActionPerformed
 
-        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         JFrame help = new JFrame();
         JLabel helptext = new JLabel();
-
+        help.setName("help");
         helptext.setText("<HTML><center>You can flip your texture for the X and Y axis mirror by set code to the <b>ALBEDO_MAP_UV_FLIP</b></center><br><br>"
                 + "<ul><li><b>1 :</b> Flip axis x</li>"
                 + "<li><b>2 :</b> Flip axis y</li>"
                 + "<li><b>3 :</b> Flip axis x & y</li></ul></HTML>");
         help.setLayout(new BorderLayout());
-        help.setLocation(dim.width / 2 - this.getSize().width / 2, dim.height / 2 - this.getSize().height / 2);
         help.setSize(500, 160);
+        help.setLocationRelativeTo(this);
         help.setResizable(true);
         help.setVisible(true);
         help.add(helptext);
@@ -1737,10 +1910,9 @@ public class SpecularAndOcclusion extends javax.swing.JFrame {
 
     private void AlbedoMapFileHelpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AlbedoMapFileHelpActionPerformed
 
-        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         JFrame help = new JFrame();
         JLabel helptext = new JLabel();
-
+        help.setName("help");
         helptext.setText("<HTML>If the ALBEDO_MAP_FROM is 1 or 2, you will need to enter the path to the texture resource. <br><br>"
                 + "Tips : parent folder ref is '../' (in other words, using '../' instead of parent folder), and change all '\\' to '/'.<br><br>"
                 + "For example : <br>"
@@ -1753,8 +1925,8 @@ public class SpecularAndOcclusion extends javax.swing.JFrame {
                 + "If the xxx.png is inside your desktop or other disk<br>"
                 + "You can set the xxx.png to the ALBEDO_MAP_FILE like : #define ALBEDO_MAP_FILE 'C:/Users/User Name/Desktop/xxx.png'</HTML>");
         help.setLayout(new BorderLayout());
-        help.setLocation(dim.width / 2 - this.getSize().width / 2, dim.height / 2 - this.getSize().height / 2);
         help.setSize(600, 350);
+        help.setLocationRelativeTo(this);
         help.setResizable(true);
         helptext.setBorder(new EmptyBorder(10, 20, 10, 10));
         help.setVisible(true);
@@ -1771,21 +1943,20 @@ public class SpecularAndOcclusion extends javax.swing.JFrame {
     }//GEN-LAST:event_AlbedoMapFileHelpActionPerformed
 
     private void albedoHelpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_albedoHelpActionPerformed
-
-        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         JFrame help = new JFrame();
         JLabel helptext = new JLabel();
-
+        help.setName("help");
         helptext.setText("<html>Default value is 0.5<br><br>"
                 + "Notice : Anything less than 2% is physically impossible and is instead considered to be shadowing<br><br>"
                 + "For example: The reflectance coefficient is equal to F(x) = (x - 1)^2 / (x + 1)^2<br>"
                 + "Consider light that is incident upon a transparent medium with a refractive index of 1.5<br><br>"
                 + "That result will be equal to (1.5 - 1)^2 / (1.5 + 1)^2 = 0.04 (or 4%).<br>"
                 + "Specular to reflection coefficient is equal to F(x) = 0.08*x, if the x is equal to 0.5 the result will be 0.04.<br>"
-                + "So default value is 0.5 for 0.04 coeff.<br></html>");
+                + "So default value is 0.5 for 0.04 coeff.<br><br><br>"
+                + "<b>between 0 ~ 1</b></html>");
         help.setLayout(new BorderLayout());
-        help.setLocation(dim.width / 2 - this.getSize().width / 2, dim.height / 2 - this.getSize().height / 2);
         help.setSize(600, 350);
+        help.setLocationRelativeTo(this);
         help.setResizable(true);
         helptext.setBorder(new EmptyBorder(10, 20, 10, 10));
         help.setVisible(true);
@@ -1797,20 +1968,18 @@ public class SpecularAndOcclusion extends javax.swing.JFrame {
             BufferedImage myImg = ImageIO.read(imgStream);
             help.setIconImage(myImg);
         } catch (IOException ex) {
-            System.out.println("" + ex);
         }
     }//GEN-LAST:event_albedoHelpActionPerformed
 
     private void AlbedoMapLoopHelpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AlbedoMapLoopHelpActionPerformed
 
-        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         JFrame help = new JFrame();
         JLabel helptext = new JLabel();
-
+        help.setName("help");
         helptext.setText("<HTML>You can tile your texture for the X and Y axis separately by change albedoMapLoopNum = float2(x, y) between float2(0, 0) ~ float2(inf, inf) </HTML>");
         help.setLayout(new BorderLayout());
-        help.setLocation(dim.width / 2 - this.getSize().width / 2, dim.height / 2 - this.getSize().height / 2);
         help.setSize(600, 200);
+        help.setLocationRelativeTo(this);
         help.setResizable(true);
         helptext.setBorder(new EmptyBorder(10, 20, 10, 10));
         help.setVisible(true);
@@ -1822,7 +1991,6 @@ public class SpecularAndOcclusion extends javax.swing.JFrame {
             BufferedImage myImg = ImageIO.read(imgStream);
             help.setIconImage(myImg);
         } catch (IOException ex) {
-            System.out.println("" + ex);
         }
     }//GEN-LAST:event_AlbedoMapLoopHelpActionPerformed
 
@@ -1832,22 +2000,19 @@ public class SpecularAndOcclusion extends javax.swing.JFrame {
 
     private void AlbedoMapHelp3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AlbedoMapHelp3ActionPerformed
 
-        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         JFrame help = new JFrame();
         JLabel helptext = new JLabel();
-
-        helptext.setText("<html><b> Other parameter types for Specular</b><br><br>"
-                + "<ul>"
-                + "<li>0 : Calculate reflection coefficient from specular color by F(x) = 0.08*(x  ) (from UE4 textures)</li>"
-                + "<li>1 : Calculate reflection coefficient from specular color by F(x) = 0.16*(x^2) (from Frostbite textures)</li>"
-                + "<li>2 : Calculate reflection coefficient from specular grays by F(x) = 0.08*(x  ) (from UE4 textures)</li>"
-                + "<li>3 : Calculate reflection coefficient from specular grays by F(x) = 0.16*(x^2) (from Frostbite textures)</li>"
-                + "<li>4 : Using reflection coefficient (0.04) instead of specular value (0.5), Available when SPECULAR_MAP_FROM at 0</li></ul></html>");
+        help.setName("help");
+        helptext.setText("<HTML><ul><li><b>0</b> : Calculate reflection coefficient from specular color by F(x) = 0.08*(x  ) (from UE4 textures)</li>"
+                + "<li><b>1</b> : Calculate reflection coefficient from specular color by F(x) = 0.16*(x^2) (from Frostbite textures)</li>"
+                + "<li><b>2</b> : Calculate reflection coefficient from specular grays by F(x) = 0.08*(x  ) (from UE4 textures)</li>"
+                + "<li><b>3</b> : Calculate reflection coefficient from specular grays by F(x) = 0.16*(x^2) (from Frostbite textures)</li>"
+                + "<li><b>4 </b>: Using reflection coefficient (0.04) instead of specular value (0.5), Available when SPECULAR_MAP_FROM at 0</li></html>");
         help.setLayout(new BorderLayout());
-        help.setLocation(dim.width / 2 - this.getSize().width / 2, dim.height / 2 - this.getSize().height / 2);
-        helptext.setBorder(new EmptyBorder(10, 20, 10, 10));
-        help.setSize(700, 250);
+        help.setSize(600, 200);
+        help.setLocationRelativeTo(this);
         help.setResizable(true);
+        helptext.setBorder(new EmptyBorder(10, 20, 10, 10));
         help.setVisible(true);
         help.add(helptext);
         help.setTitle("Specular Map Type Help");
@@ -1865,19 +2030,22 @@ public class SpecularAndOcclusion extends javax.swing.JFrame {
 
     }//GEN-LAST:event_SpecularMapSwizzleActionPerformed
 
+    private void SpecularMapApplyScaleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SpecularMapApplyScaleActionPerformed
+
+    }//GEN-LAST:event_SpecularMapApplyScaleActionPerformed
+
     private void AlbedoMapUVFlipHelp1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AlbedoMapUVFlipHelp1ActionPerformed
 
-        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         JFrame help = new JFrame();
         JLabel helptext = new JLabel();
-
+        help.setName("help");
         helptext.setText("<HTML><center>You can apply color from const float3 albedo = 1.0; to change colors in your texture by set code to the ALBEDO_MAP_APPLY_SCALE</center><br><br>"
-                + "<ul><li><b>1 : map values * albedo;</li>"
-                + "<li><b>2 : map values ^ albedo;</li>"
+                + "<ul><li><b>1</b> : map values * albedo;</li>"
+                + "<li><b>2</b> : map values ^ albedo;</li>"
                 + "</ul></HTML>");
         help.setLayout(new BorderLayout());
-        help.setLocation(dim.width / 2 - this.getSize().width / 2, dim.height / 2 - this.getSize().height / 2);
         help.setSize(500, 160);
+        help.setLocationRelativeTo(this);
         help.setResizable(true);
         help.setVisible(true);
         help.add(helptext);
@@ -1894,14 +2062,13 @@ public class SpecularAndOcclusion extends javax.swing.JFrame {
 
     private void AlbedoMapUVFlipHelp2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AlbedoMapUVFlipHelp2ActionPerformed
 
-        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         JFrame help = new JFrame();
         JLabel helptext = new JLabel();
-
+        help.setName("help");
         helptext.setText("<HTML>The ordering of the data fetched from a texture from the code. (R = 0, G = 1, B = 2, A = 3)</html>");
         help.setLayout(new BorderLayout());
-        help.setLocation(dim.width / 2 - this.getSize().width / 2, dim.height / 2 - this.getSize().height / 2);
         help.setSize(600, 200);
+        help.setLocationRelativeTo(this);
         help.setResizable(true);
         helptext.setBorder(new EmptyBorder(10, 20, 10, 10));
         help.setVisible(true);
@@ -1917,17 +2084,16 @@ public class SpecularAndOcclusion extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_AlbedoMapUVFlipHelp2ActionPerformed
 
-    private void OcclusionMapUVFlipActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_OcclusionMapUVFlipActionPerformed
+    private void SmoothnessMapUVFlipActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SmoothnessMapUVFlipActionPerformed
 
-    }//GEN-LAST:event_OcclusionMapUVFlipActionPerformed
+    }//GEN-LAST:event_SmoothnessMapUVFlipActionPerformed
 
     private void AlbedoMapHelp1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AlbedoMapHelp1ActionPerformed
-
-        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         JFrame AlbedoMapHelp = new JFrame();
         JLabel AlbedoMapHelpText = new JLabel();
-
-        AlbedoMapHelpText.setText("<HTML><div><pre style='font-family: Arial;'><center>You can use a color and texture to change colors in your model by set the code to the ALBEDO_MAP_FROM.<br><br>"
+        AlbedoMapHelp.setName("help");
+        AlbedoMapHelpText.setText("<HTML><div><pre style='font-family: Arial;'><center><b>Default data will fetch params from the SpecularPower and convert the SpecularPower to smoothness.</b>"
+                + "<br><br><br>You can use a color and texture to change colors in your model by set the code to the ALBEDO_MAP_FROM.<br><br>"
                 + "<b>Tips 1 :</b> The albedo is also called Base Color, default data will fetched params from texture from the pmx.<br>"
                 + "<b>Tips 2 :</b> Do not enter a path with HDR file, that will be ignore the HDR and linear color-space<br>"
                 + "<b>Tips 3 :</b> These files (bmp, png, jpg, tga, dds, gif, apng) must be working in a sRGB color-space<br>"
@@ -1941,14 +2107,14 @@ public class SpecularAndOcclusion extends javax.swing.JFrame {
                 + "    <li>6 : Params fetch from avi/screen from the DummyScreen.x inside extension folder.</li><br>"
                 + "    <li>7 : Params fetch from Ambient Color from the pmx.</li><br>"
                 + "    <li>8 : Params fetch from Specular Color from the pmx.</li><br>"
-                + "    <li><strike>9 : Params fetch from Specular Power from the pmx. (this option can only be used for specular)</strike>, doesn't work on Occlusion</li></ul></pre><br><br></HTML>");
+                + "    <li>9 : Params fetch from Specular Power from the pmx. (this option can only be used for specular)</li></ul></pre><br><br></HTML>");
         AlbedoMapHelp.setLayout(new BorderLayout());
-        AlbedoMapHelp.setLocation(dim.width / 2 - this.getSize().width / 2, dim.height / 2 - this.getSize().height / 2);
         AlbedoMapHelp.setSize(700, 550);
+        AlbedoMapHelp.setLocationRelativeTo(this);
         AlbedoMapHelp.setResizable(true);
         AlbedoMapHelp.setVisible(true);
         AlbedoMapHelp.add(AlbedoMapHelpText);
-        AlbedoMapHelp.setTitle("Occlusion Map From Help");
+        AlbedoMapHelp.setTitle("Smoothness Map From Help");
 
         try {
             InputStream imgStream = getClass().getResourceAsStream("/icon/ico.png");
@@ -1961,21 +2127,21 @@ public class SpecularAndOcclusion extends javax.swing.JFrame {
 
     private void AlbedoMapUVFlipHelp3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AlbedoMapUVFlipHelp3ActionPerformed
 
-        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         JFrame help = new JFrame();
         JLabel helptext = new JLabel();
-
+        help.setName("help");
         helptext.setText("<HTML><center>You can flip your texture for the X and Y axis mirror by set code to the <b>ALBEDO_MAP_UV_FLIP</b></center><br><br>"
                 + "<ul><li><b>1 :</b> Flip axis x</li>"
                 + "<li><b>2 :</b> Flip axis y</li>"
                 + "<li><b>3 :</b> Flip axis x & y</li></ul></HTML>");
         help.setLayout(new BorderLayout());
-        help.setLocation(dim.width / 2 - this.getSize().width / 2, dim.height / 2 - this.getSize().height / 2);
         help.setSize(500, 160);
+        help.setLocationRelativeTo(this);
+
         help.setResizable(true);
         help.setVisible(true);
         help.add(helptext);
-        help.setTitle("Occlusion Map UV Flip Help");
+        help.setTitle("Smoothness Map UV Flip Help");
 
         try {
             InputStream imgStream = getClass().getResourceAsStream("/icon/ico.png");
@@ -1988,10 +2154,9 @@ public class SpecularAndOcclusion extends javax.swing.JFrame {
 
     private void AlbedoMapFileHelp1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AlbedoMapFileHelp1ActionPerformed
 
-        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         JFrame help = new JFrame();
         JLabel helptext = new JLabel();
-
+        help.setName("help");
         helptext.setText("<HTML>If the ALBEDO_MAP_FROM is 1 or 2, you will need to enter the path to the texture resource. <br><br>"
                 + "Tips : parent folder ref is '../' (in other words, using '../' instead of parent folder), and change all '\\' to '/'.<br><br>"
                 + "For example : <br>"
@@ -2004,13 +2169,13 @@ public class SpecularAndOcclusion extends javax.swing.JFrame {
                 + "If the xxx.png is inside your desktop or other disk<br>"
                 + "You can set the xxx.png to the ALBEDO_MAP_FILE like : #define ALBEDO_MAP_FILE 'C:/Users/User Name/Desktop/xxx.png'</HTML>");
         help.setLayout(new BorderLayout());
-        help.setLocation(dim.width / 2 - this.getSize().width / 2, dim.height / 2 - this.getSize().height / 2);
         help.setSize(600, 350);
+        help.setLocationRelativeTo(this);
         help.setResizable(true);
         helptext.setBorder(new EmptyBorder(10, 20, 10, 10));
         help.setVisible(true);
         help.add(helptext);
-        help.setTitle("Occlusion Map File Help");
+        help.setTitle("Smoothness Map File Help");
 
         try {
             InputStream imgStream = getClass().getResourceAsStream("/icon/ico.png");
@@ -2023,19 +2188,18 @@ public class SpecularAndOcclusion extends javax.swing.JFrame {
 
     private void albedoHelp1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_albedoHelp1ActionPerformed
 
-        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         JFrame help = new JFrame();
         JLabel helptext = new JLabel();
-
+        help.setName("help");
         helptext.setText("<HTML>between 0 ~ 1</HTML>");
         help.setLayout(new BorderLayout());
-        help.setLocation(dim.width / 2 - this.getSize().width / 2, dim.height / 2 - this.getSize().height / 2);
-        help.setSize(600, 350);
+        help.setSize(300, 70);
+        help.setLocationRelativeTo(this);
         help.setResizable(true);
         helptext.setBorder(new EmptyBorder(10, 20, 10, 10));
         help.setVisible(true);
         help.add(helptext);
-        help.setTitle("Occlusion Map Scale Help");
+        help.setTitle("Smoothness Map Scale Help");
 
         try {
             InputStream imgStream = getClass().getResourceAsStream("/icon/ico.png");
@@ -2049,19 +2213,19 @@ public class SpecularAndOcclusion extends javax.swing.JFrame {
 
     private void AlbedoMapLoopHelp1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AlbedoMapLoopHelp1ActionPerformed
 
-        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         JFrame help = new JFrame();
         JLabel helptext = new JLabel();
+        help.setName("help");
 
         helptext.setText("<HTML>You can tile your texture for the X and Y axis separately by change albedoMapLoopNum = float2(x, y) between float2(0, 0) ~ float2(inf, inf) </HTML>");
         help.setLayout(new BorderLayout());
-        help.setLocation(dim.width / 2 - this.getSize().width / 2, dim.height / 2 - this.getSize().height / 2);
         help.setSize(600, 200);
+        help.setLocationRelativeTo(this);
         help.setResizable(true);
         helptext.setBorder(new EmptyBorder(10, 20, 10, 10));
         help.setVisible(true);
         help.add(helptext);
-        help.setTitle("Occlusion Map Loop Help");
+        help.setTitle("Smoothness Map Loop Help");
 
         try {
             InputStream imgStream = getClass().getResourceAsStream("/icon/ico.png");
@@ -2072,9 +2236,9 @@ public class SpecularAndOcclusion extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_AlbedoMapLoopHelp1ActionPerformed
 
-    private void OcclusionMapFromActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_OcclusionMapFromActionPerformed
+    private void SmoothnessMapFromActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SmoothnessMapFromActionPerformed
 
-    }//GEN-LAST:event_OcclusionMapFromActionPerformed
+    }//GEN-LAST:event_SmoothnessMapFromActionPerformed
 
     private void changeFile1StateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_changeFile1StateChanged
 
@@ -2085,25 +2249,23 @@ public class SpecularAndOcclusion extends javax.swing.JFrame {
         JFileChooser fileChooser = new JFileChooser();
 
         fileChooser.setCurrentDirectory(new java.io.File("../../Materials"));//The directory we are looking for is the Materials folder from ray
-        fileChooser.setDialogTitle("Choose new Occlusion Map File");
+        fileChooser.setDialogTitle("Choose new Smoothness Map File");
         //Filtering by ImageFiles
         FileFilter imageFilter = new FileNameExtensionFilter("Images", "jpg", "png", "gif", "bmp", "tga", "targa", "dds", "tif", "tiff", "jpeg", "pcd");
         fileChooser.setFileFilter(imageFilter);
 
-        Component areaTexto = null;
-
         try {
-            int selection = fileChooser.showOpenDialog(areaTexto);
+            int selection = fileChooser.showOpenDialog(this);
             String filePath = fileChooser.getSelectedFile().getAbsolutePath();
             filePath = filePath.replace("\\", "/");
 
             if (selection == 0) {
                 String relative = toRelative.convertToRelativePath(foo.getFileToEdit().getParent(), filePath);
-                OcclusionMapFile.setText(relative);
-
-                if (OcclusionMapFrom.getSelectedIndex() != 1) {
-                    OcclusionMapFrom.setSelectedIndex(1);
+                SmoothnessMapFile.setText(relative);
+                if (SmoothnessMapFrom.getSelectedIndex() != 1) {
+                    SmoothnessMapFrom.setSelectedIndex(1);
                 }
+
                 try {
                     BufferedReader br = null;
                     br = new BufferedReader(new FileReader(foo.getFileToEdit()));
@@ -2112,16 +2274,16 @@ public class SpecularAndOcclusion extends javax.swing.JFrame {
                     String catchOld = "";
                     String catchNew = "";
                     while (line != null) {
-                        if (line.contains("#define OCCLUSION_MAP_FILE")) {
+                        if (line.contains("#define SMOOTHNESS_MAP_FILE")) {
                             catchOld = line; //auxiliar line
                             String aux = "";
                             for (int i = catchOld.indexOf('"') + 1; i < line.length() - 1; i++) {
                                 aux += catchOld.charAt(i);
                             }
                             catchOld = aux;
-                            if (!catchOld.equalsIgnoreCase(OcclusionMapFile.getText())) {
-                                catchNew = OcclusionMapFile.getText(); //catchnewdigit
-                                line = "#define OCCLUSION_MAP_FILE " + '"' + catchNew + '"';
+                            if (!catchOld.equalsIgnoreCase(SmoothnessMapFile.getText())) {
+                                catchNew = SmoothnessMapFile.getText(); //catchnewdigit
+                                line = "#define SMOOTHNESS_MAP_FILE " + '"' + catchNew + '"';
                             }
                         }
                         oldtext += line + "\r\n";
@@ -2143,27 +2305,31 @@ public class SpecularAndOcclusion extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_changeFile1ActionPerformed
 
-    private void OcclusionMapSwizzleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_OcclusionMapSwizzleActionPerformed
+    private void SmoothnessMapSwizzleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SmoothnessMapSwizzleActionPerformed
 
-    }//GEN-LAST:event_OcclusionMapSwizzleActionPerformed
+    }//GEN-LAST:event_SmoothnessMapSwizzleActionPerformed
+
+    private void SmoothnessMapApplyScaleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SmoothnessMapApplyScaleActionPerformed
+
+    }//GEN-LAST:event_SmoothnessMapApplyScaleActionPerformed
 
     private void AlbedoMapUVFlipHelp4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AlbedoMapUVFlipHelp4ActionPerformed
 
-        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         JFrame help = new JFrame();
         JLabel helptext = new JLabel();
-
+        help.setName("help");
         helptext.setText("<HTML><center>You can apply color from const float3 albedo = 1.0; to change colors in your texture by set code to the ALBEDO_MAP_APPLY_SCALE</center><br><br>"
-                + "<ul><li><b>1 : map values * albedo;</li>"
-                + "<li><b>2 : map values ^ albedo;</li>"
+                + "<ul><li><b>1</b> : map values * albedo;</li>"
+                + "<li><b>2</b> : map values ^ albedo;</li>"
                 + "</ul></HTML>");
         help.setLayout(new BorderLayout());
-        help.setLocation(dim.width / 2 - this.getSize().width / 2, dim.height / 2 - this.getSize().height / 2);
         help.setSize(500, 160);
+        help.setLocationRelativeTo(this);
+
         help.setResizable(true);
         help.setVisible(true);
         help.add(helptext);
-        help.setTitle("Occlusion Map Apply Scale Help");
+        help.setTitle("Smoothness Map Apply Scale Help");
 
         try {
             InputStream imgStream = getClass().getResourceAsStream("/icon/ico.png");
@@ -2172,22 +2338,22 @@ public class SpecularAndOcclusion extends javax.swing.JFrame {
         } catch (IOException ex) {
             System.out.println("" + ex);
         }
+
     }//GEN-LAST:event_AlbedoMapUVFlipHelp4ActionPerformed
 
     private void AlbedoMapUVFlipHelp5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AlbedoMapUVFlipHelp5ActionPerformed
 
-        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         JFrame help = new JFrame();
         JLabel helptext = new JLabel();
-
+        help.setName("help");
         helptext.setText("<HTML>The ordering of the data fetched from a texture from the code. (R = 0, G = 1, B = 2, A = 3)</HTML>");
         help.setLayout(new BorderLayout());
-        help.setLocation(dim.width / 2 - this.getSize().width / 2, dim.height / 2 - this.getSize().height / 2);
         help.setSize(500, 160);
+        help.setLocationRelativeTo(this);
         help.setResizable(true);
         help.setVisible(true);
         help.add(helptext);
-        help.setTitle("Occlusion Map Swizzle Help");
+        help.setTitle("Smoothness Map Swizzle Help");
 
         try {
             InputStream imgStream = getClass().getResourceAsStream("/icon/ico.png");
@@ -2197,52 +2363,21 @@ public class SpecularAndOcclusion extends javax.swing.JFrame {
             System.out.println("" + ex);
         }
     }//GEN-LAST:event_AlbedoMapUVFlipHelp5ActionPerformed
+    private void closeAllDialogs() {
+        Window[] windows = AlbedoSection.getWindows();
 
-    private void OcclusionMapTypeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_OcclusionMapTypeActionPerformed
-
-    }//GEN-LAST:event_OcclusionMapTypeActionPerformed
-
-    private void AlbedoMapHelp4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AlbedoMapHelp4ActionPerformed
-
-        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-        JFrame help = new JFrame();
-        JLabel helptext = new JLabel();
-
-        helptext.setText("<html>Other parameter types for occlusion<br><br>"
-                + "<ul>"
-                + "<li>0 : Fetch ambient occlusion from linear color-space</li>"
-                + "<li>1 : Fetch ambient occlusion from sRGB   color-space</li></ul></html>");
-        help.setLayout(new BorderLayout());
-        help.setLocation(dim.width / 2 - this.getSize().width / 2, dim.height / 2 - this.getSize().height / 2);
-        helptext.setBorder(new EmptyBorder(10, 20, 10, 10));
-        help.setSize(700, 250);
-        help.setResizable(true);
-        help.setVisible(true);
-        help.add(helptext);
-        help.setTitle("Occlusion Map Type Help");
-
-        try {
-            InputStream imgStream = getClass().getResourceAsStream("/icon/ico.png");
-            BufferedImage myImg = ImageIO.read(imgStream);
-            help.setIconImage(myImg);
-        } catch (IOException ex) {
-            System.out.println("" + ex);
+        for (Window window : windows) {
+            if (window.getName().equalsIgnoreCase("help")) {
+                window.dispose();
+            }
         }
-    }//GEN-LAST:event_AlbedoMapHelp4ActionPerformed
-
-    private void OcclusionMapApplyScaleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_OcclusionMapApplyScaleActionPerformed
-
-    }//GEN-LAST:event_OcclusionMapApplyScaleActionPerformed
-
-    private void SpecularMapApplyScaleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SpecularMapApplyScaleActionPerformed
-
-    }//GEN-LAST:event_SpecularMapApplyScaleActionPerformed
+    }
 
     private void back1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_back1ActionPerformed
-
+        closeAllDialogs();
         WindowFrame w = new WindowFrame();
         w.setLocation(this.getLocation());
-
+        ErrorWindow.dispose();
         this.dispose();
         w.setSize(960, 549);
         w.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
@@ -2261,34 +2396,6 @@ public class SpecularAndOcclusion extends javax.swing.JFrame {
         w.setIconImage(img.getImage());
         w.setVisible(true);
     }//GEN-LAST:event_back1ActionPerformed
-
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-        JFrame help = new JFrame();
-        JLabel helptext = new JLabel();
-        helptext.setText("<html><b>Tips :</b> It has no effect on metalness > 0 and CUSTOM_ENABLE > 0.<br><br>"
-                + "The specular maps are not HDR/environment maps, only modifies the color of basic reflection of the model<br>"
-                + "Used to change the colors of the environment reflect.<br>"
-                + "When the diffuse brighter than specular reflect,<br>"
-                + "It will be only a very small contribution to change the colors of environment reflect.<br>"
-                + "So you can set the zero to the 'const float3 specular = 0.0;', if you dot‘t want that model to reflect the specular color of environment.<br></html>");
-        help.setLayout(new BorderLayout());
-        help.setLocation(dim.width / 2 - this.getSize().width / 2, dim.height / 2 - this.getSize().height / 2);
-        helptext.setBorder(new EmptyBorder(10, 20, 10, 10));
-        help.setSize(700, 250);
-        help.setResizable(true);
-        help.setVisible(true);
-        help.add(helptext);
-        help.setTitle("Specular Map Tips");
-
-        try {
-            InputStream imgStream = getClass().getResourceAsStream("/icon/ico.png");
-            BufferedImage myImg = ImageIO.read(imgStream);
-            help.setIconImage(myImg);
-        } catch (IOException ex) {
-            System.out.println("" + ex);
-        }
-    }//GEN-LAST:event_jButton2ActionPerformed
 
     private void SpecularMapFromItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_SpecularMapFromItemStateChanged
         try {
@@ -2445,7 +2552,8 @@ public class SpecularAndOcclusion extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_SpecularMapApplyScaleItemStateChanged
 
-    private void OcclusionMapFromItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_OcclusionMapFromItemStateChanged
+    private void SmoothnessMapFromItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_SmoothnessMapFromItemStateChanged
+        // TODO add your handling code here:
         try {
             BufferedReader br = null;
             br = new BufferedReader(new FileReader(foo.getFileToEdit()));
@@ -2454,10 +2562,10 @@ public class SpecularAndOcclusion extends javax.swing.JFrame {
             String catchOld = "";
             String catchNew = "";
             while (line != null) {
-                if (line.contains("#define OCCLUSION_MAP_FROM")) {
+                if (line.contains("#define SMOOTHNESS_MAP_FROM")) {
                     catchOld = line; //auxiliar line
                     catchOld = catchOld.replaceAll("\\D+", ""); //extract old digit
-                    catchNew = OcclusionMapFrom.getSelectedItem().toString(); //catchnewdigit
+                    catchNew = SmoothnessMapFrom.getSelectedItem().toString(); //catchnewdigit
                     line = line.replaceAll(catchOld, catchNew); //replace old for the new one
 
                 }
@@ -2474,9 +2582,9 @@ public class SpecularAndOcclusion extends javax.swing.JFrame {
         } catch (Exception e) {
 
         }
-    }//GEN-LAST:event_OcclusionMapFromItemStateChanged
+    }//GEN-LAST:event_SmoothnessMapFromItemStateChanged
 
-    private void OcclusionMapTypeItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_OcclusionMapTypeItemStateChanged
+    private void SmoothnessMapUVFlipItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_SmoothnessMapUVFlipItemStateChanged
         try {
             BufferedReader br = null;
             br = new BufferedReader(new FileReader(foo.getFileToEdit()));
@@ -2485,10 +2593,40 @@ public class SpecularAndOcclusion extends javax.swing.JFrame {
             String catchOld = "";
             String catchNew = "";
             while (line != null) {
-                if (line.contains("#define OCCLUSION_MAP_TYPE")) {
+                if (line.contains("#define SMOOTHNESS_MAP_UV_FLIP")) {
                     catchOld = line; //auxiliar line
                     catchOld = catchOld.replaceAll("\\D+", ""); //extract old digit
-                    catchNew = OcclusionMapType.getSelectedItem().toString(); //catchnewdigit
+                    catchNew = SmoothnessMapUVFlip.getSelectedItem().toString(); //catchnewdigit
+                    line = line.replaceAll(catchOld, catchNew); //replace old for the new one
+                }
+                oldtext += line + "\r\n";
+                line = br.readLine();
+            }
+            String newtext = oldtext;
+
+            FileWriter writer = new FileWriter(foo.getFileToEdit());
+            writer.write(newtext);
+            writer.close();
+
+            br.close();
+        } catch (Exception e) {
+
+        }
+    }//GEN-LAST:event_SmoothnessMapUVFlipItemStateChanged
+
+    private void SmoothnessMapSwizzleItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_SmoothnessMapSwizzleItemStateChanged
+        try {
+            BufferedReader br = null;
+            br = new BufferedReader(new FileReader(foo.getFileToEdit()));
+            String oldtext = "";
+            String line = br.readLine();
+            String catchOld = "";
+            String catchNew = "";
+            while (line != null) {
+                if (line.contains("#define SMOOTHNESS_MAP_SWIZZLE")) {
+                    catchOld = line; //auxiliar line
+                    catchOld = catchOld.replaceAll("\\D+", ""); //extract old digit
+                    catchNew = SmoothnessMapSwizzle.getSelectedItem().toString(); //catchnewdigit
                     line = line.replaceAll(catchOld, catchNew); //replace old for the new one
 
                 }
@@ -2505,9 +2643,9 @@ public class SpecularAndOcclusion extends javax.swing.JFrame {
         } catch (Exception e) {
 
         }
-    }//GEN-LAST:event_OcclusionMapTypeItemStateChanged
+    }//GEN-LAST:event_SmoothnessMapSwizzleItemStateChanged
 
-    private void OcclusionMapUVFlipItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_OcclusionMapUVFlipItemStateChanged
+    private void SmoothnessMapApplyScaleItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_SmoothnessMapApplyScaleItemStateChanged
         try {
             BufferedReader br = null;
             br = new BufferedReader(new FileReader(foo.getFileToEdit()));
@@ -2516,10 +2654,41 @@ public class SpecularAndOcclusion extends javax.swing.JFrame {
             String catchOld = "";
             String catchNew = "";
             while (line != null) {
-                if (line.contains("#define OCCLUSION_MAP_UV_FLIP")) {
+                if (line.contains("#define SMOOTHNESS_MAP_APPLY_SCALE")) {
                     catchOld = line; //auxiliar line
                     catchOld = catchOld.replaceAll("\\D+", ""); //extract old digit
-                    catchNew = OcclusionMapUVFlip.getSelectedItem().toString(); //catchnewdigit
+                    catchNew = SmoothnessMapApplyScale.getSelectedItem().toString(); //catchnewdigit
+                    line = line.replaceAll(catchOld, catchNew); //replace old for the new one
+
+                }
+                oldtext += line + "\r\n";
+                line = br.readLine();
+            }
+            String newtext = oldtext;
+
+            FileWriter writer = new FileWriter(foo.getFileToEdit());
+            writer.write(newtext);
+            writer.close();
+
+            br.close();
+        } catch (Exception e) {
+
+        }         // TODO add your handling code here:
+    }//GEN-LAST:event_SmoothnessMapApplyScaleItemStateChanged
+
+    private void SmoothnessMapTypeItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_SmoothnessMapTypeItemStateChanged
+        try {
+            BufferedReader br = null;
+            br = new BufferedReader(new FileReader(foo.getFileToEdit()));
+            String oldtext = "";
+            String line = br.readLine();
+            String catchOld = "";
+            String catchNew = "";
+            while (line != null) {
+                if (line.contains("#define SMOOTHNESS_MAP_TYPE")) {
+                    catchOld = line; //auxiliar line
+                    catchOld = catchOld.replaceAll("\\D+", ""); //extract old digit
+                    catchNew = SmoothnessMapType.getSelectedItem().toString(); //catchnewdigit
                     line = line.replaceAll(catchOld, catchNew); //replace old for the new one
 
                 }
@@ -2536,69 +2705,138 @@ public class SpecularAndOcclusion extends javax.swing.JFrame {
         } catch (Exception e) {
 
         }
-    }//GEN-LAST:event_OcclusionMapUVFlipItemStateChanged
+    }//GEN-LAST:event_SmoothnessMapTypeItemStateChanged
 
-    private void OcclusionMapSwizzleItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_OcclusionMapSwizzleItemStateChanged
+    private void SmoothnessMapTypeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SmoothnessMapTypeActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_SmoothnessMapTypeActionPerformed
+
+    private void AlbedoMapHelp4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AlbedoMapHelp4ActionPerformed
+
+        JFrame AlbedoMapHelp = new JFrame();
+        JLabel AlbedoMapHelpText = new JLabel();
+        AlbedoMapHelp.setName("help");
+        AlbedoMapHelpText.setText("<HTML><ul><li>0 : Smoothness (from Frostbite / CE5 textures)</li>"
+                + "<li>1 : Calculate Smoothness from roughness by 1.0 - Roughness ^ 0.5 (from UE4/GGX/SubstancePainter2 textures)</li>"
+                + "<li>2 : Calculate Smoothness from roughness by 1.0 - Roughness		(from UE4/GGX/SubstancePainter2 with roughness linear roughness)</li></ul></html>");
+        AlbedoMapHelp.setLayout(new BorderLayout());
+        AlbedoMapHelp.setSize(700, 550);
+        AlbedoMapHelp.setLocationRelativeTo(this);
+
+        AlbedoMapHelp.setResizable(true);
+        AlbedoMapHelp.setVisible(true);
+        AlbedoMapHelp.add(AlbedoMapHelpText);
+        AlbedoMapHelp.setTitle("Smoothness Map From Help");
+
         try {
-            BufferedReader br = null;
-            br = new BufferedReader(new FileReader(foo.getFileToEdit()));
-            String oldtext = "";
-            String line = br.readLine();
-            String catchOld = "";
-            String catchNew = "";
-            while (line != null) {
-                if (line.contains("#define OCCLUSION_MAP_SWIZZLE")) {
-                    catchOld = line; //auxiliar line
-                    catchOld = catchOld.replaceAll("\\D+", ""); //extract old digit
-                    catchNew = OcclusionMapSwizzle.getSelectedItem().toString(); //catchnewdigit
-                    line = line.replaceAll(catchOld, catchNew); //replace old for the new one
+            InputStream imgStream = getClass().getResourceAsStream("/icon/ico.png");
+            BufferedImage myImg = ImageIO.read(imgStream);
+            AlbedoMapHelp.setIconImage(myImg);
+        } catch (IOException ex) {
+            System.out.println("" + ex);
+        }
+    }//GEN-LAST:event_AlbedoMapHelp4ActionPerformed
 
-                }
-                oldtext += line + "\r\n";
-                line = br.readLine();
-            }
-            String newtext = oldtext;
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
 
-            FileWriter writer = new FileWriter(foo.getFileToEdit());
-            writer.write(newtext);
-            writer.close();
+        JFrame help = new JFrame();
+        JLabel helptext = new JLabel();
+        helptext.setText("<html><b>Tips :</b> It has no effect on metalness > 0 and CUSTOM_ENABLE > 0.<br><br>"
+                + "The specular maps are not HDR/environment maps, only modifies the color of basic reflection of the model<br>"
+                + "Used to change the colors of the environment reflect.<br>"
+                + "When the diffuse brighter than specular reflect,<br>"
+                + "It will be only a very small contribution to change the colors of environment reflect.<br>"
+                + "So you can set the zero to the 'const float3 specular = 0.0;', if you dot‘t want that model to reflect the specular color of environment.<br></html>");
+        help.setLayout(new BorderLayout());
+        help.setSize(700, 250);
+        help.setLocationRelativeTo(this);
+        helptext.setBorder(new EmptyBorder(10, 20, 10, 10));
+        help.setResizable(true);
+        help.setVisible(true);
+        help.add(helptext);
+        help.setTitle("Specular Map Tips");
 
-            br.close();
+        try {
+            InputStream imgStream = getClass().getResourceAsStream("/icon/ico.png");
+            BufferedImage myImg = ImageIO.read(imgStream);
+            help.setIconImage(myImg);
+        } catch (IOException ex) {
+            System.out.println("" + ex);
+        }
+    }//GEN-LAST:event_jButton2ActionPerformed
+    public void previewImg(String path) {
+        File f = new File(path);
+        File a = new File(foo.getFilePath());
+        File parentFolder = new File(a.getParent());
+        File b = new File(parentFolder, path);
+        String absolute = "";
+        try {
+            absolute = b.getCanonicalPath();
+            f = new File(absolute);
         } catch (Exception e) {
 
         }
-    }//GEN-LAST:event_OcclusionMapSwizzleItemStateChanged
-
-    private void OcclusionMapApplyScaleItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_OcclusionMapApplyScaleItemStateChanged
-        try {
-            BufferedReader br = null;
-            br = new BufferedReader(new FileReader(foo.getFileToEdit()));
-            String oldtext = "";
-            String line = br.readLine();
-            String catchOld = "";
-            String catchNew = "";
-            while (line != null) {
-                if (line.contains("#define OCCLUSION_MAP_APPLY_SCALE")) {
-                    catchOld = line; //auxiliar line
-                    catchOld = catchOld.replaceAll("\\D+", ""); //extract old digit
-                    catchNew = OcclusionMapApplyScale.getSelectedItem().toString(); //catchnewdigit
-                    line = line.replaceAll(catchOld, catchNew); //replace old for the new one
-
-                }
-                oldtext += line + "\r\n";
-                line = br.readLine();
+        if (f.exists()) {
+            JDialog jf = new JDialog();
+            JLabel jl = new JLabel();
+            jf.setName("help");
+            jf.setTitle("Map Preview");
+            try {//Icon
+                InputStream imgStream = getClass().getResourceAsStream("/icon/ico.png");
+                BufferedImage myImg = ImageIO.read(imgStream);
+                jf.setIconImage(myImg);
+            } catch (IOException ex) {
+                Logger.getLogger(AlbedoSection.class.getName()).log(Level.SEVERE, null, ex);
             }
-            String newtext = oldtext;
-
-            FileWriter writer = new FileWriter(foo.getFileToEdit());
-            writer.write(newtext);
-            writer.close();
-
-            br.close();
-        } catch (Exception e) {
+            BufferedImage img = null;
+            try {//Map
+                img = ImageIO.read(new File(absolute));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            jf.setSize(600, 600);
+            jf.setResizable(false);
+            jf.setModal(true);
+            jf.setLocationRelativeTo(this);
+            jf.setAlwaysOnTop(true);
+            jf.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
+            Image dimg = img.getScaledInstance(jf.getWidth(), jf.getHeight(),
+                    Image.SCALE_SMOOTH);
+            ImageIcon ii = new ImageIcon(dimg);
+            jl.setIcon(ii);
+            jf.add(jl);
+            jf.setVisible(true);
+        } else {
+            JDialog jd = new JDialog();
+            JLabel jl = new JLabel();
+            jl.setText("<html><div style='padding-left: 12px;'>The Map file you are trying to preview doesn't exist.</div></html>");
+            jd.setName("help");
+            jd.setTitle("No such Map File");
+            jd.setSize(300, 100);
+            jd.setModal(true);
+            jd.setResizable(false);
+            jd.setLocationRelativeTo(this);
+            jd.setAlwaysOnTop(true);
+            jd.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
+            try {//Icon
+                InputStream imgStream = getClass().getResourceAsStream("/icon/ico.png");
+                BufferedImage myImg = ImageIO.read(imgStream);
+                jd.setIconImage(myImg);
+            } catch (IOException ex) {
+                Logger.getLogger(AlbedoSection.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            jd.add(jl);
+            jd.setVisible(true);
 
         }
-    }//GEN-LAST:event_OcclusionMapApplyScaleItemStateChanged
+    }
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        previewImg(SpecularMapFile.getText());
+    }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        previewImg(SmoothnessMapFile.getText());
+    }//GEN-LAST:event_jButton5ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -2653,12 +2891,12 @@ public class SpecularAndOcclusion extends javax.swing.JFrame {
     private javax.swing.JButton AlbedoMapUVFlipHelp3;
     private javax.swing.JButton AlbedoMapUVFlipHelp4;
     private javax.swing.JButton AlbedoMapUVFlipHelp5;
-    private javax.swing.JComboBox<String> OcclusionMapApplyScale;
-    private javax.swing.JTextField OcclusionMapFile;
-    private javax.swing.JComboBox<String> OcclusionMapFrom;
-    private javax.swing.JComboBox<String> OcclusionMapSwizzle;
-    private javax.swing.JComboBox<String> OcclusionMapType;
-    private javax.swing.JComboBox<String> OcclusionMapUVFlip;
+    private javax.swing.JComboBox<String> SmoothnessMapApplyScale;
+    private javax.swing.JTextField SmoothnessMapFile;
+    private javax.swing.JComboBox<String> SmoothnessMapFrom;
+    private javax.swing.JComboBox<String> SmoothnessMapSwizzle;
+    private javax.swing.JComboBox<String> SmoothnessMapType;
+    private javax.swing.JComboBox<String> SmoothnessMapUVFlip;
     private javax.swing.JComboBox<String> SpecularMapApplyScale;
     private javax.swing.JTextField SpecularMapFile;
     private javax.swing.JComboBox<String> SpecularMapFrom;
@@ -2671,6 +2909,8 @@ public class SpecularAndOcclusion extends javax.swing.JFrame {
     private javax.swing.JButton changeFile;
     private javax.swing.JButton changeFile1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton4;
+    private javax.swing.JButton jButton5;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -2679,12 +2919,12 @@ public class SpecularAndOcclusion extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
+    private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JMenu jMenu1;

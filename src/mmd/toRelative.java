@@ -34,7 +34,6 @@ public class toRelative {
 
         // Thanks to:
         // http://mrpmorris.blogspot.com/2007/05/convert-absolute-path-to-toRelative-path.html
-        
         absolutePath = absolutePath.replaceAll("\\\\", "/");
         relativeTo = relativeTo.replaceAll("\\\\", "/");
 

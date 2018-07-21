@@ -75,9 +75,9 @@
         </Constraint>
       </Constraints>
     </Component>
-    <Component class="javax.swing.JButton" name="PARALLAX">
+    <Component class="javax.swing.JButton" name="METALNESS">
       <Properties>
-        <Property name="text" type="java.lang.String" value="PARALLAX"/>
+        <Property name="text" type="java.lang.String" value="METALNESS"/>
         <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
           <Dimension value="[172, 30]"/>
         </Property>
@@ -90,7 +90,7 @@
         </Property>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="PARALLAXActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="METALNESSActionPerformed"/>
       </Events>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
@@ -98,9 +98,9 @@
         </Constraint>
       </Constraints>
     </Component>
-    <Component class="javax.swing.JButton" name="SMOOTHNESSMETALNESS">
+    <Component class="javax.swing.JButton" name="SPECULARANDSMOOTHNESS">
       <Properties>
-        <Property name="text" type="java.lang.String" value="SMOOTHNESS &amp; METALNESS"/>
+        <Property name="text" type="java.lang.String" value="SPECULAR &amp; SMOOTHNESS"/>
         <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
           <Dimension value="[172, 30]"/>
         </Property>
@@ -113,7 +113,7 @@
         </Property>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="SMOOTHNESSMETALNESSActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="SPECULARANDSMOOTHNESSActionPerformed"/>
       </Events>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
@@ -121,9 +121,9 @@
         </Constraint>
       </Constraints>
     </Component>
-    <Component class="javax.swing.JButton" name="SPECULARANDOCCLUSION">
+    <Component class="javax.swing.JButton" name="PARALLAXANDOCCLUSION">
       <Properties>
-        <Property name="text" type="java.lang.String" value="SPECULAR &amp; OCCLUSION"/>
+        <Property name="text" type="java.lang.String" value="PARALLAX &amp; OCCLUSION"/>
         <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
           <Dimension value="[172, 35]"/>
         </Property>
@@ -136,7 +136,7 @@
         </Property>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="SPECULARANDOCCLUSIONActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="PARALLAXANDOCCLUSIONActionPerformed"/>
       </Events>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">

@@ -29,26 +29,31 @@ package mmd;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dialog;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.Toolkit;
+import java.awt.Image;
+import java.awt.Window;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Paths;
 import java.text.DecimalFormat;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JColorChooser;
+import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -90,6 +95,52 @@ public class AlbedoSection extends javax.swing.JFrame {
     private static String CatchalbedoSub;
     private static float CatchalbedoMapLoop;
     private static float CatchalbedoSubMapLoop;
+    public int errors = 0;
+    public String albedoMap;
+    JFrame ErrorWindow = new JFrame();
+
+    public void SomethingWentWrong() {
+        if (errors == 1) {
+
+            JLabel ErrorWindowText = new JLabel();
+            //ErrorWindowText.
+            ErrorWindowText.setText("<HTML><div style='padding-left:30px;'>Something went wrong while trying to load <i>Albedo Section</i>...<br><br>"
+                    + "Please make sure the file you are trying to open doesn't <b>exceed the limit for each parameter</b>, usually this happens when you are trying to open "
+                    + "a .fx file where some of it's parameters has <b>higher values</b> than supposed to be<br><br>"
+                    + "<b>Limits: </b><br>"
+                    + "<ul><li>AlbedoMapFrom: 0 - 8</li>"
+                    + "<li>AlbedoMapUVFlip: 0 - 3</li>"
+                    + "<li>AlbedoMapApplyScale: 0 - 2</li>"
+                    + "<li>AlbedoMapApplyDiffuse: 0 - 2</li>"
+                    + "<li>AlbedoMapApplyMorphColor: 0 - 1</li>"
+                    + "<br>"
+                    + "</ul>Same for AlbedoSub</div></HTML>");
+            ErrorWindow.setLayout(new BorderLayout());
+            ErrorWindow.setSize(700, 350);
+            ErrorWindow.setLocationRelativeTo(this);
+            ErrorWindow.setResizable(true);
+            ErrorWindow.setAlwaysOnTop(true);
+            ErrorWindow.setVisible(true);
+            ErrorWindow.add(ErrorWindowText);
+            ErrorWindow.setName("help");
+            ErrorWindow.setTitle("Something went wrong");
+            ErrorWindow.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+            ErrorWindow.addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosing(WindowEvent we) {
+                    ErrorWindow.dispose();
+                }
+            });
+
+            try {
+                InputStream imgStream = getClass().getResourceAsStream("/icon/ico.png");
+                BufferedImage myImg = ImageIO.read(imgStream);
+                ErrorWindow.setIconImage(myImg);
+            } catch (IOException ex) {
+                Logger.getLogger(AlbedoSection.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
 
     public int getAlbedoSubEnable() {
         BufferedReader AlbedotoEdit_Br = null;
@@ -101,7 +152,7 @@ public class AlbedoSection extends javax.swing.JFrame {
             String s = "";
 
             s = AlbedotoEdit_Br.readLine();
-            
+
             while (s != null) {
                 if (s.contains("#define ALBEDO_SUB_ENABLE")) {
 
@@ -111,15 +162,13 @@ public class AlbedoSection extends javax.swing.JFrame {
                 s = AlbedotoEdit_Br.readLine();
             }
 
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(WindowFrame.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(WindowFrame.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            SomethingWentWrong();
         } finally {
             try {
                 AlbedotoEdit_Br.close();
             } catch (IOException ex) {
-                Logger.getLogger(WindowFrame.class.getName()).log(Level.SEVERE, null, ex);
+                SomethingWentWrong();
             }
         }
         return CatchAlbedoSubEnable;
@@ -135,7 +184,7 @@ public class AlbedoSection extends javax.swing.JFrame {
             String s = "";
 
             s = AlbedotoEdit_Br.readLine();
-            
+
             while (s != null) {
                 if (s.contains("#define ALBEDO_MAP_FROM")) {
 
@@ -145,15 +194,13 @@ public class AlbedoSection extends javax.swing.JFrame {
                 s = AlbedotoEdit_Br.readLine();
             }
 
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(WindowFrame.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(WindowFrame.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception e) {
+            SomethingWentWrong();
+
         } finally {
             try {
                 AlbedotoEdit_Br.close();
             } catch (IOException ex) {
-                Logger.getLogger(WindowFrame.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         return CatchAlbedoMapFrom;
@@ -169,7 +216,7 @@ public class AlbedoSection extends javax.swing.JFrame {
             String s = "";
 
             s = AlbedotoEdit_Br.readLine();
-            
+
             while (s != null) {
                 if (s.contains("#define ALBEDO_SUB_MAP_UV_FLIP")) {
 
@@ -203,7 +250,7 @@ public class AlbedoSection extends javax.swing.JFrame {
             String s = "";
 
             s = AlbedotoEdit_Br.readLine();
-            
+
             while (s != null) {
                 if (s.contains("#define ALBEDO_SUB_MAP_FROM")) {
 
@@ -237,7 +284,7 @@ public class AlbedoSection extends javax.swing.JFrame {
             String s = "";
 
             s = AlbedotoEdit_Br.readLine();
-            
+
             while (s != null) {
                 if (s.contains("#define ALBEDO_SUB_MAP_APPLY_SCALE")) {
 
@@ -851,6 +898,8 @@ public class AlbedoSection extends javax.swing.JFrame {
         AlbedoSubMapFile = new javax.swing.JTextField();
         jButton2 = new javax.swing.JButton();
         albedoSubColorPick = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
+        jButton4 = new javax.swing.JButton();
 
         jMenu1.setText("jMenu1");
 
@@ -863,7 +912,12 @@ public class AlbedoSection extends javax.swing.JFrame {
         jLabel1.setText("<html><b>ALBEDO MAP FROM </b></html>");
 
         AlbedoMapFrom.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "0", "1", "2", "3", "4", "5", "6", "7", "8" }));
-        AlbedoMapFrom.setSelectedIndex(getAlbedoMapFrom());
+        try{
+            AlbedoMapFrom.setSelectedIndex(getAlbedoMapFrom());
+        }catch(Exception e){
+            errors+=1;
+            SomethingWentWrong();
+        }
         AlbedoMapFrom.setToolTipText("");
         AlbedoMapFrom.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
@@ -900,8 +954,13 @@ public class AlbedoSection extends javax.swing.JFrame {
 
         jLabel8.setText("<html><b>ALBEDO</b></html>");
 
-        albedo.setText(String.valueOf(getalbedo())
-        );
+        try{
+            albedo.setText(String.valueOf(getalbedo())
+            );
+        }catch(Exception e){
+            errors+=1;
+            SomethingWentWrong();
+        }
         albedo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 albedoActionPerformed(evt);
@@ -924,7 +983,12 @@ public class AlbedoSection extends javax.swing.JFrame {
         jLabel9.setText("<html><b>ALBEDO MAP LOOP</b></html>");
 
         AlbedoMapUVFlip.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "0", "1", "2", "3" }));
-        AlbedoMapUVFlip.setSelectedIndex(getAlbedoMapUVFlip());
+        try{
+            AlbedoMapUVFlip.setSelectedIndex(getAlbedoMapUVFlip());
+        }catch(Exception e){
+            errors+=1;
+            SomethingWentWrong();
+        }
         AlbedoMapUVFlip.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 AlbedoMapUVFlipItemStateChanged(evt);
@@ -937,7 +1001,12 @@ public class AlbedoSection extends javax.swing.JFrame {
         });
 
         AlbedoApplyScale.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "0", "1", "2" }));
-        AlbedoApplyScale.setSelectedIndex(getAlbedoApplyScale());
+        try{
+            AlbedoApplyScale.setSelectedIndex(getAlbedoApplyScale());
+        }catch(Exception e){
+            errors+=1;
+            SomethingWentWrong();
+        }
         AlbedoApplyScale.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 AlbedoApplyScaleItemStateChanged(evt);
@@ -950,7 +1019,12 @@ public class AlbedoSection extends javax.swing.JFrame {
         });
 
         AlbedoApplyDiffuse.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "0", "1", "2" }));
-        AlbedoApplyDiffuse.setSelectedIndex(getAlbedoApplyDiffuse());
+        try{
+            AlbedoApplyDiffuse.setSelectedIndex(getAlbedoApplyDiffuse());
+        }catch(Exception e){
+            errors+=1;
+            SomethingWentWrong();
+        }
         AlbedoApplyDiffuse.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 AlbedoApplyDiffuseItemStateChanged(evt);
@@ -963,7 +1037,12 @@ public class AlbedoSection extends javax.swing.JFrame {
         });
 
         AlbedoApplyMorphColor.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "0", "1" }));
-        AlbedoApplyMorphColor.setSelectedIndex(getAlbedoApplyMorphColor());
+        try{
+            AlbedoApplyMorphColor.setSelectedIndex(getAlbedoApplyMorphColor());
+        }catch(Exception e){
+            errors+=1;
+            SomethingWentWrong();
+        }
         AlbedoApplyMorphColor.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 AlbedoApplyMorphColorItemStateChanged(evt);
@@ -1055,7 +1134,12 @@ public class AlbedoSection extends javax.swing.JFrame {
         jLabel15.setText("<html><b>ALBEDO SUB MAP LOOP</b></html>");
 
         AlbedoSubMapFrom.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9" }));
-        AlbedoSubMapFrom.setSelectedIndex(getAlbedoSubMapFrom());
+        try{
+            AlbedoSubMapFrom.setSelectedIndex(getAlbedoSubMapFrom());
+        }catch(Exception e){
+            errors+=1;
+            SomethingWentWrong();
+        }
         AlbedoSubMapFrom.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 AlbedoSubMapFromItemStateChanged(evt);
@@ -1063,7 +1147,12 @@ public class AlbedoSection extends javax.swing.JFrame {
         });
 
         AlbedoSubEnable.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "0", "1", "2", "3", "4", "5" }));
-        AlbedoSubEnable.setSelectedIndex(getAlbedoSubEnable());
+        try{
+            AlbedoSubEnable.setSelectedIndex(getAlbedoSubEnable());
+        }catch(Exception e){
+            errors+=1;
+            SomethingWentWrong();
+        }
         AlbedoSubEnable.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 AlbedoSubEnableItemStateChanged(evt);
@@ -1071,7 +1160,12 @@ public class AlbedoSection extends javax.swing.JFrame {
         });
 
         AlbedoSubMapApplyScale.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "0", "1", "2", "3" }));
-        AlbedoSubMapApplyScale.setSelectedIndex(getAlbedoSubMapApplyScale());
+        try{
+            AlbedoSubMapApplyScale.setSelectedIndex(getAlbedoSubMapApplyScale());
+        }catch(Exception e){
+            errors+=1;
+            SomethingWentWrong();
+        }
         AlbedoSubMapApplyScale.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 AlbedoSubMapApplyScaleItemStateChanged(evt);
@@ -1079,7 +1173,12 @@ public class AlbedoSection extends javax.swing.JFrame {
         });
 
         AlbedoSubMapUVFlip1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "0", "1", "2", "3" }));
-        AlbedoSubMapUVFlip1.setSelectedIndex(getAlbedoSubMapUVFlip());
+        try{
+            AlbedoSubMapUVFlip1.setSelectedIndex(getAlbedoSubMapUVFlip());
+        }catch(Exception e){
+            errors+=1;
+            SomethingWentWrong();
+        }
         AlbedoSubMapUVFlip1.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 AlbedoSubMapUVFlip1ItemStateChanged(evt);
@@ -1098,8 +1197,13 @@ public class AlbedoSection extends javax.swing.JFrame {
             }
         });
 
-        albedoSub.setText(String.valueOf(getalbedoSub())
-        );
+        try{
+            albedoSub.setText(String.valueOf(getalbedoSub())
+            );
+        }catch(Exception e){
+            errors+=1;
+            SomethingWentWrong();
+        }
         albedoSub.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 albedoSubActionPerformed(evt);
@@ -1163,9 +1267,21 @@ public class AlbedoSection extends javax.swing.JFrame {
             }
         });
 
-        AlbedoMapFile.setText(AlbedoMapFile1);
+        try{
+            AlbedoMapFile.setEditable(false);
+            AlbedoMapFile.setText(AlbedoMapFile1);
+        }catch(Exception e){
+            errors+=1;
+            SomethingWentWrong();
+        }
 
-        AlbedoSubMapFile.setText(getAlbedoSubMapFile());
+        try{
+            AlbedoSubMapFile.setEditable(false);
+            AlbedoSubMapFile.setText(getAlbedoSubMapFile());
+        }catch(Exception e){
+            errors+=1;
+            SomethingWentWrong();
+        }
 
         jButton2.setText("Pick Colour");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -1181,6 +1297,20 @@ public class AlbedoSection extends javax.swing.JFrame {
             }
         });
 
+        jButton3.setText("Preview");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+
+        jButton4.setText("Preview");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -1190,6 +1320,8 @@ public class AlbedoSection extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(AlbedoMapFile, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton3)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1283,7 +1415,10 @@ public class AlbedoSection extends javax.swing.JFrame {
                                         .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                         .addComponent(AlbedoMapLoopHelp1))
-                                    .addComponent(AlbedoSubMapFile, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(AlbedoSubMapFile, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jButton4)))
                                 .addGap(0, 0, Short.MAX_VALUE))))))
         );
         layout.setVerticalGroup(
@@ -1336,9 +1471,12 @@ public class AlbedoSection extends javax.swing.JFrame {
                     .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(changeFile)
                     .addComponent(AlbedoMapFileHelp)
-                    .addComponent(AlbedoSubMapFile, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(AlbedoSubMapFile, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton4))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(AlbedoMapFile, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(AlbedoMapFile, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -1349,13 +1487,13 @@ public class AlbedoSection extends javax.swing.JFrame {
                     .addComponent(jButton2)
                     .addComponent(albedoColorPick)
                     .addComponent(albedoSubColorPick))
-                .addGap(26, 26, 26)
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(AlbedoMapLoopHelp)
                     .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(AlbedoMapLoopHelp1))
-                .addContainerGap(81, Short.MAX_VALUE))
+                .addContainerGap(89, Short.MAX_VALUE))
         );
 
         pack();
@@ -1399,6 +1537,7 @@ public class AlbedoSection extends javax.swing.JFrame {
         try {
             int selection = fileChooser.showOpenDialog(this);
             String filePath = fileChooser.getSelectedFile().getAbsolutePath();
+            albedoMap = filePath;
             filePath = filePath.replace("\\", "/");
 
             if (selection == 0) {
@@ -1455,17 +1594,28 @@ public class AlbedoSection extends javax.swing.JFrame {
     private void changeFileStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_changeFileStateChanged
 
     }//GEN-LAST:event_changeFileStateChanged
+    private void closeAllDialogs() {
+        Window[] windows = AlbedoSection.getWindows();
+
+        for (Window window : windows) {
+            if (window.getName().equalsIgnoreCase("help")) {
+                window.dispose();
+            }
+        }
+    }
 
     private void backActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backActionPerformed
-
+        closeAllDialogs();
         WindowFrame w = new WindowFrame();
         w.setLocation(this.getLocation());
-
+        ErrorWindow.dispose();
         this.dispose();
+
         w.setSize(960, 549);
         w.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         w.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent we) {
+
                 callMenu();
                 w.dispose();
             }
@@ -1481,10 +1631,9 @@ public class AlbedoSection extends javax.swing.JFrame {
     }//GEN-LAST:event_backActionPerformed
 
     private void AlbedoMapHelpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AlbedoMapHelpActionPerformed
-
-        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         JFrame AlbedoMapHelp = new JFrame();
         JLabel AlbedoMapHelpText = new JLabel();
+        AlbedoMapHelp.setName("help");
         //AlbedoMapHelpText.
         AlbedoMapHelpText.setText("<HTML><div><pre style='font-family: Arial;'><center>You can use a color and texture to change colors in your model by set the code to the ALBEDO_MAP_FROM.<br><br>"
                 + "<b>Tips 1 :</b> The albedo is also called Base Color, default data will fetched params from texture from the pmx.<br>"
@@ -1502,8 +1651,8 @@ public class AlbedoSection extends javax.swing.JFrame {
                 + "    <li>8 : Params fetch from Specular Color from the pmx.</li><br>"
                 + "    <li><strike>9 : Params fetch from Specular Power from the pmx. (this option can only be used for specular)</strike>, doesn't work on Albedo</li></ul></pre><br><br></HTML>");
         AlbedoMapHelp.setLayout(new BorderLayout());
-        AlbedoMapHelp.setLocation(dim.width / 2 - this.getSize().width / 2, dim.height / 2 - this.getSize().height / 2);
         AlbedoMapHelp.setSize(700, 550);
+        AlbedoMapHelp.setLocationRelativeTo(this);
         AlbedoMapHelp.setResizable(true);
         AlbedoMapHelp.setVisible(true);
         AlbedoMapHelp.add(AlbedoMapHelpText);
@@ -1523,22 +1672,21 @@ public class AlbedoSection extends javax.swing.JFrame {
         } catch (IOException ex) {
             Logger.getLogger(AlbedoSection.class.getName()).log(Level.SEVERE, null, ex);
         }
-
     }//GEN-LAST:event_AlbedoMapHelpActionPerformed
 
     private void AlbedoMapUVFlipHelpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AlbedoMapUVFlipHelpActionPerformed
 
-        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         JFrame help = new JFrame();
         JLabel helptext = new JLabel();
+        help.setName("help");
         //AlbedoMapHelpText.
         helptext.setText("<HTML><center>You can flip your texture for the X and Y axis mirror by set code to the <b>ALBEDO_MAP_UV_FLIP</b></center><br><br>"
                 + "<ul><li><b>1 :</b> Flip axis x</li>"
                 + "<li><b>2 :</b> Flip axis y</li>"
                 + "<li><b>3 :</b> Flip axis x & y</li></ul></HTML>");
         help.setLayout(new BorderLayout());
-        help.setLocation(dim.width / 2 - this.getSize().width / 2, dim.height / 2 - this.getSize().height / 2);
         help.setSize(500, 160);
+        help.setLocationRelativeTo(this);
         help.setResizable(true);
         help.setVisible(true);
         help.add(helptext);
@@ -1555,17 +1703,17 @@ public class AlbedoSection extends javax.swing.JFrame {
 
     private void AlbedoMapApplyScaleHelpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AlbedoMapApplyScaleHelpActionPerformed
 
-        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         JFrame help = new JFrame();
         JLabel helptext = new JLabel();
+        help.setName("help");
         //AlbedoMapHelpText.
         helptext.setText("<HTML><center>You can apply color from const float3 albedo = 1.0; to change colors in your texture by set code to the ALBEDO_MAP_APPLY_SCALE</center><br><br>"
                 + "<ul><li><b>1 : map values * albedo;</li>"
                 + "<li><b>2 : map values ^ albedo;</li>"
                 + "</ul></HTML>");
         help.setLayout(new BorderLayout());
-        help.setLocation(dim.width / 2 - this.getSize().width / 2, dim.height / 2 - this.getSize().height / 2);
         help.setSize(500, 160);
+        help.setLocationRelativeTo(this);
         help.setResizable(true);
         help.setVisible(true);
         help.add(helptext);
@@ -1583,15 +1731,14 @@ public class AlbedoSection extends javax.swing.JFrame {
 
     private void AlbedoApplyDiffuseHelpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AlbedoApplyDiffuseHelpActionPerformed
 
-        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         JFrame help = new JFrame();
         JLabel helptext = new JLabel();
-        //AlbedoMapHelpText.
+        help.setName("help");
         helptext.setText("<HTML><center>Texture colors to multiply with diffuse from the <b>PMX</b>.</center></HTML>");
         help.setLayout(new BorderLayout());
-        help.setLocation(dim.width / 2 - this.getSize().width / 2, dim.height / 2 - this.getSize().height / 2);
+        help.setSize(400, 100);
+        help.setLocationRelativeTo(this);
         helptext.setBorder(new EmptyBorder(10, 30, 10, 10));
-        help.setSize(500, 160);
         help.setResizable(true);
         help.setVisible(true);
         help.add(helptext);
@@ -1607,15 +1754,13 @@ public class AlbedoSection extends javax.swing.JFrame {
     }//GEN-LAST:event_AlbedoApplyDiffuseHelpActionPerformed
 
     private void AlbedoMorphColorHelpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AlbedoMorphColorHelpActionPerformed
-
-        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         JFrame help = new JFrame();
         JLabel helptext = new JLabel();
         //AlbedoMapHelpText.
         helptext.setText("<HTML>Texture colors to multiply with color from the morph <b>controller</b> (R+/G+/B+)...</HTML>");
         help.setLayout(new BorderLayout());
-        help.setLocation(dim.width / 2 - this.getSize().width / 2, dim.height / 2 - this.getSize().height / 2);
         help.setSize(500, 160);
+        help.setLocationRelativeTo(this);
         helptext.setBorder(new EmptyBorder(10, 20, 10, 10));
         help.setResizable(true);
         help.setVisible(true);
@@ -1632,10 +1777,9 @@ public class AlbedoSection extends javax.swing.JFrame {
     }//GEN-LAST:event_AlbedoMorphColorHelpActionPerformed
 
     private void AlbedoMapFileHelpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AlbedoMapFileHelpActionPerformed
-
-        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         JFrame help = new JFrame();
         JLabel helptext = new JLabel();
+        help.setName("help");
         //AlbedoMapHelpText.
         helptext.setText("<HTML>If the ALBEDO_MAP_FROM is 1 or 2, you will need to enter the path to the texture resource. <br><br>"
                 + "Tips : parent folder ref is '../' (in other words, using '../' instead of parent folder), and change all '\\' to '/'.<br><br>"
@@ -1649,8 +1793,8 @@ public class AlbedoSection extends javax.swing.JFrame {
                 + "If the xxx.png is inside your desktop or other disk<br>"
                 + "You can set the xxx.png to the ALBEDO_MAP_FILE like : #define ALBEDO_MAP_FILE 'C:/Users/User Name/Desktop/xxx.png'</HTML>");
         help.setLayout(new BorderLayout());
-        help.setLocation(dim.width / 2 - this.getSize().width / 2, dim.height / 2 - this.getSize().height / 2);
         help.setSize(600, 350);
+        help.setLocationRelativeTo(this);
         help.setResizable(true);
         helptext.setBorder(new EmptyBorder(10, 20, 10, 10));
         help.setVisible(true);
@@ -1668,9 +1812,9 @@ public class AlbedoSection extends javax.swing.JFrame {
 
     private void albedoColorPickActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_albedoColorPickActionPerformed
 
-        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         JFrame help = new JFrame();
         JLabel helptext = new JLabel();
+        help.setName("help");
         //AlbedoMapHelpText.
         helptext.setText("<HTML>When the ALBEDO_MAP_FROM at 0 or ALBEDO_MAP_APPLY_SCALE at 1, you will need to set a color/rgb to albedo, and color range is between 0.0 and 1.0"
                 + "like const float3 albedo = float3(r, g, b) <br><br><br>"
@@ -1685,8 +1829,8 @@ public class AlbedoSection extends javax.swing.JFrame {
                 + "https://developer.nvidia.com/gpugems/GPUGems3/gpugems3_ch24.html<br>"
                 + "https://en.wikipedia.org/wiki/SRGB<br></HTML>");
         help.setLayout(new BorderLayout());
-        help.setLocation(dim.width / 2 - this.getSize().width / 2, dim.height / 2 - this.getSize().height / 2);
         help.setSize(600, 350);
+        help.setLocationRelativeTo(this);
         help.setResizable(true);
         helptext.setBorder(new EmptyBorder(10, 20, 10, 10));
         help.setVisible(true);
@@ -1705,14 +1849,13 @@ public class AlbedoSection extends javax.swing.JFrame {
     }//GEN-LAST:event_albedoColorPickActionPerformed
 
     private void AlbedoMapLoopHelpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AlbedoMapLoopHelpActionPerformed
-
-        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         JFrame help = new JFrame();
         JLabel helptext = new JLabel();
+        help.setName("help");
         helptext.setText("<HTML>You can tile your texture for the X and Y axis separately by change albedoMapLoopNum = float2(x, y) between float2(0, 0) ~ float2(inf, inf) </HTML>");
         help.setLayout(new BorderLayout());
-        help.setLocation(dim.width / 2 - this.getSize().width / 2, dim.height / 2 - this.getSize().height / 2);
         help.setSize(600, 200);
+        help.setLocationRelativeTo(this);
         help.setResizable(true);
         helptext.setBorder(new EmptyBorder(10, 20, 10, 10));
         help.setVisible(true);
@@ -1803,9 +1946,9 @@ public class AlbedoSection extends javax.swing.JFrame {
 
     private void AlbedoMapHelp1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AlbedoMapHelp1ActionPerformed
 
-        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         JFrame AlbedoMapHelp = new JFrame();
         JLabel AlbedoMapHelpText = new JLabel();
+        AlbedoMapHelp.setName("help");
         //AlbedoMapHelpText.
         AlbedoMapHelpText.setText("<HTML><div><pre style='font-family: Arial;'><center>You can use a color and texture to change colors in your model by set the code to the ALBEDO_MAP_FROM.<br><br>"
                 + "<b>Tips 1 :</b> The albedo is also called Base Color, default data will fetched params from texture from the pmx.<br>"
@@ -1823,8 +1966,8 @@ public class AlbedoSection extends javax.swing.JFrame {
                 + "    <li>8 : Params fetch from Specular Color from the pmx.</li><br>"
                 + "    <li>9 : Params fetch from Specular Power from the pmx. (this option can only be used for smoothness)</li></ul></pre><br><br></HTML>");
         AlbedoMapHelp.setLayout(new BorderLayout());
-        AlbedoMapHelp.setLocation(dim.width / 2 - this.getSize().width / 2, dim.height / 2 - this.getSize().height / 2);
         AlbedoMapHelp.setSize(700, 550);
+        AlbedoMapHelp.setLocationRelativeTo(this);
         AlbedoMapHelp.setResizable(true);
         AlbedoMapHelp.setVisible(true);
         AlbedoMapHelp.add(AlbedoMapHelpText);
@@ -1841,18 +1984,17 @@ public class AlbedoSection extends javax.swing.JFrame {
     }//GEN-LAST:event_AlbedoMapHelp1ActionPerformed
 
     private void AlbedoMapUVFlipHelp1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AlbedoMapUVFlipHelp1ActionPerformed
-
-        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         JFrame help = new JFrame();
         JLabel helptext = new JLabel();
+        help.setName("help");
         //AlbedoMapHelpText.
         helptext.setText("<HTML><center>You can flip your texture for the X and Y axis mirror by set code to the <b>ALBEDO_MAP_UV_FLIP</b></center><br><br>"
                 + "<ul><li><b>1 :</b> Flip axis x</li>"
                 + "<li><b>2 :</b> Flip axis y</li>"
                 + "<li><b>3 :</b> Flip axis x & y</li></ul></HTML>");
         help.setLayout(new BorderLayout());
-        help.setLocation(dim.width / 2 - this.getSize().width / 2, dim.height / 2 - this.getSize().height / 2);
         help.setSize(500, 160);
+        help.setLocationRelativeTo(this);
         help.setResizable(true);
         help.setVisible(true);
         help.add(helptext);
@@ -1869,18 +2011,17 @@ public class AlbedoSection extends javax.swing.JFrame {
     }//GEN-LAST:event_AlbedoMapUVFlipHelp1ActionPerformed
 
     private void AlbedoMapApplyScaleHelp1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AlbedoMapApplyScaleHelp1ActionPerformed
-
-        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         JFrame help = new JFrame();
         JLabel helptext = new JLabel();
+        help.setName("help");
         //AlbedoMapHelpText.
         helptext.setText("<HTML><center>You can apply color from const float3 albedo = 1.0; to change colors in your texture by set code to the ALBEDO_MAP_APPLY_SCALE</center><br><br>"
                 + "<ul><li><b>1 : map values * albedo;</li>"
                 + "<li><b>2 : map values ^ albedo;</li>"
                 + "</ul></HTML>");
         help.setLayout(new BorderLayout());
-        help.setLocation(dim.width / 2 - this.getSize().width / 2, dim.height / 2 - this.getSize().height / 2);
         help.setSize(500, 160);
+        help.setLocationRelativeTo(this);
         help.setResizable(true);
         help.setVisible(true);
         help.add(helptext);
@@ -1896,10 +2037,9 @@ public class AlbedoSection extends javax.swing.JFrame {
     }//GEN-LAST:event_AlbedoMapApplyScaleHelp1ActionPerformed
 
     private void AlbedoMapFileHelp1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AlbedoMapFileHelp1ActionPerformed
-
-        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         JFrame help = new JFrame();
         JLabel helptext = new JLabel();
+        help.setName("help");
         //AlbedoMapHelpText.
         helptext.setText("<HTML>If the ALBEDO_MAP_FROM is 1 or 2, you will need to enter the path to the texture resource. <br><br>"
                 + "Tips : parent folder ref is '../' (in other words, using '../' instead of parent folder), and change all '\\' to '/'.<br><br>"
@@ -1913,8 +2053,8 @@ public class AlbedoSection extends javax.swing.JFrame {
                 + "If the xxx.png is inside your desktop or other disk<br>"
                 + "You can set the xxx.png to the ALBEDO_MAP_FILE like : #define ALBEDO_MAP_FILE 'C:/Users/User Name/Desktop/xxx.png'</HTML>");
         help.setLayout(new BorderLayout());
-        help.setLocation(dim.width / 2 - this.getSize().width / 2, dim.height / 2 - this.getSize().height / 2);
         help.setSize(600, 350);
+        help.setLocationRelativeTo(this);
         help.setResizable(true);
         helptext.setBorder(new EmptyBorder(10, 20, 10, 10));
         help.setVisible(true);
@@ -1932,15 +2072,14 @@ public class AlbedoSection extends javax.swing.JFrame {
     }//GEN-LAST:event_AlbedoMapFileHelp1ActionPerformed
 
     private void subHelpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_subHelpActionPerformed
-
-        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         JFrame help = new JFrame();
         JLabel helptext = new JLabel();
+        help.setName("help");
         //AlbedoMapHelpText.
         helptext.setText("<HTML>between 0 ~ 1</HTML>");
         help.setLayout(new BorderLayout());
-        help.setLocation(dim.width / 2 - this.getSize().width / 2, dim.height / 2 - this.getSize().height / 2);
-        help.setSize(600, 350);
+        help.setSize(300, 70);
+        help.setLocationRelativeTo(this);
         help.setResizable(true);
         helptext.setBorder(new EmptyBorder(10, 20, 10, 10));
         help.setVisible(true);
@@ -1957,15 +2096,14 @@ public class AlbedoSection extends javax.swing.JFrame {
     }//GEN-LAST:event_subHelpActionPerformed
 
     private void AlbedoMapLoopHelp1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AlbedoMapLoopHelp1ActionPerformed
-
-        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         JFrame help = new JFrame();
         JLabel helptext = new JLabel();
+        help.setName("help");
         //AlbedoMapHelpText.
         helptext.setText("<HTML>You can tile your texture for the X and Y axis separately by change albedoMapLoopNum = float2(x, y) between float2(0, 0) ~ float2(inf, inf) </HTML>");
         help.setLayout(new BorderLayout());
-        help.setLocation(dim.width / 2 - this.getSize().width / 2, dim.height / 2 - this.getSize().height / 2);
         help.setSize(600, 200);
+        help.setLocationRelativeTo(this);
         help.setResizable(true);
         helptext.setBorder(new EmptyBorder(10, 20, 10, 10));
         help.setVisible(true);
@@ -1983,9 +2121,9 @@ public class AlbedoSection extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
 
-        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         JFrame help = new JFrame();
         JLabel helptext = new JLabel();
+        help.setName("help");
         //AlbedoMapHelpText.
         helptext.setText("<HTML>You can apply second value for color of texture (albedo) change by change ALBEDO_SUB_ENABLE <br><br><br>"
                 + "<ul>"
@@ -1997,8 +2135,8 @@ public class AlbedoSection extends javax.swing.JFrame {
                 + "<li>5 : Alpha Blend</li>"
                 + "</ul></HTML>");
         help.setLayout(new BorderLayout());
-        help.setLocation(dim.width / 2 - this.getSize().width / 2, dim.height / 2 - this.getSize().height / 2);
         help.setSize(600, 200);
+        help.setLocationRelativeTo(this);
         help.setResizable(true);
         helptext.setBorder(new EmptyBorder(10, 20, 10, 10));
         help.setVisible(true);
@@ -2114,7 +2252,6 @@ public class AlbedoSection extends javax.swing.JFrame {
 
     private void albedoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_albedoKeyTyped
         // TODO add your handling code here:
-
 
     }//GEN-LAST:event_albedoKeyTyped
 
@@ -2471,6 +2608,83 @@ public class AlbedoSection extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_albedoSubKeyReleased
 
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+        previewImg(AlbedoMapFile.getText());
+
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        // TODO add your handling code here:
+        previewImg(AlbedoSubMapFile.getText());
+    }//GEN-LAST:event_jButton4ActionPerformed
+    public void previewImg(String path) {
+        File f = new File(path);
+        File a = new File(foo.getFilePath());
+        File parentFolder = new File(a.getParent());
+        File b = new File(parentFolder, path);
+        String absolute = "";
+        try {
+            absolute = b.getCanonicalPath();
+            f = new File(absolute);
+        } catch (Exception e) {
+
+        }
+        if (f.exists()) {
+            JDialog jf = new JDialog();
+            JLabel jl = new JLabel();
+            jf.setName("help");
+            jf.setTitle("Map Preview");
+            try {//Icon
+                InputStream imgStream = getClass().getResourceAsStream("/icon/ico.png");
+                BufferedImage myImg = ImageIO.read(imgStream);
+                jf.setIconImage(myImg);
+            } catch (IOException ex) {
+                Logger.getLogger(AlbedoSection.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            BufferedImage img = null;
+            try {//Map
+                img = ImageIO.read(new File(absolute));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            jf.setSize(600, 600);
+            jf.setResizable(false);
+            jf.setModal(true);
+            jf.setLocationRelativeTo(this);
+            jf.setAlwaysOnTop(true);
+            jf.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
+            Image dimg = img.getScaledInstance(jf.getWidth(), jf.getHeight(),
+                    Image.SCALE_SMOOTH);
+            ImageIcon ii = new ImageIcon(dimg);
+            jl.setIcon(ii);
+            jf.add(jl);
+            jf.setVisible(true);
+        } else {
+            JDialog jd = new JDialog();
+            JLabel jl = new JLabel();
+            jl.setText("<html><div style='padding-left: 12px;'>The Map file you are trying to preview doesn't exist.</div></html>");
+            jd.setName("help");
+            jd.setTitle("No such Map File");
+            jd.setSize(300, 100);
+            jd.setModal(true);
+            jd.setResizable(false);
+            jd.setLocationRelativeTo(this);
+            jd.setAlwaysOnTop(true);
+            jd.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
+            try {//Icon
+                InputStream imgStream = getClass().getResourceAsStream("/icon/ico.png");
+                BufferedImage myImg = ImageIO.read(imgStream);
+                jd.setIconImage(myImg);
+            } catch (IOException ex) {
+                Logger.getLogger(AlbedoSection.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            jd.add(jl);
+            jd.setVisible(true);
+
+        }
+    }
+
     /**
      * @param args the command line arguments
      */
@@ -2520,12 +2734,12 @@ public class AlbedoSection extends javax.swing.JFrame {
     private javax.swing.JTextField AlbedoMapFile;
     private javax.swing.JButton AlbedoMapFileHelp;
     private javax.swing.JButton AlbedoMapFileHelp1;
-    private javax.swing.JComboBox<String> AlbedoMapFrom;
+    public javax.swing.JComboBox<String> AlbedoMapFrom;
     private javax.swing.JButton AlbedoMapHelp;
     private javax.swing.JButton AlbedoMapHelp1;
     private javax.swing.JButton AlbedoMapLoopHelp;
     private javax.swing.JButton AlbedoMapLoopHelp1;
-    private javax.swing.JComboBox<String> AlbedoMapUVFlip;
+    public javax.swing.JComboBox<String> AlbedoMapUVFlip;
     private javax.swing.JButton AlbedoMapUVFlipHelp;
     private javax.swing.JButton AlbedoMapUVFlipHelp1;
     private javax.swing.JButton AlbedoMorphColorHelp;
@@ -2543,6 +2757,8 @@ public class AlbedoSection extends javax.swing.JFrame {
     private javax.swing.JButton changeFileSub;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;

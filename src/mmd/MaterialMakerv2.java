@@ -181,105 +181,247 @@ public class MaterialMakerv2 {
                             + "Note that If you click <i>'No'</i> the new material will be created at the same folder as the selected one.</html>", "Destination Folder",
                             JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE, img);
 
-                    if (input == 0) {//I would like to specify
-                        JFileChooser chooser;
-                        String choosertitle = null;
+                    switch (input) {
+                        case 0:
+                            //I would like to specify
+                            JFileChooser chooser;
+                            String choosertitle = null;
+                            chooser = new JFileChooser();
+                            chooser.setCurrentDirectory(new java.io.File("../../Materials"));
+                            chooser.setDialogTitle(choosertitle);
+                            chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+                            chooser.setAcceptAllFileFilterUsed(false);
+                            if (chooser.showOpenDialog(a) == JFileChooser.APPROVE_OPTION) {
+                                filePath = chooser.getSelectedFile().toString();
+                                fileOldPath = filePath;
+                                filePath += "\\" + newName;
+                                fileToEdit = new File(filePath);
+                                Object[] options = {"Overwrite file", "Change name", "Go to menu"};
+                                if (fileToEdit.exists() && !fileToEdit.isDirectory()) {
+                                    int whenExists = JOptionPane.showOptionDialog(a, "<html>It looks like a material with that exact name (<i>" + newName + "</i>), already exists.<br><br>" + "Would you like whether to <b>overwrite</b> the selected file or <b>change the name </b> of the material?</html>",
+                                            "Material already exists", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE, img, options, "Change name");
+                                    switch (whenExists) {
+                                        case 0: {
+                                            //Overwrite
+                                            File check = new File((fileToEdit.getParent() + "\\material_common_2.0.fxsub"));
+                                            if (!check.exists()) {//If materialcommon doesn't exist in the folder.
+                                                copyFile(new File("../../Materials/material_common_2.0.fxsub"), check);
+                                            }
+                                            FileWriter fw = new FileWriter(filePath);
+                                            fw.write(catchContent);
+                                            fw.close();
+                                            try {
+                                                a.setVisible(false);
 
-                        chooser = new JFileChooser();
-                        chooser.setCurrentDirectory(new java.io.File("../../Materials"));
-                        chooser.setDialogTitle(choosertitle);
-                        chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+                                                WindowFrame w = new WindowFrame();
+                                                w.setAlwaysOnTop(true);
+                                                w.setAlwaysOnTop(false);
+                                                w.setResizable(false);
+                                                w.setBounds(0, 0, 960, 549);
+                                                w.setLocationRelativeTo(null);
+                                                w.setLayout(new BorderLayout());
+                                                w.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 
-                        chooser.setAcceptAllFileFilterUsed(false);
+                                                w.addWindowListener(new WindowAdapter() {
+                                                    @Override
+                                                    public void windowClosing(WindowEvent we) {
+                                                        callMenu();
+                                                        w.dispose();
+                                                    }
+                                                });
+                                                ImageIcon imge = new ImageIcon(MaterialMakerv2.class.getResource("/icon/ico.png"));
+                                                w.setIconImage(imge.getImage());
+                                                w.setVisible(true);
+                                            } catch (Exception e) {
 
-                        if (chooser.showOpenDialog(a) == JFileChooser.APPROVE_OPTION) {
-                            filePath = chooser.getSelectedFile().toString();
+                                            }
+                                            break;
+                                        }
+                                        case 1: {
+                                            //Change Name
+                                            do {
+                                                newName = (String) JOptionPane.showInputDialog(a, "<html>New material name (<B>WITHOUT EXTENSION</B>)</html>", "Create material from Default", EXIT_ON_CLOSE, img, null, null);
+                                                Pattern pattern = Pattern.compile("\\p{Alnum}+");//Only validates numbers and letters
+                                                matcher = pattern.matcher(newName);
+
+                                                filePath = fileOldPath + "\\" + newName + ".fx";
+                                                fileToEdit = new File(filePath);
+                                                if (fileToEdit.exists()) {
+                                                    newName = "fuck you.fx";
+                                                }
+                                            } while (!matcher.matches() || (newName.contains(".fx") || (newName.equalsIgnoreCase("fx"))));
+                                            File check = new File((fileToEdit.getParent() + "\\material_common_2.0.fxsub"));
+                                            if (!check.exists()) {//If materialcommon doesn't exist in the folder.
+                                                copyFile(new File("../../Materials/material_common_2.0.fxsub"), check);
+                                            }
+                                            FileWriter fw = new FileWriter(filePath);
+                                            fw.write(catchContent);
+                                            fw.close();
+                                            try {
+                                                a.setVisible(false);
+                                                WindowFrame w = new WindowFrame();
+                                                w.setAlwaysOnTop(true);
+                                                w.setAlwaysOnTop(false);
+                                                w.setResizable(false);
+                                                w.setBounds(0, 0, 960, 549);
+                                                w.setLocationRelativeTo(null);
+                                                w.setLayout(new BorderLayout());
+                                                w.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+
+                                                w.addWindowListener(new WindowAdapter() {
+                                                    public void windowClosing(WindowEvent we) {
+                                                        callMenu();
+                                                        w.dispose();
+                                                    }
+                                                });
+                                                ImageIcon imge = new ImageIcon(MaterialMakerv2.class.getResource("/icon/ico.png"));
+                                                w.setIconImage(imge.getImage());
+                                                w.setVisible(true);
+                                            } catch (Exception e) {
+
+                                            }
+                                            break;
+                                        }
+                                        default:
+                                            break;
+                                    }
+                                } else {
+                                    File check = new File((fileToEdit.getParent() + "\\material_common_2.0.fxsub"));
+                                    if (!check.exists()) {//If materialcommon doesn't exist in the folder.
+                                        copyFile(new File("../../Materials/material_common_2.0.fxsub"), check);
+                                    }
+                                    FileWriter fw = new FileWriter(filePath);
+
+                                    fw.write(catchContent);
+                                    fw.close();
+
+                                    try {
+                                        a.setVisible(false);
+                                        WindowFrame w = new WindowFrame();
+                                        w.setAlwaysOnTop(true);
+                                        w.setAlwaysOnTop(false);
+                                        w.setResizable(false);
+                                        w.setBounds(0, 0, 960, 549);
+                                        w.setLocationRelativeTo(null);
+                                        w.setLayout(new BorderLayout());
+                                        w.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+                                        w.addWindowListener(new WindowAdapter() {
+                                            public void windowClosing(WindowEvent we) {
+                                                callMenu();
+                                                w.dispose();
+                                            }
+                                        });
+                                        ImageIcon imge = new ImageIcon(MaterialMakerv2.class.getResource("/icon/ico.png"));
+                                        w.setIconImage(imge.getImage());
+                                        w.setVisible(true);
+                                    } catch (Exception e) {
+
+                                    }
+                                }
+                            } else {
+                            }
+                            break;
+                        case 1:
+                            //I would not like to specify
+
+                            filePath = fileChooser.getSelectedFile().getParent();
                             fileOldPath = filePath;
                             filePath += "\\" + newName;
                             fileToEdit = new File(filePath);
                             Object[] options = {"Overwrite file", "Change name", "Go to menu"};
                             if (fileToEdit.exists() && !fileToEdit.isDirectory()) {
-
                                 int whenExists = JOptionPane.showOptionDialog(a, "<html>It looks like a material with that exact name (<i>" + newName + "</i>), already exists.<br><br>" + "Would you like whether to <b>overwrite</b> the selected file or <b>change the name </b> of the material?</html>",
                                         "Material already exists", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE, img, options, "Change name");
-                                if (whenExists == 0) {//Overwrite
-                                    FileWriter fw = new FileWriter(filePath);
-
-                                    fw.write(catchContent);
-                                    fw.close();
-
-                                    try {
-                                        a.setVisible(false);
-
-                                        WindowFrame w = new WindowFrame();
-                                        w.setAlwaysOnTop(true);
-                                        w.setAlwaysOnTop(false);
-                                        w.setResizable(false);
-                                        w.setBounds(0, 0, 960, 549);
-                                        w.setLocationRelativeTo(null);
-                                        w.setLayout(new BorderLayout());
-                                        w.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-
-                                        w.addWindowListener(new WindowAdapter() {
-                                            @Override
-                                            public void windowClosing(WindowEvent we) {
-                                                callMenu();
-                                                w.dispose();
-                                            }
-                                        });
-                                        ImageIcon imge = new ImageIcon(MaterialMakerv2.class.getResource("/icon/ico.png"));
-                                        w.setIconImage(imge.getImage());
-                                        w.setVisible(true);
-                                    } catch (Exception e) {
-
-                                    }
-                                } else if (whenExists == 1) {//Change Name
-                                    do {
-                                        newName = (String) JOptionPane.showInputDialog(a, "<html>New material name (<B>WITHOUT EXTENSION</B>)</html>", "Create material from Default", EXIT_ON_CLOSE, img, null, null);
-                                        Pattern pattern = Pattern.compile("\\p{Alnum}+");//Only validates numbers and letters
-                                        matcher = pattern.matcher(newName);
-
-                                        filePath = fileOldPath + "\\" + newName + ".fx";
-                                        fileToEdit = new File(filePath);
-                                        if (fileToEdit.exists()) {
-                                            newName = "fuck you.fx";
+                                switch (whenExists) {
+                                    case 0: {
+                                        //Overwrite
+                                        File check = new File((fileToEdit.getParent() + "\\material_common_2.0.fxsub"));
+                                        if (!check.exists()) {//If materialcommon doesn't exist in the folder.
+                                            copyFile(new File("../../Materials/material_common_2.0.fxsub"), check);
                                         }
-                                    } while (!matcher.matches() || (newName.contains(".fx") || (newName.equalsIgnoreCase("fx"))));
+                                        FileWriter fw = new FileWriter(filePath);
+                                        fw.write(catchContent);
+                                        fw.close();
+                                        try {
+                                            a.setVisible(false);
 
-                                    FileWriter fw = new FileWriter(filePath);
+                                            WindowFrame w = new WindowFrame();
+                                            w.setAlwaysOnTop(true);
+                                            w.setAlwaysOnTop(false);
+                                            w.setResizable(false);
+                                            w.setBounds(0, 0, 960, 549);
+                                            w.setLocationRelativeTo(null);
+                                            w.setLayout(new BorderLayout());
+                                            w.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 
-                                    fw.write(catchContent);
-                                    fw.close();
+                                            w.addWindowListener(new WindowAdapter() {
+                                                @Override
+                                                public void windowClosing(WindowEvent we) {
+                                                    callMenu();
+                                                    w.dispose();
+                                                }
+                                            });
+                                            ImageIcon imge = new ImageIcon(MaterialMakerv2.class.getResource("/icon/ico.png"));
+                                            w.setIconImage(imge.getImage());
+                                            w.setVisible(true);
+                                        } catch (Exception e) {
 
-                                    try {
-                                        a.setVisible(false);
-                                        WindowFrame w = new WindowFrame();
-                                        w.setAlwaysOnTop(true);
-                                        w.setAlwaysOnTop(false);
-                                        w.setResizable(false);
-                                        w.setBounds(0, 0, 960, 549);
-                                        w.setLocationRelativeTo(null);
-                                        w.setLayout(new BorderLayout());
-                                        w.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-
-                                        w.addWindowListener(new WindowAdapter() {
-                                            public void windowClosing(WindowEvent we) {
-                                                callMenu();
-                                                w.dispose();
-                                            }
-                                        });
-                                        ImageIcon imge = new ImageIcon(MaterialMakerv2.class.getResource("/icon/ico.png"));
-                                        w.setIconImage(imge.getImage());
-                                        w.setVisible(true);
-                                    } catch (Exception e) {
-
+                                        }
+                                        break;
                                     }
+                                    case 1: {
+                                        //Change Name
+                                        do {
+                                            newName = (String) JOptionPane.showInputDialog(a, "<html>New material name (<B>WITHOUT EXTENSION</B>)</html>", "Create material from Default", EXIT_ON_CLOSE, img, null, null);
+                                            Pattern pattern = Pattern.compile("\\p{Alnum}+");
+                                            matcher = pattern.matcher(newName);
 
-                                } else {
+                                            filePath = fileOldPath + "\\" + newName + ".fx";
+                                            fileToEdit = new File(filePath);
+                                            if (fileToEdit.exists()) {
+                                                newName = ".fx";
+                                            }
+                                        } while (!matcher.matches() || (newName.contains(".fx") || (newName.equalsIgnoreCase("fx"))));
+                                        File check = new File((fileToEdit.getParent() + "\\material_common_2.0.fxsub"));
+                                        if (!check.exists()) {//If materialcommon doesn't exist in the folder.
+                                            copyFile(new File("../../Materials/material_common_2.0.fxsub"), check);
+                                        }
+                                        FileWriter fw = new FileWriter(filePath);
+                                        fw.write(catchContent);
+                                        fw.close();
+                                        try {
+                                            a.setVisible(false);
+                                            WindowFrame w = new WindowFrame();
+                                            w.setAlwaysOnTop(true);
+                                            w.setAlwaysOnTop(false);
+                                            w.setResizable(false);
+                                            w.setBounds(0, 0, 960, 549);
+                                            w.setLocationRelativeTo(null);
+                                            w.setLayout(new BorderLayout());
+                                            w.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 
+                                            w.addWindowListener(new WindowAdapter() {
+                                                public void windowClosing(WindowEvent we) {
+                                                    callMenu();
+                                                    w.dispose();
+                                                }
+                                            });
+                                            ImageIcon imge = new ImageIcon(MaterialMakerv2.class.getResource("/icon/ico.png"));
+                                            w.setIconImage(imge.getImage());
+                                            w.setVisible(true);
+                                        } catch (Exception e) {
+
+                                        }
+                                        break;
+                                    }
+                                    default:
+                                        break;
                                 }
                             } else {
-
+                                File check = new File((fileToEdit.getParent() + "\\material_common_2.0.fxsub"));
+                                if (!check.exists()) {//If materialcommon doesn't exist in the folder.
+                                    copyFile(new File("../../Materials/material_common_2.0.fxsub"), check);
+                                }
                                 FileWriter fw = new FileWriter(filePath);
 
                                 fw.write(catchContent);
@@ -308,130 +450,9 @@ public class MaterialMakerv2 {
 
                                 }
                             }
-
-                        } else {
-
-                        }
-
-                    } else if (input == 1) {//I would not like to specify
-
-                        filePath = fileChooser.getSelectedFile().getParent();
-                        fileOldPath = filePath;
-                        filePath += "\\" + newName;
-                        fileToEdit = new File(filePath);
-                        Object[] options = {"Overwrite file", "Change name", "Go to menu"};
-                        if (fileToEdit.exists() && !fileToEdit.isDirectory()) {
-
-                            int whenExists = JOptionPane.showOptionDialog(a, "<html>It looks like a material with that exact name (<i>" + newName + "</i>), already exists.<br><br>" + "Would you like whether to <b>overwrite</b> the selected file or <b>change the name </b> of the material?</html>",
-                                    "Material already exists", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE, img, options, "Change name");
-                            if (whenExists == 0) {//Overwrite
-                                FileWriter fw = new FileWriter(filePath);
-
-                                fw.write(catchContent);
-                                fw.close();
-
-                                try {
-                                    a.setVisible(false);
-
-                                    WindowFrame w = new WindowFrame();
-                                    w.setAlwaysOnTop(true);
-                                    w.setAlwaysOnTop(false);
-                                    w.setResizable(false);
-                                    w.setBounds(0, 0, 960, 549);
-                                    w.setLocationRelativeTo(null);
-                                    w.setLayout(new BorderLayout());
-                                    w.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-
-                                    w.addWindowListener(new WindowAdapter() {
-                                        @Override
-                                        public void windowClosing(WindowEvent we) {
-                                            callMenu();
-                                            w.dispose();
-                                        }
-                                    });
-                                    ImageIcon imge = new ImageIcon(MaterialMakerv2.class.getResource("/icon/ico.png"));
-                                    w.setIconImage(imge.getImage());
-                                    w.setVisible(true);
-                                } catch (Exception e) {
-
-                                }
-                            } else if (whenExists == 1) {//Change Name
-                                do {
-                                    newName = (String) JOptionPane.showInputDialog(a, "<html>New material name (<B>WITHOUT EXTENSION</B>)</html>", "Create material from Default", EXIT_ON_CLOSE, img, null, null);
-                                    Pattern pattern = Pattern.compile("\\p{Alnum}+");
-                                    matcher = pattern.matcher(newName);
-
-                                    filePath = fileOldPath + "\\" + newName + ".fx";
-                                    fileToEdit = new File(filePath);
-                                    if (fileToEdit.exists()) {
-                                        newName = ".fx";
-                                    }
-                                } while (!matcher.matches() || (newName.contains(".fx") || (newName.equalsIgnoreCase("fx"))));
-
-                                FileWriter fw = new FileWriter(filePath);
-
-                                fw.write(catchContent);
-                                fw.close();
-
-                                try {
-                                    a.setVisible(false);
-                                    WindowFrame w = new WindowFrame();
-                                    w.setAlwaysOnTop(true);
-                                    w.setAlwaysOnTop(false);
-                                    w.setResizable(false);
-                                    w.setBounds(0, 0, 960, 549);
-                                    w.setLocationRelativeTo(null);
-                                    w.setLayout(new BorderLayout());
-                                    w.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-
-                                    w.addWindowListener(new WindowAdapter() {
-                                        public void windowClosing(WindowEvent we) {
-                                            callMenu();
-                                            w.dispose();
-                                        }
-                                    });
-                                    ImageIcon imge = new ImageIcon(MaterialMakerv2.class.getResource("/icon/ico.png"));
-                                    w.setIconImage(imge.getImage());
-                                    w.setVisible(true);
-                                } catch (Exception e) {
-
-                                }
-
-                            } else {
-
-                            }
-                        } else {
-
-                            FileWriter fw = new FileWriter(filePath);
-
-                            fw.write(catchContent);
-                            fw.close();
-
-                            try {
-                                a.setVisible(false);
-                                WindowFrame w = new WindowFrame();
-                                w.setAlwaysOnTop(true);
-                                w.setAlwaysOnTop(false);
-                                w.setResizable(false);
-                                w.setBounds(0, 0, 960, 549);
-                                w.setLocationRelativeTo(null);
-                                w.setLayout(new BorderLayout());
-                                w.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-                                w.addWindowListener(new WindowAdapter() {
-                                    public void windowClosing(WindowEvent we) {
-                                        callMenu();
-                                        w.dispose();
-                                    }
-                                });
-                                ImageIcon imge = new ImageIcon(MaterialMakerv2.class.getResource("/icon/ico.png"));
-                                w.setIconImage(imge.getImage());
-                                w.setVisible(true);
-                            } catch (Exception e) {
-
-                            }
-                        }
-                    } else {
-
+                            break;
+                        default:
+                            break;
                     }
 
                 } else {
@@ -454,6 +475,23 @@ public class MaterialMakerv2 {
 
         } catch (Exception ex) {
             return false;
+        }
+    }
+
+    private static void copyFile(File source, File dest) throws IOException {
+        InputStream is = null;
+        OutputStream os = null;
+        try {
+            is = new FileInputStream(source);
+            os = new FileOutputStream(dest);
+            byte[] buffer = new byte[1024];
+            int length;
+            while ((length = is.read(buffer)) > 0) {
+                os.write(buffer, 0, length);
+            }
+        } finally {
+            is.close();
+            os.close();
         }
     }
 
@@ -492,107 +530,245 @@ public class MaterialMakerv2 {
                         + "Note that If you click <i>'No'</i> the new material will be created at the <i>/Materials</i> folder.</html>", "Destination Folder",
                         JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE, img);
 
-                if (input == 0) {
+                switch (input) {
+                    case 0:
+                        JFileChooser chooser;
+                        String choosertitle = null;
+                        chooser = new JFileChooser();
+                        chooser.setCurrentDirectory(new java.io.File("../../Materials"));
+                        chooser.setDialogTitle(choosertitle);
+                        chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+                        chooser.setAcceptAllFileFilterUsed(false);
+                        if (chooser.showOpenDialog(a) == JFileChooser.APPROVE_OPTION) {
+                            filePath = chooser.getSelectedFile().toString();
+                            fileOldPath = filePath;
+                            filePath += "\\" + newName;
+                            fileToEdit = new File(filePath);
+                            Object[] options = {"Overwrite file", "Change name", "Go to menu"};
+                            if (fileToEdit.exists() && !fileToEdit.isDirectory()) {
+                                int whenExists = JOptionPane.showOptionDialog(a, "<html>It looks like a material with that exact name (<i>" + newName + "</i>), already exists.<br><br>" + "Would you like whether to <b>overwrite</b> the selected file or <b>change the name </b> of the material?</html>",
+                                        "Material already exists", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE, img, options, "Change name");
+                                switch (whenExists) {
+                                    case 0: {
+                                        //Overwrite
+                                        File check = new File((fileToEdit.getParent() + "\\material_common_2.0.fxsub"));
+                                        if (!check.exists()) {//If materialcommon doesn't exist in the folder.
+                                            copyFile(new File("../../Materials/material_common_2.0.fxsub"), check);
+                                        }
+                                        FileWriter fw = new FileWriter(filePath);
+                                        fw.write(catchContent);
+                                        fw.close();
+                                        try {
+                                            a.setVisible(false);
 
-                    JFileChooser chooser;
-                    String choosertitle = null;
+                                            WindowFrame w = new WindowFrame();
+                                            w.setAlwaysOnTop(true);
+                                            w.setAlwaysOnTop(false);
+                                            w.setResizable(false);
+                                            w.setBounds(0, 0, 960, 549);
+                                            w.setLocationRelativeTo(null);
+                                            w.setLayout(new BorderLayout());
+                                            w.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 
-                    chooser = new JFileChooser();
-                    chooser.setCurrentDirectory(new java.io.File("../../Materials"));
-                    chooser.setDialogTitle(choosertitle);
-                    chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+                                            w.addWindowListener(new WindowAdapter() {
+                                                @Override
+                                                public void windowClosing(WindowEvent we) {
+                                                    callMenu();
+                                                    w.dispose();
+                                                }
+                                            });
+                                            ImageIcon imge = new ImageIcon(MaterialMakerv2.class.getResource("/icon/ico.png"));
+                                            w.setIconImage(imge.getImage());
+                                            w.setVisible(true);
+                                        } catch (Exception e) {
 
-                    chooser.setAcceptAllFileFilterUsed(false);
+                                        }
+                                        break;
+                                    }
+                                    case 1: {
+                                        //Change Name
+                                        do {
+                                            newName = (String) JOptionPane.showInputDialog(a, "<html>New material name (<B>WITHOUT EXTENSION</B>)</html>", "Create material from Default", EXIT_ON_CLOSE, img, null, null);
+                                            Pattern pattern = Pattern.compile("\\p{Alnum}+");//Only validates numbers and letters
+                                            matcher = pattern.matcher(newName);
 
-                    if (chooser.showOpenDialog(a) == JFileChooser.APPROVE_OPTION) {
+                                            filePath = fileOldPath + "\\" + newName + ".fx";
+                                            fileToEdit = new File(filePath);
+                                            if (fileToEdit.exists()) {
+                                                newName = ".fx";
+                                            }
+                                        } while (!matcher.matches() || (newName.contains(".fx") || (newName.equalsIgnoreCase("fx"))));
+                                        File check = new File((fileToEdit.getParent() + "\\material_common_2.0.fxsub"));
+                                        if (!check.exists()) {//If materialcommon doesn't exist in the folder.
+                                            copyFile(new File("../../Materials/material_common_2.0.fxsub"), check);
+                                        }
+                                        FileWriter fw = new FileWriter(filePath);
+                                        fw.write(catchContent);
+                                        fw.close();
+                                        try {
+                                            a.setVisible(false);
+                                            WindowFrame w = new WindowFrame();
+                                            w.setAlwaysOnTop(true);
+                                            w.setAlwaysOnTop(false);
+                                            w.setResizable(false);
+                                            w.setBounds(0, 0, 960, 549);
+                                            w.setLocationRelativeTo(null);
+                                            w.setLayout(new BorderLayout());
+                                            w.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 
-                        filePath = chooser.getSelectedFile().toString();
-                        fileOldPath = filePath;
+                                            w.addWindowListener(new WindowAdapter() {
+                                                public void windowClosing(WindowEvent we) {
+                                                    callMenu();
+                                                    w.dispose();
+                                                }
+                                            });
+                                            ImageIcon imge = new ImageIcon(MaterialMakerv2.class.getResource("/icon/ico.png"));
+                                            w.setIconImage(imge.getImage());
+                                            w.setVisible(true);
+                                        } catch (Exception e) {
+
+                                        }
+                                        break;
+                                    }
+                                    default:
+                                        break;
+                                }
+                            } else {
+                                File check = new File((fileToEdit.getParent() + "\\material_common_2.0.fxsub"));
+                                if (!check.exists()) {//If materialcommon doesn't exist in the folder.
+                                    copyFile(new File("../../Materials/material_common_2.0.fxsub"), check);
+                                }
+                                FileWriter fw = new FileWriter(filePath);
+
+                                fw.write(catchContent);
+                                fw.close();
+
+                                try {
+                                    a.setVisible(false);
+                                    WindowFrame w = new WindowFrame();
+                                    w.setAlwaysOnTop(true);
+                                    w.setAlwaysOnTop(false);
+                                    w.setResizable(false);
+                                    w.setBounds(0, 0, 960, 549);
+                                    w.setLocationRelativeTo(null);
+                                    w.setLayout(new BorderLayout());
+                                    w.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+
+                                    w.addWindowListener(new WindowAdapter() {
+                                        public void windowClosing(WindowEvent we) {
+                                            callMenu();
+                                            w.dispose();
+                                        }
+                                    });
+                                    ImageIcon imge = new ImageIcon(MaterialMakerv2.class.getResource("/icon/ico.png"));
+                                    w.setIconImage(imge.getImage());
+                                    w.setVisible(true);
+                                } catch (Exception e) {
+
+                                }
+                            }
+                        } else {
+                        }
+                        break;
+                    case 1:
+                        filePath = "../../Materials";
                         filePath += "\\" + newName;
                         fileToEdit = new File(filePath);
-
                         Object[] options = {"Overwrite file", "Change name", "Go to menu"};
                         if (fileToEdit.exists() && !fileToEdit.isDirectory()) {
-
                             int whenExists = JOptionPane.showOptionDialog(a, "<html>It looks like a material with that exact name (<i>" + newName + "</i>), already exists.<br><br>" + "Would you like whether to <b>overwrite</b> the selected file or <b>change the name </b> of the material?</html>",
                                     "Material already exists", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE, img, options, "Change name");
-                            if (whenExists == 0) {//Overwrite
-                                FileWriter fw = new FileWriter(filePath);
+                            switch (whenExists) {
+                                case 0:
+                                    //Overwrite
 
-                                fw.write(catchContent);
-                                fw.close();
+                                    try {
+                                        File overwrite = fileToEdit;
+                                        FileWriter fw = new FileWriter(overwrite);
+                                        fw.write(catchContent);
+                                        fw.close();
 
-                                try {
-                                    a.setVisible(false);
+                                    } catch (Exception e) {
 
-                                    WindowFrame w = new WindowFrame();
-                                    w.setAlwaysOnTop(true);
-                                    w.setAlwaysOnTop(false);
-                                    w.setResizable(false);
-                                    w.setBounds(0, 0, 960, 549);
-                                    w.setLocationRelativeTo(null);
-                                    w.setLayout(new BorderLayout());
-                                    w.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-
-                                    w.addWindowListener(new WindowAdapter() {
-                                        @Override
-                                        public void windowClosing(WindowEvent we) {
-                                            callMenu();
-                                            w.dispose();
-                                        }
-                                    });
-                                    ImageIcon imge = new ImageIcon(MaterialMakerv2.class.getResource("/icon/ico.png"));
-                                    w.setIconImage(imge.getImage());
-                                    w.setVisible(true);
-                                } catch (Exception e) {
-
-                                }
-                            } else if (whenExists == 1) {//Change Name
-                                do {
-                                    newName = (String) JOptionPane.showInputDialog(a, "<html>New material name (<B>WITHOUT EXTENSION</B>)</html>", "Create material from Default", EXIT_ON_CLOSE, img, null, null);
-                                    Pattern pattern = Pattern.compile("\\p{Alnum}+");//Only validates numbers and letters
-                                    matcher = pattern.matcher(newName);
-
-                                    filePath = fileOldPath + "\\" + newName + ".fx";
-                                    fileToEdit = new File(filePath);
-                                    if (fileToEdit.exists()) {
-                                        newName = ".fx";
                                     }
-                                } while (!matcher.matches() || (newName.contains(".fx") || (newName.equalsIgnoreCase("fx"))));
+                                    try {
 
-                                FileWriter fw = new FileWriter(filePath);
+                                        WindowFrame wf = new WindowFrame();
 
-                                fw.write(catchContent);
-                                fw.close();
+                                        wf.setAlwaysOnTop(true);
+                                        wf.setAlwaysOnTop(false);
+                                        wf.setResizable(false);
+                                        wf.setBounds(0, 0, 960, 549);
+                                        wf.setLocationRelativeTo(null);
+                                        wf.setLayout(new BorderLayout());
+                                        wf.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 
-                                try {
-                                    a.setVisible(false);
-                                    WindowFrame w = new WindowFrame();
-                                    w.setAlwaysOnTop(true);
-                                    w.setAlwaysOnTop(false);
-                                    w.setResizable(false);
-                                    w.setBounds(0, 0, 960, 549);
-                                    w.setLocationRelativeTo(null);
-                                    w.setLayout(new BorderLayout());
-                                    w.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+                                        wf.addWindowListener(new WindowAdapter() {
+                                            public void windowClosing(WindowEvent we) {
+                                                callMenu();
+                                                wf.dispose();
+                                            }
+                                        });
+                                        ImageIcon imge = new ImageIcon(MaterialMakerv2.class.getResource("/icon/ico.png"));
+                                        wf.setIconImage(imge.getImage());
+                                        wf.setVisible(true);
+                                    } catch (Exception e) {
 
-                                    w.addWindowListener(new WindowAdapter() {
-                                        public void windowClosing(WindowEvent we) {
-                                            callMenu();
-                                            w.dispose();
+                                    } finally {
+                                        a.setVisible(false);
+                                    }
+                                    break;
+                                case 1:
+                                    do {
+                                        newName = (String) JOptionPane.showInputDialog(a, "<html>New material name (<B>WITHOUT EXTENSION</B>)</html>", "Create material from Default", EXIT_ON_CLOSE, img, null, null);
+                                        Pattern pattern = Pattern.compile("\\p{Alnum}+");//Only validates numbers and letters
+                                        matcher = pattern.matcher(newName);
+
+                                        filePath = "../../Materials" + "\\" + newName + ".fx";
+                                        fileToEdit = new File(filePath);
+                                        if (fileToEdit.exists()) {
+                                            newName = "fuck you.fx";
                                         }
-                                    });
-                                    ImageIcon imge = new ImageIcon(MaterialMakerv2.class.getResource("/icon/ico.png"));
-                                    w.setIconImage(imge.getImage());
-                                    w.setVisible(true);
-                                } catch (Exception e) {
+                                    } while (!matcher.matches() || (newName.contains(".fx") || (newName.equalsIgnoreCase("fx"))));
+                                    File check = new File((fileToEdit.getParent() + "\\material_common_2.0.fxsub"));
+                                    if (!check.exists()) {//If materialcommon doesn't exist in the folder.
+                                        copyFile(new File("../../Materials/material_common_2.0.fxsub"), check);
+                                    }
+                                    FileWriter fw = new FileWriter(filePath);
+                                    fw.write(catchContent);
+                                    fw.close();
+                                    try {
+                                        a.setVisible(false);
+                                        WindowFrame w = new WindowFrame();
+                                        w.setAlwaysOnTop(true);
+                                        w.setAlwaysOnTop(false);
+                                        w.setResizable(false);
+                                        w.setBounds(0, 0, 960, 549);
+                                        w.setLocationRelativeTo(null);
+                                        w.setLayout(new BorderLayout());
+                                        w.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 
-                                }
+                                        w.addWindowListener(new WindowAdapter() {
+                                            public void windowClosing(WindowEvent we) {
+                                                callMenu();
+                                                w.dispose();
+                                            }
+                                        });
+                                        ImageIcon imge = new ImageIcon(MaterialMakerv2.class.getResource("/icon/ico.png"));
+                                        w.setIconImage(imge.getImage());
+                                        w.setVisible(true);
+                                    } catch (Exception e) {
 
-                            } else {
-
+                                    }
+                                    break;
+                                default:
+                                    break;
                             }
                         } else {
+                            File check = new File((fileToEdit.getParent() + "\\material_common_2.0.fxsub"));
+                            if (!check.exists()) {//If materialcommon doesn't exist in the folder.
+                                copyFile(new File("../../Materials/material_common_2.0.fxsub"), check);
+                            }
                             FileWriter fw = new FileWriter(filePath);
 
                             fw.write(catchContent);
@@ -610,6 +786,7 @@ public class MaterialMakerv2 {
                                 w.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 
                                 w.addWindowListener(new WindowAdapter() {
+                                    @Override
                                     public void windowClosing(WindowEvent we) {
                                         callMenu();
                                         w.dispose();
@@ -622,135 +799,9 @@ public class MaterialMakerv2 {
 
                             }
                         }
-                    } else {
-
-                    }
-
-                } else if (input == 1) {
-                    filePath = "../../Materials";
-                    filePath += "\\" + newName;
-                    fileToEdit = new File(filePath);
-
-                    Object[] options = {"Overwrite file", "Change name", "Go to menu"};
-
-                    if (fileToEdit.exists() && !fileToEdit.isDirectory()) {
-
-                        int whenExists = JOptionPane.showOptionDialog(a, "<html>It looks like a material with that exact name (<i>" + newName + "</i>), already exists.<br><br>" + "Would you like whether to <b>overwrite</b> the selected file or <b>change the name </b> of the material?</html>",
-                                "Material already exists", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE, img, options, "Change name");
-                        if (whenExists == 0) {//Overwrite
-
-                            try {
-                                File overwrite = fileToEdit;
-                                FileWriter fw = new FileWriter(overwrite);
-                                fw.write(catchContent);
-                                fw.close();
-
-                            } catch (Exception e) {
-
-                            }
-                            try {
-
-                                WindowFrame wf = new WindowFrame();
-
-                                wf.setAlwaysOnTop(true);
-                                wf.setAlwaysOnTop(false);
-                                wf.setResizable(false);
-                                wf.setBounds(0, 0, 960, 549);
-                                wf.setLocationRelativeTo(null);
-                                wf.setLayout(new BorderLayout());
-                                wf.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-
-                                wf.addWindowListener(new WindowAdapter() {
-                                    public void windowClosing(WindowEvent we) {
-                                        callMenu();
-                                        wf.dispose();
-                                    }
-                                });
-                                ImageIcon imge = new ImageIcon(MaterialMakerv2.class.getResource("/icon/ico.png"));
-                                wf.setIconImage(imge.getImage());
-                                wf.setVisible(true);
-                            } catch (Exception e) {
-
-                            } finally {
-                                a.setVisible(false);
-                            }
-                        } else if (whenExists == 1) {
-                            do {
-                                newName = (String) JOptionPane.showInputDialog(a, "<html>New material name (<B>WITHOUT EXTENSION</B>)</html>", "Create material from Default", EXIT_ON_CLOSE, img, null, null);
-                                Pattern pattern = Pattern.compile("\\p{Alnum}+");//Only validates numbers and letters
-                                matcher = pattern.matcher(newName);
-
-                                filePath = "../../Materials" + "\\" + newName + ".fx";
-                                fileToEdit = new File(filePath);
-                                if (fileToEdit.exists()) {
-                                    newName = "fuck you.fx";
-                                }
-                            } while (!matcher.matches() || (newName.contains(".fx") || (newName.equalsIgnoreCase("fx"))));
-
-                            FileWriter fw = new FileWriter(filePath);
-
-                            fw.write(catchContent);
-                            fw.close();
-
-                            try {
-                                a.setVisible(false);
-                                WindowFrame w = new WindowFrame();
-                                w.setAlwaysOnTop(true);
-                                w.setAlwaysOnTop(false);
-                                w.setResizable(false);
-                                w.setBounds(0, 0, 960, 549);
-                                w.setLocationRelativeTo(null);
-                                w.setLayout(new BorderLayout());
-                                w.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-
-                                w.addWindowListener(new WindowAdapter() {
-                                    public void windowClosing(WindowEvent we) {
-                                        callMenu();
-                                        w.dispose();
-                                    }
-                                });
-                                ImageIcon imge = new ImageIcon(MaterialMakerv2.class.getResource("/icon/ico.png"));
-                                w.setIconImage(imge.getImage());
-                                w.setVisible(true);
-                            } catch (Exception e) {
-
-                            }
-
-                        } else {
-
-                        }
-                    } else {
-                        FileWriter fw = new FileWriter(filePath);
-
-                        fw.write(catchContent);
-                        fw.close();
-
-                        try {
-                            a.setVisible(false);
-                            WindowFrame w = new WindowFrame();
-                            w.setAlwaysOnTop(true);
-                            w.setAlwaysOnTop(false);
-                            w.setResizable(false);
-                            w.setBounds(0, 0, 960, 549);
-                            w.setLocationRelativeTo(null);
-                            w.setLayout(new BorderLayout());
-                            w.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-
-                            w.addWindowListener(new WindowAdapter() {
-                                @Override
-                                public void windowClosing(WindowEvent we) {
-                                    callMenu();
-                                    w.dispose();
-                                }
-                            });
-                            ImageIcon imge = new ImageIcon(MaterialMakerv2.class.getResource("/icon/ico.png"));
-                            w.setIconImage(imge.getImage());
-                            w.setVisible(true);
-                        } catch (Exception e) {
-
-                        }
-                    }
-                } else {
+                        break;
+                    default:
+                        break;
                 }
 
             } else {

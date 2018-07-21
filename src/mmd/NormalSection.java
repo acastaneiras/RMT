@@ -28,14 +28,16 @@
 package mmd;
 
 import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.Toolkit;
+import java.awt.Dialog;
+import java.awt.Image;
+import java.awt.Window;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -46,6 +48,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
+import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -88,6 +91,49 @@ public class NormalSection extends javax.swing.JFrame {
     private static String CatchNormalSubMapFile = null;
     private static String CatchNormalSubScale;
     private static float CatchNormalSubLoop;
+    public int errors = 0;
+    JFrame ErrorWindow = new JFrame();
+
+    public void SomethingWentWrong() {
+        if (errors == 1) {
+
+            JLabel ErrorWindowText = new JLabel();
+            //ErrorWindowText.
+            ErrorWindowText.setText("<HTML><div style='padding-left:30px;'>Something went wrong while trying to load <i>Normal Section</i>...<br><br>"
+                    + "Please make sure the file you are trying to open doesn't <b>exceed the limit for each parameter</b>, usually this happens when you are trying to open "
+                    + "a .fx file where some of it's parameters has <b>higher values</b> than supposed to be<br><br>"
+                    + "<b>Limits: </b><br>"
+                    + "<ul><li>NormalMapFrom: 0 - 8</li>"
+                    + "<li>NormalMapType: 0 - 3</li>"
+                    + "<li>NormalMapUVFlip: 0 - 3</li>"
+                    + "<br>"
+                    + "</ul>Same for NormalSub</div></HTML>");
+            ErrorWindow.setLayout(new BorderLayout());
+            ErrorWindow.setSize(700, 350);
+            ErrorWindow.setLocationRelativeTo(this);
+            ErrorWindow.setResizable(true);
+            ErrorWindow.setAlwaysOnTop(true);
+            ErrorWindow.setVisible(true);
+            ErrorWindow.add(ErrorWindowText);
+            ErrorWindow.setName("help");
+            ErrorWindow.setTitle("Something went wrong");
+            ErrorWindow.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+            ErrorWindow.addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosing(WindowEvent we) {
+                    ErrorWindow.dispose();
+                }
+            });
+
+            try {
+                InputStream imgStream = getClass().getResourceAsStream("/icon/ico.png");
+                BufferedImage myImg = ImageIO.read(imgStream);
+                ErrorWindow.setIconImage(myImg);
+            } catch (IOException ex) {
+                Logger.getLogger(AlbedoSection.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
 
     public int getNormalMapFrom() {
         BufferedReader AlbedotoEdit_Br = null;
@@ -906,6 +952,8 @@ public class NormalSection extends javax.swing.JFrame {
         NormalSubMapFile = new javax.swing.JTextField();
         back1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
+        jButton4 = new javax.swing.JButton();
 
         jMenu1.setText("jMenu1");
 
@@ -918,7 +966,12 @@ public class NormalSection extends javax.swing.JFrame {
         jLabel1.setText("<html><b>NORMAL MAP FROM</b></html>");
 
         NormalMapFrom.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "0", "1", "2", "3", "4", "5", "6" }));
-        NormalMapFrom.setSelectedIndex(getNormalMapFrom());
+        try{
+            NormalMapFrom.setSelectedIndex(getNormalMapFrom());
+        }catch(Exception e){
+            errors+=1;
+            SomethingWentWrong();
+        }
         NormalMapFrom.setToolTipText("");
         NormalMapFrom.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
@@ -952,7 +1005,12 @@ public class NormalSection extends javax.swing.JFrame {
         jLabel9.setText("<html><b>NORMAL MAP LOOP</b></html>");
 
         NormalMapUVFlip.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "0", "1", "2", "3" }));
-        NormalMapUVFlip.setSelectedIndex(getNormalMapUVFlip());
+        try{
+            NormalMapUVFlip.setSelectedIndex(getNormalMapUVFlip());
+        }catch(Exception e){
+            errors+=1;
+            SomethingWentWrong();
+        }
         NormalMapUVFlip.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 NormalMapUVFlipItemStateChanged(evt);
@@ -1002,7 +1060,12 @@ public class NormalSection extends javax.swing.JFrame {
         jLabel3.setText("<html><b>NORMAL MAP TYPE</b></html>");
 
         NormalMapType.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "0", "1", "2", "3" }));
-        NormalMapType.setSelectedIndex(getNormalMapType());
+        try{
+            NormalMapType.setSelectedIndex(getNormalMapType());
+        }catch(Exception e){
+            errors+=1;
+            SomethingWentWrong();
+        }
         NormalMapType.setToolTipText("");
         NormalMapType.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
@@ -1025,7 +1088,12 @@ public class NormalSection extends javax.swing.JFrame {
         jLabel4.setText("<html><b>NORMAL SUB MAP FROM </b></html>");
 
         NormalSubMapFrom.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "0", "1", "2", "3", "4", "5", "6" }));
-        NormalSubMapFrom.setSelectedIndex(getNormalSubMapFrom());
+        try{
+            NormalSubMapFrom.setSelectedIndex(getNormalSubMapFrom());
+        }catch(Exception e){
+            errors+=1;
+            SomethingWentWrong();
+        }
         NormalSubMapFrom.setToolTipText("");
         NormalSubMapFrom.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
@@ -1063,7 +1131,7 @@ public class NormalSection extends javax.swing.JFrame {
 
         jLabel7.setText("<html><b>NORMAL SUB MAP TYPE</b></html>");
 
-        jLabel10.setText("<html><b>NORMALSUB  MAP FILE</b></html>");
+        jLabel10.setText("<html><b>NORMAL SUB  MAP FILE</b></html>");
 
         changeFile1.setText("...");
         changeFile1.addChangeListener(new javax.swing.event.ChangeListener() {
@@ -1078,7 +1146,12 @@ public class NormalSection extends javax.swing.JFrame {
         });
 
         NormalSubMapType.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "0", "1", "2", "3" }));
-        NormalSubMapType.setSelectedIndex(getNormalSubMapType());
+        try{
+            NormalSubMapType.setSelectedIndex(getNormalSubMapType());
+        }catch(Exception e){
+            errors+=1;
+            SomethingWentWrong();
+        }
         NormalSubMapType.setToolTipText("");
         NormalSubMapType.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
@@ -1096,7 +1169,12 @@ public class NormalSection extends javax.swing.JFrame {
         jLabel12.setText("<html><b>NORMAL SUB MAP LOOP</b></html>");
 
         NormalSubMapUVFlip.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "0", "1", "2", "3" }));
-        NormalSubMapUVFlip.setSelectedIndex(getNormalSubMapUVFlip());
+        try{
+            NormalSubMapUVFlip.setSelectedIndex(getNormalSubMapUVFlip());
+        }catch(Exception e){
+            errors+=1;
+            SomethingWentWrong();
+        }
         NormalSubMapUVFlip.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 NormalSubMapUVFlipItemStateChanged(evt);
@@ -1129,9 +1207,21 @@ public class NormalSection extends javax.swing.JFrame {
             }
         });
 
-        NormalMapFile.setText(getNormalMapFile());
+        try{
+            NormalMapFile.setEditable(false);
+            NormalMapFile.setText(getNormalMapFile());
+        }catch(Exception e){
+            errors+=1;
+            SomethingWentWrong();
+        }
 
-        NormalSubMapFile.setText(getNormalSubMapFile());
+        try{
+            NormalSubMapFile.setEditable(false);
+            NormalSubMapFile.setText(getNormalSubMapFile());
+        }catch(Exception e){
+            errors+=1;
+            SomethingWentWrong();
+        }
 
         back1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/bg/back.png"))); // NOI18N
         back1.setBorder(null);
@@ -1150,6 +1240,20 @@ public class NormalSection extends javax.swing.JFrame {
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
+            }
+        });
+
+        jButton3.setText("Preview");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+
+        jButton4.setText("Preview");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
             }
         });
 
@@ -1196,7 +1300,10 @@ public class NormalSection extends javax.swing.JFrame {
                                     .addComponent(AlbedoMapUVFlipHelp)
                                     .addComponent(AlbedoMapFileHelp)
                                     .addComponent(AlbedoMapHelp3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                            .addComponent(NormalMapFile, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(NormalMapFile, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jButton3)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 53, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
@@ -1231,7 +1338,10 @@ public class NormalSection extends javax.swing.JFrame {
                                     .addComponent(AlbedoMapUVFlipHelp1)
                                     .addComponent(AlbedoMapFileHelp1)
                                     .addComponent(AlbedoMapHelp2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                            .addComponent(NormalSubMapFile, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(NormalSubMapFile, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jButton4)))
                         .addGap(54, 54, 54))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(back1, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -1269,8 +1379,10 @@ public class NormalSection extends javax.swing.JFrame {
                             .addComponent(changeFile)
                             .addComponent(AlbedoMapFileHelp))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(NormalMapFile, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(37, 37, 37)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(NormalMapFile, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jButton3))
+                        .addGap(33, 33, 33)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(albedoHelp))
@@ -1302,12 +1414,14 @@ public class NormalSection extends javax.swing.JFrame {
                             .addComponent(changeFile1)
                             .addComponent(AlbedoMapFileHelp1))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(NormalSubMapFile, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(37, 37, 37)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(NormalSubMapFile, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jButton4))
+                        .addGap(33, 33, 33)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(albedoHelp1))))
-                .addContainerGap(154, Short.MAX_VALUE))
+                .addContainerGap(150, Short.MAX_VALUE))
         );
 
         pack();
@@ -1386,11 +1500,9 @@ public class NormalSection extends javax.swing.JFrame {
     }//GEN-LAST:event_changeFileStateChanged
 
     private void AlbedoMapHelpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AlbedoMapHelpActionPerformed
-
-        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         JFrame AlbedoMapHelp = new JFrame();
         JLabel AlbedoMapHelpText = new JLabel();
-
+        AlbedoMapHelp.setName("help");
         AlbedoMapHelpText.setText("<HTML><div><pre style='font-family: Arial;'><center>You can use a color and texture to change colors in your model by set the code to the ALBEDO_MAP_FROM.<br><br>"
                 + "<b>Tips 1 :</b> The albedo is also called Base Color, default data will fetched params from texture from the pmx.<br>"
                 + "<b>Tips 2 :</b> Do not enter a path with HDR file, that will be ignore the HDR and linear color-space<br>"
@@ -1407,8 +1519,8 @@ public class NormalSection extends javax.swing.JFrame {
                 + "    <li><strike>8 : Params fetch from Specular Color from the pmx. </strike>, doesn't work on NormalMap</li><br>"
                 + "    <li><strike>9 : Params fetch from Specular Power from the pmx. (this option can only be used for specular)</strike>, doesn't work on NormalMap</li></ul></pre><br><br></HTML>");
         AlbedoMapHelp.setLayout(new BorderLayout());
-        AlbedoMapHelp.setLocation(dim.width / 2 - this.getSize().width / 2, dim.height / 2 - this.getSize().height / 2);
         AlbedoMapHelp.setSize(700, 550);
+        AlbedoMapHelp.setLocationRelativeTo(this);
         AlbedoMapHelp.setResizable(true);
         AlbedoMapHelp.setVisible(true);
         AlbedoMapHelp.add(AlbedoMapHelpText);
@@ -1425,17 +1537,17 @@ public class NormalSection extends javax.swing.JFrame {
 
     private void AlbedoMapUVFlipHelpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AlbedoMapUVFlipHelpActionPerformed
 
-        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         JFrame help = new JFrame();
         JLabel helptext = new JLabel();
+        help.setName("help");
 
         helptext.setText("<HTML><center>You can flip your texture for the X and Y axis mirror by set code to the <b>ALBEDO_MAP_UV_FLIP</b></center><br><br>"
                 + "<ul><li><b>1 :</b> Flip axis x</li>"
                 + "<li><b>2 :</b> Flip axis y</li>"
                 + "<li><b>3 :</b> Flip axis x & y</li></ul></HTML>");
         help.setLayout(new BorderLayout());
-        help.setLocation(dim.width / 2 - this.getSize().width / 2, dim.height / 2 - this.getSize().height / 2);
         help.setSize(500, 160);
+        help.setLocationRelativeTo(this);
         help.setResizable(true);
         help.setVisible(true);
         help.add(helptext);
@@ -1452,10 +1564,9 @@ public class NormalSection extends javax.swing.JFrame {
 
     private void AlbedoMapFileHelpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AlbedoMapFileHelpActionPerformed
 
-        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         JFrame help = new JFrame();
         JLabel helptext = new JLabel();
-
+        help.setName("help");
         helptext.setText("<HTML>If the ALBEDO_MAP_FROM is 1 or 2, you will need to enter the path to the texture resource. <br><br>"
                 + "Tips : parent folder ref is '../' (in other words, using '../' instead of parent folder), and change all '\\' to '/'.<br><br>"
                 + "For example : <br>"
@@ -1468,8 +1579,8 @@ public class NormalSection extends javax.swing.JFrame {
                 + "If the xxx.png is inside your desktop or other disk<br>"
                 + "You can set the xxx.png to the ALBEDO_MAP_FILE like : #define ALBEDO_MAP_FILE 'C:/Users/User Name/Desktop/xxx.png'</HTML>");
         help.setLayout(new BorderLayout());
-        help.setLocation(dim.width / 2 - this.getSize().width / 2, dim.height / 2 - this.getSize().height / 2);
         help.setSize(600, 350);
+        help.setLocationRelativeTo(this);
         help.setResizable(true);
         helptext.setBorder(new EmptyBorder(10, 20, 10, 10));
         help.setVisible(true);
@@ -1487,14 +1598,13 @@ public class NormalSection extends javax.swing.JFrame {
 
     private void albedoHelpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_albedoHelpActionPerformed
 
-        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         JFrame help = new JFrame();
         JLabel helptext = new JLabel();
-
+        help.setName("help");
         helptext.setText("<HTML>between 0 ~ inf</HTML>");
         help.setLayout(new BorderLayout());
-        help.setLocation(dim.width / 2 - this.getSize().width / 2, dim.height / 2 - this.getSize().height / 2);
-        help.setSize(600, 350);
+        help.setSize(300, 70);
+        help.setLocationRelativeTo(this);
         help.setResizable(true);
         helptext.setBorder(new EmptyBorder(10, 20, 10, 10));
         help.setVisible(true);
@@ -1512,14 +1622,14 @@ public class NormalSection extends javax.swing.JFrame {
 
     private void AlbedoMapLoopHelpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AlbedoMapLoopHelpActionPerformed
 
-        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         JFrame help = new JFrame();
         JLabel helptext = new JLabel();
-
+        help.setName("help");
         helptext.setText("<HTML>You can tile your texture for the X and Y axis separately by change albedoMapLoopNum = float2(x, y) between float2(0, 0) ~ float2(inf, inf) </HTML>");
         help.setLayout(new BorderLayout());
-        help.setLocation(dim.width / 2 - this.getSize().width / 2, dim.height / 2 - this.getSize().height / 2);
         help.setSize(600, 200);
+        help.setLocationRelativeTo(this);
+
         help.setResizable(true);
         helptext.setBorder(new EmptyBorder(10, 20, 10, 10));
         help.setVisible(true);
@@ -1540,18 +1650,16 @@ public class NormalSection extends javax.swing.JFrame {
     }//GEN-LAST:event_NormalMapTypeActionPerformed
 
     private void AlbedoMapUVFlipHelp1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AlbedoMapUVFlipHelp1ActionPerformed
-
-        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         JFrame help = new JFrame();
         JLabel helptext = new JLabel();
-
+        help.setName("help");
         helptext.setText("<HTML><center>You can flip your texture for the X and Y axis mirror by set code to the <b>ALBEDO_MAP_UV_FLIP</b></center><br><br>"
                 + "<ul><li><b>1 :</b> Flip axis x</li>"
                 + "<li><b>2 :</b> Flip axis y</li>"
                 + "<li><b>3 :</b> Flip axis x & y</li></ul></HTML>");
         help.setLayout(new BorderLayout());
-        help.setLocation(dim.width / 2 - this.getSize().width / 2, dim.height / 2 - this.getSize().height / 2);
         help.setSize(500, 160);
+        help.setLocationRelativeTo(this);
         help.setResizable(true);
         help.setVisible(true);
         help.add(helptext);
@@ -1571,11 +1679,9 @@ public class NormalSection extends javax.swing.JFrame {
     }//GEN-LAST:event_NormalSubMapFromActionPerformed
 
     private void AlbedoMapFileHelp1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AlbedoMapFileHelp1ActionPerformed
-
-        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         JFrame help = new JFrame();
         JLabel helptext = new JLabel();
-
+        help.setName("help");
         helptext.setText("<HTML>If the ALBEDO_MAP_FROM is 1 or 2, you will need to enter the path to the texture resource. <br><br>"
                 + "Tips : parent folder ref is '../' (in other words, using '../' instead of parent folder), and change all '\\' to '/'.<br><br>"
                 + "For example : <br>"
@@ -1588,8 +1694,8 @@ public class NormalSection extends javax.swing.JFrame {
                 + "If the xxx.png is inside your desktop or other disk<br>"
                 + "You can set the xxx.png to the ALBEDO_MAP_FILE like : #define ALBEDO_MAP_FILE 'C:/Users/User Name/Desktop/xxx.png'</HTML>");
         help.setLayout(new BorderLayout());
-        help.setLocation(dim.width / 2 - this.getSize().width / 2, dim.height / 2 - this.getSize().height / 2);
         help.setSize(600, 350);
+        help.setLocationRelativeTo(this);
         help.setResizable(true);
         helptext.setBorder(new EmptyBorder(10, 20, 10, 10));
         help.setVisible(true);
@@ -1607,14 +1713,13 @@ public class NormalSection extends javax.swing.JFrame {
 
     private void albedoHelp1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_albedoHelp1ActionPerformed
 
-        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         JFrame help = new JFrame();
         JLabel helptext = new JLabel();
-
+        help.setName("help");
         helptext.setText("<HTML>between 0 ~ inf</HTML>");
         help.setLayout(new BorderLayout());
-        help.setLocation(dim.width / 2 - this.getSize().width / 2, dim.height / 2 - this.getSize().height / 2);
-        help.setSize(600, 350);
+        help.setSize(300, 70);
+        help.setLocationRelativeTo(this);
         help.setResizable(true);
         helptext.setBorder(new EmptyBorder(10, 20, 10, 10));
         help.setVisible(true);
@@ -1632,14 +1737,13 @@ public class NormalSection extends javax.swing.JFrame {
 
     private void AlbedoMapLoopHelp1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AlbedoMapLoopHelp1ActionPerformed
 
-        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         JFrame help = new JFrame();
         JLabel helptext = new JLabel();
-
+        help.setName("help");
         helptext.setText("<HTML>You can tile your texture for the X and Y axis separately by change albedoMapLoopNum = float2(x, y) between float2(0, 0) ~ float2(inf, inf) </HTML>");
         help.setLayout(new BorderLayout());
-        help.setLocation(dim.width / 2 - this.getSize().width / 2, dim.height / 2 - this.getSize().height / 2);
         help.setSize(600, 200);
+        help.setLocationRelativeTo(this);
         help.setResizable(true);
         helptext.setBorder(new EmptyBorder(10, 20, 10, 10));
         help.setVisible(true);
@@ -1677,6 +1781,9 @@ public class NormalSection extends javax.swing.JFrame {
             if (selection == 0) {
                 String relative = toRelative.convertToRelativePath(foo.getFileToEdit().getParent().toString(), filePath);
                 NormalSubMapFile.setText(relative);
+                if (NormalSubMapFrom.getSelectedIndex() != 1) {
+                    NormalSubMapFrom.setSelectedIndex(1);
+                }
 
                 try {
                     BufferedReader br = null;
@@ -1725,11 +1832,9 @@ public class NormalSection extends javax.swing.JFrame {
     }//GEN-LAST:event_NormalSubMapUVFlipActionPerformed
 
     private void AlbedoMapHelp1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AlbedoMapHelp1ActionPerformed
-
-        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         JFrame AlbedoMapHelp = new JFrame();
         JLabel AlbedoMapHelpText = new JLabel();
-
+        AlbedoMapHelp.setName("help");
         AlbedoMapHelpText.setText("<HTML><div><pre style='font-family: Arial;'><center>You can use a color and texture to change colors in your model by set the code to the ALBEDO_MAP_FROM.<br><br>"
                 + "<b>Tips 1 :</b> The albedo is also called Base Color, default data will fetched params from texture from the pmx.<br>"
                 + "<b>Tips 2 :</b> Do not enter a path with HDR file, that will be ignore the HDR and linear color-space<br>"
@@ -1746,8 +1851,8 @@ public class NormalSection extends javax.swing.JFrame {
                 + "    <li><strike>8 : Params fetch from Specular Color from the pmx. </strike>, doesn't work on NormalMap</li><br>"
                 + "    <li><strike>9 : Params fetch from Specular Power from the pmx. (this option can only be used for specular)</strike>, doesn't work on NormalMap</li></ul></pre><br><br></HTML>");
         AlbedoMapHelp.setLayout(new BorderLayout());
-        AlbedoMapHelp.setLocation(dim.width / 2 - this.getSize().width / 2, dim.height / 2 - this.getSize().height / 2);
         AlbedoMapHelp.setSize(700, 550);
+        AlbedoMapHelp.setLocationRelativeTo(this);
         AlbedoMapHelp.setResizable(true);
         AlbedoMapHelp.setVisible(true);
         AlbedoMapHelp.add(AlbedoMapHelpText);
@@ -1763,11 +1868,9 @@ public class NormalSection extends javax.swing.JFrame {
     }//GEN-LAST:event_AlbedoMapHelp1ActionPerformed
 
     private void AlbedoMapHelp2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AlbedoMapHelp2ActionPerformed
-
-        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         JFrame help = new JFrame();
         JLabel helptext = new JLabel();
-
+        help.setName("help");
         helptext.setText("<HTML>Other parameter types for tangent normal see UE4 docs for PerturbNormalLQ and PerturbNormalHQ."
                 + "<a href='https://docs.unrealengine.com/latest/INT/Engine/Rendering/LightingAndShadows/BumpMappingWithoutTangentSpace/index.html'>https://docs.unrealengine.com/latest/INT/Engine/Rendering/LightingAndShadows/BumpMappingWithoutTangentSpace/index.html</a> <br><br><br>"
                 + "<ul>"
@@ -1777,8 +1880,8 @@ public class NormalSection extends javax.swing.JFrame {
                 + "<li>3 : Calculate world-space normal from Grayscale bump map by PerturbNormalHQ (High Quality).</li>"
                 + "<ul></HTML>");
         help.setLayout(new BorderLayout());
-        help.setLocation(dim.width / 2 - this.getSize().width / 2, dim.height / 2 - this.getSize().height / 2);
-        help.setSize(600, 200);
+        help.setSize(750, 200);
+        help.setLocationRelativeTo(this);
         help.setResizable(true);
         helptext.setBorder(new EmptyBorder(10, 20, 10, 10));
         help.setVisible(true);
@@ -1795,11 +1898,9 @@ public class NormalSection extends javax.swing.JFrame {
     }//GEN-LAST:event_AlbedoMapHelp2ActionPerformed
 
     private void AlbedoMapHelp3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AlbedoMapHelp3ActionPerformed
-
-        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         JFrame help = new JFrame();
         JLabel helptext = new JLabel();
-
+        help.setName("help");
         helptext.setText("<HTML>Other parameter types for tangent normal see UE4 docs for PerturbNormalLQ and PerturbNormalHQ."
                 + "<a href='https://docs.unrealengine.com/latest/INT/Engine/Rendering/LightingAndShadows/BumpMappingWithoutTangentSpace/index.html'>https://docs.unrealengine.com/latest/INT/Engine/Rendering/LightingAndShadows/BumpMappingWithoutTangentSpace/index.html</a> <br><br><br>"
                 + "<ul>"
@@ -1809,8 +1910,9 @@ public class NormalSection extends javax.swing.JFrame {
                 + "<li>3 : Calculate world-space normal from Grayscale bump map by PerturbNormalHQ (High Quality).</li>"
                 + "<ul></HTML>");
         help.setLayout(new BorderLayout());
-        help.setLocation(dim.width / 2 - this.getSize().width / 2, dim.height / 2 - this.getSize().height / 2);
-        help.setSize(600, 200);
+        help.setSize(750, 200);
+        help.setLocationRelativeTo(this);
+
         help.setResizable(true);
         helptext.setBorder(new EmptyBorder(10, 20, 10, 10));
         help.setVisible(true);
@@ -1825,11 +1927,20 @@ public class NormalSection extends javax.swing.JFrame {
             System.out.println("" + ex);
         }
     }//GEN-LAST:event_AlbedoMapHelp3ActionPerformed
+    private void closeAllDialogs() {
+        Window[] windows = AlbedoSection.getWindows();
 
+        for (Window window : windows) {
+            if (window.getName().equalsIgnoreCase("help")) {
+                window.dispose();
+            }
+        }
+    }
     private void back1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_back1ActionPerformed
-
+        closeAllDialogs();
         WindowFrame w = new WindowFrame();
         w.setLocation(this.getLocation());
+        ErrorWindow.dispose();
         this.dispose();
         w.setSize(960, 549);
         w.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
@@ -1849,16 +1960,16 @@ public class NormalSection extends javax.swing.JFrame {
     }//GEN-LAST:event_back1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+
         JFrame help = new JFrame();
         JLabel helptext = new JLabel();
 
-        helptext.setText("<HTML>Tips : (NormalMap, SSAO, SSDO, etc) only support non-empty the normals else will result a white edge issue<br><br><br>"
+        helptext.setText("<HTML><b>Tips </b>: ( <i>NormalMap, SSAO, SSDO, etc</i> ) only support non-empty the normals else will result a white edge issue<br><br><br>"
                 + "When you see some effect that looks like some white edges on your actor model, you can put the scene in the PMXEditor<br>"
                 + "and check the scene that all normals are not zero-length (XYZ are same equal to zero) to be used for model.<br></HTML>");
         help.setLayout(new BorderLayout());
-        help.setLocation(dim.width / 2 - this.getSize().width / 2, dim.height / 2 - this.getSize().height / 2);
         help.setSize(600, 200);
+        help.setLocationRelativeTo(this);
         help.setResizable(true);
         helptext.setBorder(new EmptyBorder(10, 20, 10, 10));
         help.setVisible(true);
@@ -2054,6 +2165,81 @@ public class NormalSection extends javax.swing.JFrame {
         } catch (Exception e) {
         }
     }//GEN-LAST:event_NormalSubMapUVFlipItemStateChanged
+    public void previewImg(String path) {
+        File f = new File(path);
+        File a = new File(foo.getFilePath());
+        File parentFolder = new File(a.getParent());
+        File b = new File(parentFolder, path);
+        String absolute = "";
+        try {
+            absolute = b.getCanonicalPath();
+            f = new File(absolute);
+        } catch (Exception e) {
+
+        }
+        if (f.exists()) {
+            JDialog jf = new JDialog();
+            JLabel jl = new JLabel();
+            jf.setName("help");
+            jf.setTitle("Map Preview");
+            try {//Icon
+                InputStream imgStream = getClass().getResourceAsStream("/icon/ico.png");
+                BufferedImage myImg = ImageIO.read(imgStream);
+                jf.setIconImage(myImg);
+            } catch (IOException ex) {
+                Logger.getLogger(AlbedoSection.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            BufferedImage img = null;
+            try {//Map
+                img = ImageIO.read(new File(absolute));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            jf.setSize(600, 600);
+            jf.setResizable(false);
+            jf.setModal(true);
+            jf.setLocationRelativeTo(this);
+            jf.setAlwaysOnTop(true);
+            jf.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
+            Image dimg = img.getScaledInstance(jf.getWidth(), jf.getHeight(),
+                    Image.SCALE_SMOOTH);
+            ImageIcon ii = new ImageIcon(dimg);
+            jl.setIcon(ii);
+            jf.add(jl);
+            jf.setVisible(true);
+        } else {
+            JDialog jd = new JDialog();
+            JLabel jl = new JLabel();
+            jl.setText("<html><div style='padding-left: 12px;'>The Map file you are trying to preview doesn't exist.</div></html>");
+            jd.setName("help");
+            jd.setTitle("No such Map File");
+            jd.setSize(300, 100);
+            jd.setModal(true);
+            jd.setResizable(false);
+            jd.setLocationRelativeTo(this);
+            jd.setAlwaysOnTop(true);
+            jd.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
+            try {//Icon
+                InputStream imgStream = getClass().getResourceAsStream("/icon/ico.png");
+                BufferedImage myImg = ImageIO.read(imgStream);
+                jd.setIconImage(myImg);
+            } catch (IOException ex) {
+                Logger.getLogger(AlbedoSection.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            jd.add(jl);
+            jd.setVisible(true);
+
+        }
+    }
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+        previewImg(NormalMapFile.getText());
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        // TODO add your handling code here:
+        previewImg(NormalMapFile.getText());
+    }//GEN-LAST:event_jButton4ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -2118,6 +2304,8 @@ public class NormalSection extends javax.swing.JFrame {
     private javax.swing.JButton changeFile;
     private javax.swing.JButton changeFile1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;

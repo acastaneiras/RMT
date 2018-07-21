@@ -30,6 +30,7 @@ package mmd;
 import java.awt.BorderLayout;
 import java.awt.Desktop;
 import java.awt.Point;
+import java.awt.Window;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
@@ -58,9 +59,9 @@ public class WindowFrame extends javax.swing.JFrame {
         jMenu1 = new javax.swing.JMenu();
         back1 = new javax.swing.JButton();
         gotofolder = new javax.swing.JButton();
-        PARALLAX = new javax.swing.JButton();
-        SMOOTHNESSMETALNESS = new javax.swing.JButton();
-        SPECULARANDOCCLUSION = new javax.swing.JButton();
+        METALNESS = new javax.swing.JButton();
+        SPECULARANDSMOOTHNESS = new javax.swing.JButton();
+        PARALLAXANDOCCLUSION = new javax.swing.JButton();
         ALPHA = new javax.swing.JButton();
         CUSTOMENABLE = new javax.swing.JButton();
         EMISSIVE = new javax.swing.JButton();
@@ -100,44 +101,44 @@ public class WindowFrame extends javax.swing.JFrame {
         getContentPane().add(gotofolder);
         gotofolder.setBounds(670, 20, 140, 32);
 
-        PARALLAX.setText("PARALLAX");
-        PARALLAX.setMaximumSize(new java.awt.Dimension(172, 30));
-        PARALLAX.setMinimumSize(new java.awt.Dimension(172, 30));
-        PARALLAX.setOpaque(false);
-        PARALLAX.setPreferredSize(new java.awt.Dimension(172, 30));
-        PARALLAX.addActionListener(new java.awt.event.ActionListener() {
+        METALNESS.setText("METALNESS");
+        METALNESS.setMaximumSize(new java.awt.Dimension(172, 30));
+        METALNESS.setMinimumSize(new java.awt.Dimension(172, 30));
+        METALNESS.setOpaque(false);
+        METALNESS.setPreferredSize(new java.awt.Dimension(172, 30));
+        METALNESS.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                PARALLAXActionPerformed(evt);
+                METALNESSActionPerformed(evt);
             }
         });
-        getContentPane().add(PARALLAX);
-        PARALLAX.setBounds(386, 382, 172, 45);
+        getContentPane().add(METALNESS);
+        METALNESS.setBounds(386, 382, 172, 45);
 
-        SMOOTHNESSMETALNESS.setText("SMOOTHNESS & METALNESS");
-        SMOOTHNESSMETALNESS.setMaximumSize(new java.awt.Dimension(172, 30));
-        SMOOTHNESSMETALNESS.setMinimumSize(new java.awt.Dimension(172, 30));
-        SMOOTHNESSMETALNESS.setOpaque(false);
-        SMOOTHNESSMETALNESS.setPreferredSize(new java.awt.Dimension(172, 30));
-        SMOOTHNESSMETALNESS.addActionListener(new java.awt.event.ActionListener() {
+        SPECULARANDSMOOTHNESS.setText("SPECULAR & SMOOTHNESS");
+        SPECULARANDSMOOTHNESS.setMaximumSize(new java.awt.Dimension(172, 30));
+        SPECULARANDSMOOTHNESS.setMinimumSize(new java.awt.Dimension(172, 30));
+        SPECULARANDSMOOTHNESS.setOpaque(false);
+        SPECULARANDSMOOTHNESS.setPreferredSize(new java.awt.Dimension(172, 30));
+        SPECULARANDSMOOTHNESS.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                SMOOTHNESSMETALNESSActionPerformed(evt);
+                SPECULARANDSMOOTHNESSActionPerformed(evt);
             }
         });
-        getContentPane().add(SMOOTHNESSMETALNESS);
-        SMOOTHNESSMETALNESS.setBounds(386, 120, 172, 45);
+        getContentPane().add(SPECULARANDSMOOTHNESS);
+        SPECULARANDSMOOTHNESS.setBounds(386, 120, 172, 45);
 
-        SPECULARANDOCCLUSION.setText("SPECULAR & OCCLUSION");
-        SPECULARANDOCCLUSION.setMaximumSize(new java.awt.Dimension(172, 35));
-        SPECULARANDOCCLUSION.setMinimumSize(new java.awt.Dimension(172, 35));
-        SPECULARANDOCCLUSION.setOpaque(false);
-        SPECULARANDOCCLUSION.setPreferredSize(new java.awt.Dimension(172, 35));
-        SPECULARANDOCCLUSION.addActionListener(new java.awt.event.ActionListener() {
+        PARALLAXANDOCCLUSION.setText("PARALLAX & OCCLUSION");
+        PARALLAXANDOCCLUSION.setMaximumSize(new java.awt.Dimension(172, 35));
+        PARALLAXANDOCCLUSION.setMinimumSize(new java.awt.Dimension(172, 35));
+        PARALLAXANDOCCLUSION.setOpaque(false);
+        PARALLAXANDOCCLUSION.setPreferredSize(new java.awt.Dimension(172, 35));
+        PARALLAXANDOCCLUSION.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                SPECULARANDOCCLUSIONActionPerformed(evt);
+                PARALLAXANDOCCLUSIONActionPerformed(evt);
             }
         });
-        getContentPane().add(SPECULARANDOCCLUSION);
-        SPECULARANDOCCLUSION.setBounds(386, 249, 172, 45);
+        getContentPane().add(PARALLAXANDOCCLUSION);
+        PARALLAXANDOCCLUSION.setBounds(386, 249, 172, 45);
 
         ALPHA.setText("ALPHA");
         ALPHA.setMaximumSize(new java.awt.Dimension(172, 30));
@@ -285,54 +286,54 @@ public class WindowFrame extends javax.swing.JFrame {
             return false;
         }
     }
-    private void PARALLAXActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PARALLAXActionPerformed
+    private void METALNESSActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_METALNESSActionPerformed
 
-        ParallaxSection ps = new ParallaxSection();
-        ps.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-        ps.addWindowListener(new WindowAdapter() {
+        MetalnessSection ms = new MetalnessSection();
+        ms.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+        ms.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent we) {
-                Point pos = ps.getLocation();
+                Point pos = ms.getLocation();
                 callWindow(pos);
-                ps.dispose();
+                ms.dispose();
             }
         });
-        ps.setSize(960, 549);
-        ps.setLayout(new AbsoluteLayout());
-        ps.setLocationRelativeTo(this);
+        ms.setSize(960, 549);
+        ms.setLayout(new AbsoluteLayout());
+        ms.setLocationRelativeTo(this);
         this.dispose();
-        ps.setAlwaysOnTop(true);
-        ps.setAlwaysOnTop(false);
-        ps.setVisible(true);
+        ms.setAlwaysOnTop(true);
+        ms.setAlwaysOnTop(false);
+        ms.setVisible(true);
         ImageIcon img = new ImageIcon(getClass().getResource("/icon/ico.png"));
-        ps.setIconImage(img.getImage());
-    }//GEN-LAST:event_PARALLAXActionPerformed
+        ms.setIconImage(img.getImage());
+    }//GEN-LAST:event_METALNESSActionPerformed
 
-    private void SMOOTHNESSMETALNESSActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SMOOTHNESSMETALNESSActionPerformed
+    private void SPECULARANDSMOOTHNESSActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SPECULARANDSMOOTHNESSActionPerformed
 
-        SmoothnessAndMetalness sm = new SmoothnessAndMetalness();
-        sm.setLocationRelativeTo(this);
-        sm.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-        sm.addWindowListener(new WindowAdapter() {
+        SpecularAndSmoothness ss = new SpecularAndSmoothness();
+        ss.setLocationRelativeTo(this);
+        ss.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+        ss.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent we) {
-                Point pos = sm.getLocation();
+                Point pos = ss.getLocation();
                 callWindow(pos);
-                sm.dispose();
+                ss.dispose();
             }
         });
 
         this.dispose();
-        sm.setAlwaysOnTop(true);
-        sm.setAlwaysOnTop(false);
-        sm.setVisible(true);
+        ss.setAlwaysOnTop(true);
+        ss.setAlwaysOnTop(false);
+        ss.setVisible(true);
 
         ImageIcon img = new ImageIcon(getClass().getResource("/icon/ico.png"));
-        sm.setIconImage(img.getImage());
-        sm.AlbedoMapFile1 = "";
-    }//GEN-LAST:event_SMOOTHNESSMETALNESSActionPerformed
+        ss.setIconImage(img.getImage());
+        ss.AlbedoMapFile1 = "";
+    }//GEN-LAST:event_SPECULARANDSMOOTHNESSActionPerformed
 
-    private void SPECULARANDOCCLUSIONActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SPECULARANDOCCLUSIONActionPerformed
+    private void PARALLAXANDOCCLUSIONActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PARALLAXANDOCCLUSIONActionPerformed
 
-        SpecularAndOcclusion sao = new SpecularAndOcclusion();
+        ParallaxAndOcclusion sao = new ParallaxAndOcclusion();
         sao.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         sao.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent we) {
@@ -351,7 +352,7 @@ public class WindowFrame extends javax.swing.JFrame {
         ImageIcon img = new ImageIcon(getClass().getResource("/icon/ico.png"));
         sao.setIconImage(img.getImage());
 
-    }//GEN-LAST:event_SPECULARANDOCCLUSIONActionPerformed
+    }//GEN-LAST:event_PARALLAXANDOCCLUSIONActionPerformed
 
     private void ALPHAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ALPHAActionPerformed
 
@@ -425,7 +426,6 @@ public class WindowFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_EMISSIVEActionPerformed
 
     private void ALBEDOActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ALBEDOActionPerformed
-
         AlbedoSection ab = new AlbedoSection();
         ab.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         ab.addWindowListener(new WindowAdapter() {
@@ -440,6 +440,7 @@ public class WindowFrame extends javax.swing.JFrame {
         ab.setAlwaysOnTop(true);
         ab.setAlwaysOnTop(false);
         ab.setLocationRelativeTo(this);
+
         ab.setLayout(new AbsoluteLayout());
         this.dispose();
         ImageIcon img = new ImageIcon(getClass().getResource("/icon/ico.png"));
@@ -472,6 +473,7 @@ public class WindowFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_NORMALMAPActionPerformed
 
     private void FINISHEDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FINISHEDActionPerformed
+
         this.dispose();
 
         ImageIcon ico = new ImageIcon(getClass().getResource("/icon/ico.png"));
@@ -591,11 +593,11 @@ public class WindowFrame extends javax.swing.JFrame {
     }
 
     public JButton getOCCLUISON() {
-        return this.SPECULARANDOCCLUSION;
+        return this.PARALLAXANDOCCLUSION;
     }
 
     public JButton getPARALLAX() {
-        return this.PARALLAX;
+        return this.METALNESS;
     }
 
     public JButton getSAVE() {
@@ -607,7 +609,7 @@ public class WindowFrame extends javax.swing.JFrame {
     }
 
     public JButton getSPECULAR() {
-        return this.SMOOTHNESSMETALNESS;
+        return this.SPECULARANDSMOOTHNESS;
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -616,10 +618,10 @@ public class WindowFrame extends javax.swing.JFrame {
     private javax.swing.JButton CUSTOMENABLE;
     private javax.swing.JButton EMISSIVE;
     private javax.swing.JButton FINISHED;
+    private javax.swing.JButton METALNESS;
     private javax.swing.JButton NORMALMAP;
-    private javax.swing.JButton PARALLAX;
-    private javax.swing.JButton SMOOTHNESSMETALNESS;
-    private javax.swing.JButton SPECULARANDOCCLUSION;
+    private javax.swing.JButton PARALLAXANDOCCLUSION;
+    private javax.swing.JButton SPECULARANDSMOOTHNESS;
     private javax.swing.JButton back1;
     private javax.swing.JButton gotofolder;
     private javax.swing.JButton gotofolder1;

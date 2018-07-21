@@ -28,14 +28,18 @@
 package mmd;
 
 import java.awt.BorderLayout;
+import java.awt.Dialog;
 import java.awt.Dimension;
+import java.awt.Image;
 import java.awt.Toolkit;
+import java.awt.Window;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -46,6 +50,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
+import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -87,6 +92,53 @@ public class EmissiveSection extends javax.swing.JFrame {
     private static float CatchEmissiveLoop;
     private static float CatchEmissiveBlink;
     private static float CatchEmissiveIntensity;
+    public int errors = 0;
+    JFrame ErrorWindow = new JFrame();
+
+    public void SomethingWentWrong() {
+        if (errors == 1) {
+            JLabel ErrorWindowText = new JLabel();
+            //ErrorWindowText.
+            ErrorWindowText.setText("<HTML><div style='padding-left:30px;'>Something went wrong while trying to load <i>Emissive Section</i>...<br><br>"
+                    + "Please make sure the file you are trying to open doesn't <b>exceed the limit for each parameter</b>, usually this happens when you are trying to open "
+                    + "a .fx file where some of it's parameters has <b>higher values</b> than supposed to be<br><br>"
+                    + "<b>Limits: </b><br>"
+                    + "<ul>"
+                    + "<li>EmissiveEnable: 0 - 1</li>"
+                    + "<li>EmissiveMapFrom: 0 - 8</li>"
+                    + "<li>EmissiveMapUVFlip: 0 - 3</li>"
+                    + "<li>EmissiveMapApplyScale: 0 - 2</li>"
+                    + "<li>EmissiveMapApplyIntensity: 0 - 3</li>"
+                    + "<li>EmissiveMapApplyMorphColor: 0 - 3</li>"
+                    + "<li>EmissiveMapApplyBlink: 0 - 2</li>"
+                    + "<br>"
+                    + "</ul></div></HTML>");
+            ErrorWindow.setLayout(new BorderLayout());
+            ErrorWindow.setSize(700, 350);
+            ErrorWindow.setLocationRelativeTo(this);
+            ErrorWindow.setResizable(true);
+            ErrorWindow.setAlwaysOnTop(true);
+            ErrorWindow.setVisible(true);
+            ErrorWindow.add(ErrorWindowText);
+            ErrorWindow.setName("help");
+            ErrorWindow.setTitle("Something went wrong");
+            ErrorWindow.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+            ErrorWindow.addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosing(WindowEvent we) {
+                    ErrorWindow.dispose();
+                }
+            });
+
+            try {
+                InputStream imgStream = getClass().getResourceAsStream("/icon/ico.png");
+                BufferedImage myImg = ImageIO.read(imgStream);
+                ErrorWindow.setIconImage(myImg);
+            } catch (IOException ex) {
+                Logger.getLogger(AlbedoSection.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
 
     public int getEmissiveMapApplyBlink() {
         BufferedReader AlbedotoEdit_Br = null;
@@ -526,7 +578,7 @@ public class EmissiveSection extends javax.swing.JFrame {
         final DecimalFormat df = new DecimalFormat("0.####");
         final JTextField text = new JTextField(20);
 
-        final DoubleJSlider slider = new DoubleJSlider(-51200, 51200, 0, 100);
+        final DoubleJSlider slider = new DoubleJSlider(-10000, 10000, 0, 100);
         slider.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent e) {
@@ -593,10 +645,10 @@ public class EmissiveSection extends javax.swing.JFrame {
         catchvalue = Float.parseFloat("" + getEmissiveLoop()) * slider.scale;
         slider.setPaintTrack(true);
         slider.setPaintLabels(true);
-        slider.setBounds(578, 327, 200, 30);
+        slider.setBounds(578, 332, 200, 30);
         slider.setPaintTicks(true);
         slider.setValue((int) catchvalue);
-        text.setBounds(788, 327, 50, 20);
+        text.setBounds(788, 332, 50, 20);
 
         add(text);
         add(slider);
@@ -831,10 +883,10 @@ public class EmissiveSection extends javax.swing.JFrame {
         catchvalue = Float.parseFloat("" + getEmissiveIntensity()) * slider.scale;
         slider.setPaintTrack(true);
         slider.setPaintLabels(true);
-        slider.setBounds(578, 264, 200, 30);
+        slider.setBounds(578, 265, 200, 30);
         slider.setPaintTicks(true);
         slider.setValue((int) catchvalue);
-        text.setBounds(788, 264, 50, 20);
+        text.setBounds(788, 265, 50, 20);
 
         add(text);
         add(slider);
@@ -899,6 +951,7 @@ public class EmissiveSection extends javax.swing.JFrame {
         AlbedoMapUVFlipHelp4 = new javax.swing.JButton();
         EmissiveMapFile = new javax.swing.JTextField();
         back1 = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
 
         jMenu1.setText("jMenu1");
 
@@ -911,7 +964,12 @@ public class EmissiveSection extends javax.swing.JFrame {
         jLabel1.setText("<html><b>EMISSIVE MAP FROM</b></html>");
 
         EmissiveMapFrom.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "0", "1", "2", "3", "4", "5", "6", "7", "8" }));
-        EmissiveMapFrom.setSelectedIndex(getEmissiveMapFrom());
+        try{
+            EmissiveMapFrom.setSelectedIndex(getEmissiveMapFrom());
+        }catch(Exception e){
+            errors+=1;
+            SomethingWentWrong();
+        }
         EmissiveMapFrom.setToolTipText("");
         EmissiveMapFrom.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
@@ -945,7 +1003,12 @@ public class EmissiveSection extends javax.swing.JFrame {
         jLabel9.setText("<html><b>EMISSIVE MAP LOOP</b></html>");
 
         EmissiveMapUVFlip.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "0", "1", "2", "3" }));
-        EmissiveMapUVFlip.setSelectedIndex(getEmissiveMapUVFlip());
+        try{
+            EmissiveMapUVFlip.setSelectedIndex(getEmissiveMapUVFlip());
+        }catch(Exception e){
+            errors+=1;
+            SomethingWentWrong();
+        }
         EmissiveMapUVFlip.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 EmissiveMapUVFlipItemStateChanged(evt);
@@ -995,7 +1058,12 @@ public class EmissiveSection extends javax.swing.JFrame {
         jLabel3.setText("<html><b>EMISSIVE MAP ENABLE</b></html>");
 
         EmissiveEnable.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "0", "1" }));
-        EmissiveEnable.setSelectedIndex(getEmissiveEnable());
+        try{
+            EmissiveEnable.setSelectedIndex(getEmissiveEnable());
+        }catch(Exception e){
+            errors+=1;
+            SomethingWentWrong();
+        }
         EmissiveEnable.setToolTipText("");
         EmissiveEnable.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
@@ -1054,7 +1122,12 @@ public class EmissiveSection extends javax.swing.JFrame {
         });
 
         EmissiveMapApplyScale.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "0", "1", "2", "3" }));
-        EmissiveMapApplyScale.setSelectedIndex(getEmissiveMapApplyScale());
+        try{
+            EmissiveMapApplyScale.setSelectedIndex(getEmissiveMapApplyScale());
+        }catch(Exception e){
+            errors+=1;
+            SomethingWentWrong();
+        }
         EmissiveMapApplyScale.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 EmissiveMapApplyScaleItemStateChanged(evt);
@@ -1073,7 +1146,12 @@ public class EmissiveSection extends javax.swing.JFrame {
         jLabel13.setText("<html><b>EMISSIVE MAP APPLY BLINK</b></html>");
 
         EmissiveMapApplyMorphColor.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "0", "1", "2", "3" }));
-        EmissiveMapApplyMorphColor.setSelectedIndex(getEmissiveMapApplyMorphColor());
+        try{
+            EmissiveMapApplyMorphColor.setSelectedIndex(getEmissiveMapApplyMorphColor());
+        }catch(Exception e){
+            errors+=1;
+            SomethingWentWrong();
+        }
         EmissiveMapApplyMorphColor.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 EmissiveMapApplyMorphColorItemStateChanged(evt);
@@ -1086,7 +1164,12 @@ public class EmissiveSection extends javax.swing.JFrame {
         });
 
         EmissiveMapApplyMorphIntensity.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "0", "1", "2", "3" }));
-        EmissiveMapApplyMorphIntensity.setSelectedIndex(getEmissiveMapApplyMorphIntensity());
+        try{
+            EmissiveMapApplyMorphIntensity.setSelectedIndex(getEmissiveMapApplyMorphIntensity());
+        }catch(Exception e){
+            errors+=1;
+            SomethingWentWrong();
+        }
         EmissiveMapApplyMorphIntensity.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 EmissiveMapApplyMorphIntensityItemStateChanged(evt);
@@ -1099,7 +1182,12 @@ public class EmissiveSection extends javax.swing.JFrame {
         });
 
         EmissiveMapApplyBlink.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "0", "1", "2" }));
-        EmissiveMapApplyBlink.setSelectedIndex(getEmissiveMapApplyBlink());
+        try{
+            EmissiveMapApplyBlink.setSelectedIndex(getEmissiveMapApplyBlink());
+        }catch(Exception e){
+            errors+=1;
+            SomethingWentWrong();
+        }
         EmissiveMapApplyBlink.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 EmissiveMapApplyBlinkItemStateChanged(evt);
@@ -1132,7 +1220,12 @@ public class EmissiveSection extends javax.swing.JFrame {
             }
         });
 
-        EmissiveMapFile.setText(getEmissiveMapFile());
+        try{
+            EmissiveMapFile.setEditable(false);
+            EmissiveMapFile.setText(getEmissiveMapFile());
+        }catch(Exception e){
+
+        }
 
         back1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/bg/back.png"))); // NOI18N
         back1.setBorder(null);
@@ -1140,6 +1233,13 @@ public class EmissiveSection extends javax.swing.JFrame {
         back1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 back1ActionPerformed(evt);
+            }
+        });
+
+        jButton3.setText("Preview");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
             }
         });
 
@@ -1155,10 +1255,10 @@ public class EmissiveSection extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(94, 94, 94)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jLabel1)
+                            .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 255, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(EmissiveMapFrom, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -1170,27 +1270,19 @@ public class EmissiveSection extends javax.swing.JFrame {
                                 .addComponent(AlbedoMapHelp3))))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(EmissiveMapFile, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(31, 31, 31)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(EmissiveMapFile, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jButton3)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel7, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel12, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 255, Short.MAX_VALUE)
+                            .addComponent(jLabel13)
+                            .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.TRAILING))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(changeFile, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(AlbedoMapFileHelp))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(EmissiveMapApplyBlink, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(AlbedoMapUVFlipHelp4)
-                                .addGap(134, 134, 134)
-                                .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(6, 6, 6)
-                                .addComponent(AlbedoMapLoopHelp))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(EmissiveMapApplyMorphIntensity, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -1208,9 +1300,22 @@ public class EmissiveSection extends javax.swing.JFrame {
                                     .addGroup(layout.createSequentialGroup()
                                         .addComponent(EmissiveMapUVFlip, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(AlbedoMapUVFlipHelp)))
+                                        .addComponent(AlbedoMapUVFlipHelp))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(EmissiveMapApplyBlink, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                                .addComponent(changeFile, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(AlbedoMapFileHelp)
+                                            .addComponent(AlbedoMapUVFlipHelp4))))
                                 .addGap(134, 134, 134)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(AlbedoMapLoopHelp))
                                     .addGroup(layout.createSequentialGroup()
                                         .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -1223,7 +1328,7 @@ public class EmissiveSection extends javax.swing.JFrame {
                                         .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addComponent(albedoHelp)))))))
-                .addContainerGap(141, Short.MAX_VALUE))
+                .addGap(141, 141, 141))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1234,93 +1339,75 @@ public class EmissiveSection extends javax.swing.JFrame {
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(back1, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(9, 9, 9)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(54, 54, 54)
-                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(51, 51, 51)
+                        .addGap(63, 63, 63)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(EmissiveEnable, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(AlbedoMapHelp3)))
+                            .addComponent(AlbedoMapHelp3)
+                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(48, 48, 48)
+                        .addGap(57, 57, 57)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(albedoHelp))))
                 .addGap(6, 6, 6)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(AlbedoMapHelp)
+                    .addComponent(EmissiveMapFrom, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(6, 6, 6)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(6, 6, 6)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(AlbedoMapHelp)
-                        .addComponent(EmissiveMapFrom, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(14, 14, 14)
+                        .addComponent(EmissiveMapUVFlip, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(AlbedoMapUVFlipHelp)
                         .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(9, 9, 9)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(EmissiveMapUVFlip, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(AlbedoMapUVFlipHelp)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(6, 6, 6)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(albedoHelp1))))
-                .addGap(6, 6, 6)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(8, 8, 8)
-                        .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(AlbedoMapUVFlipHelp1)
-                        .addComponent(EmissiveMapApplyScale, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(6, 6, 6)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(AlbedoMapUVFlipHelp2)
-                        .addComponent(EmissiveMapApplyMorphColor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(AlbedoMapLoopHelp1)
+                        .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(albedoHelp1)))
+                .addGap(2, 2, 2)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(AlbedoMapUVFlipHelp1)
+                    .addComponent(EmissiveMapApplyScale, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(8, 8, 8)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(AlbedoMapLoopHelp1)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(6, 6, 6)
+                                .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(43, 43, 43)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(AlbedoMapLoopHelp))
+                        .addGap(161, 161, 161))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addGap(6, 6, 6)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(8, 8, 8)
-                        .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(AlbedoMapUVFlipHelp3)
-                        .addComponent(EmissiveMapApplyMorphIntensity, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(6, 6, 6)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(AlbedoMapUVFlipHelp4)
-                        .addComponent(EmissiveMapApplyBlink, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(8, 8, 8)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(AlbedoMapLoopHelp)))))
-                .addGap(6, 6, 6)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(AlbedoMapFileHelp)
-                        .addComponent(changeFile))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(8, 8, 8)
-                        .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(EmissiveMapApplyMorphColor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(AlbedoMapUVFlipHelp2))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(EmissiveMapFile, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(100, 100, 100))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(EmissiveMapApplyMorphIntensity, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(AlbedoMapUVFlipHelp3))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(EmissiveMapApplyBlink, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(AlbedoMapUVFlipHelp4)
+                            .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(changeFile)
+                            .addComponent(AlbedoMapFileHelp)
+                            .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(EmissiveMapFile, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(119, 119, 119))))
         );
 
         pack();
@@ -1404,10 +1491,10 @@ public class EmissiveSection extends javax.swing.JFrame {
     }//GEN-LAST:event_changeFileStateChanged
 
     private void AlbedoMapHelpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AlbedoMapHelpActionPerformed
-        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+
         JFrame AlbedoMapHelp = new JFrame();
         JLabel AlbedoMapHelpText = new JLabel();
-
+        AlbedoMapHelp.setName("help");
         AlbedoMapHelpText.setText("<HTML><div><pre style='font-family: Arial;'><center>You can use a color and texture to change colors in your model by set the code to the ALBEDO_MAP_FROM.<br><br>"
                 + "<b>Tips 1 :</b> The albedo is also called Base Color, default data will fetched params from texture from the pmx.<br>"
                 + "<b>Tips 2 :</b> Do not enter a path with HDR file, that will be ignore the HDR and linear color-space<br>"
@@ -1424,8 +1511,8 @@ public class EmissiveSection extends javax.swing.JFrame {
                 + "    <li>8 : Params fetch from Specular Color from the pmx.</li><br>"
                 + "    <li><strike>9 : Params fetch from Specular Power from the pmx. (this option can only be used for specular)</strike>, doesn't work on Emissive</li></ul></pre><br><br></HTML>");
         AlbedoMapHelp.setLayout(new BorderLayout());
-        AlbedoMapHelp.setLocation(dim.width / 2 - this.getSize().width / 2, dim.height / 2 - this.getSize().height / 2);
         AlbedoMapHelp.setSize(700, 550);
+        AlbedoMapHelp.setLocationRelativeTo(this);
         AlbedoMapHelp.setResizable(true);
         AlbedoMapHelp.setVisible(true);
         AlbedoMapHelp.add(AlbedoMapHelpText);
@@ -1441,17 +1528,17 @@ public class EmissiveSection extends javax.swing.JFrame {
     }//GEN-LAST:event_AlbedoMapHelpActionPerformed
 
     private void AlbedoMapUVFlipHelpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AlbedoMapUVFlipHelpActionPerformed
-        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+
         JFrame help = new JFrame();
         JLabel helptext = new JLabel();
-
+        help.setName("help");
         helptext.setText("<HTML><center>You can flip your texture for the X and Y axis mirror by set code to the <b>ALBEDO_MAP_UV_FLIP</b></center><br><br>"
                 + "<ul><li><b>1 :</b> Flip axis x</li>"
                 + "<li><b>2 :</b> Flip axis y</li>"
                 + "<li><b>3 :</b> Flip axis x & y</li></ul></HTML>");
         help.setLayout(new BorderLayout());
-        help.setLocation(dim.width / 2 - this.getSize().width / 2, dim.height / 2 - this.getSize().height / 2);
         help.setSize(500, 160);
+        help.setLocationRelativeTo(this);
         help.setResizable(true);
         help.setVisible(true);
         help.add(helptext);
@@ -1467,10 +1554,10 @@ public class EmissiveSection extends javax.swing.JFrame {
     }//GEN-LAST:event_AlbedoMapUVFlipHelpActionPerformed
 
     private void AlbedoMapFileHelpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AlbedoMapFileHelpActionPerformed
-        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+
         JFrame help = new JFrame();
         JLabel helptext = new JLabel();
-
+        help.setName("help");
         helptext.setText("<HTML>If the ALBEDO_MAP_FROM is 1 or 2, you will need to enter the path to the texture resource. <br><br>"
                 + "Tips : parent folder ref is '../' (in other words, using '../' instead of parent folder), and change all '\\' to '/'.<br><br>"
                 + "For example : <br>"
@@ -1483,8 +1570,8 @@ public class EmissiveSection extends javax.swing.JFrame {
                 + "If the xxx.png is inside your desktop or other disk<br>"
                 + "You can set the xxx.png to the ALBEDO_MAP_FILE like : #define ALBEDO_MAP_FILE 'C:/Users/User Name/Desktop/xxx.png'</HTML>");
         help.setLayout(new BorderLayout());
-        help.setLocation(dim.width / 2 - this.getSize().width / 2, dim.height / 2 - this.getSize().height / 2);
         help.setSize(600, 350);
+        help.setLocationRelativeTo(this);
         help.setResizable(true);
         helptext.setBorder(new EmptyBorder(10, 20, 10, 10));
         help.setVisible(true);
@@ -1501,14 +1588,14 @@ public class EmissiveSection extends javax.swing.JFrame {
     }//GEN-LAST:event_AlbedoMapFileHelpActionPerformed
 
     private void albedoHelpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_albedoHelpActionPerformed
-        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+
         JFrame help = new JFrame();
         JLabel helptext = new JLabel();
-
+        help.setName("help");
         helptext.setText("<html>between 0 ~ 1</html>");
         help.setLayout(new BorderLayout());
-        help.setLocation(dim.width / 2 - this.getSize().width / 2, dim.height / 2 - this.getSize().height / 2);
-        help.setSize(600, 350);
+        help.setSize(300, 70);
+        help.setLocationRelativeTo(this);
         help.setResizable(true);
         helptext.setBorder(new EmptyBorder(10, 20, 10, 10));
         help.setVisible(true);
@@ -1525,14 +1612,15 @@ public class EmissiveSection extends javax.swing.JFrame {
     }//GEN-LAST:event_albedoHelpActionPerformed
 
     private void AlbedoMapLoopHelpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AlbedoMapLoopHelpActionPerformed
-        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+
         JFrame help = new JFrame();
         JLabel helptext = new JLabel();
+        help.setName("help");
 
         helptext.setText("<HTML>You can tile your texture for the X and Y axis separately by change albedoMapLoopNum = float2(x, y) between float2(0, 0) ~ float2(inf, inf) </HTML>");
         help.setLayout(new BorderLayout());
-        help.setLocation(dim.width / 2 - this.getSize().width / 2, dim.height / 2 - this.getSize().height / 2);
         help.setSize(600, 200);
+        help.setLocationRelativeTo(this);
         help.setResizable(true);
         helptext.setBorder(new EmptyBorder(10, 20, 10, 10));
         help.setVisible(true);
@@ -1553,15 +1641,15 @@ public class EmissiveSection extends javax.swing.JFrame {
     }//GEN-LAST:event_EmissiveEnableActionPerformed
 
     private void AlbedoMapHelp3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AlbedoMapHelp3ActionPerformed
-        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+
         JFrame help = new JFrame();
         JLabel helptext = new JLabel();
-
+        help.setName("help");
         helptext.setText("<html>0 in order to  Disable, 1 for Enabling </html>");
         help.setLayout(new BorderLayout());
-        help.setLocation(dim.width / 2 - this.getSize().width / 2, dim.height / 2 - this.getSize().height / 2);
+        help.setSize(400, 70);
+        help.setLocationRelativeTo(this);
         helptext.setBorder(new EmptyBorder(10, 20, 10, 10));
-        help.setSize(700, 250);
         help.setResizable(true);
         help.setVisible(true);
         help.add(helptext);
@@ -1577,17 +1665,17 @@ public class EmissiveSection extends javax.swing.JFrame {
     }//GEN-LAST:event_AlbedoMapHelp3ActionPerformed
 
     private void AlbedoMapUVFlipHelp1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AlbedoMapUVFlipHelp1ActionPerformed
-        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+
         JFrame help = new JFrame();
         JLabel helptext = new JLabel();
-
+        help.setName("help");
         helptext.setText("<HTML><center>You can apply color from const float3 albedo = 1.0; to change colors in your texture by set code to the ALBEDO_MAP_APPLY_SCALE</center><br><br>"
                 + "<ul><li><b>1 : map values * albedo;</li>"
                 + "<li><b>2 : map values ^ albedo;</li>"
                 + "</ul></HTML>");
         help.setLayout(new BorderLayout());
-        help.setLocation(dim.width / 2 - this.getSize().width / 2, dim.height / 2 - this.getSize().height / 2);
         help.setSize(500, 160);
+        help.setLocationRelativeTo(this);
         help.setResizable(true);
         help.setVisible(true);
         help.add(helptext);
@@ -1603,14 +1691,14 @@ public class EmissiveSection extends javax.swing.JFrame {
     }//GEN-LAST:event_AlbedoMapUVFlipHelp1ActionPerformed
 
     private void albedoHelp1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_albedoHelp1ActionPerformed
-        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+
         JFrame help = new JFrame();
         JLabel helptext = new JLabel();
-
+        help.setName("help");
         helptext.setText("<HTML>between 0 ~ 10</HTML>");
         help.setLayout(new BorderLayout());
-        help.setLocation(dim.width / 2 - this.getSize().width / 2, dim.height / 2 - this.getSize().height / 2);
-        help.setSize(600, 350);
+        help.setSize(300, 70);
+        help.setLocationRelativeTo(this);
         help.setResizable(true);
         helptext.setBorder(new EmptyBorder(10, 20, 10, 10));
         help.setVisible(true);
@@ -1628,14 +1716,14 @@ public class EmissiveSection extends javax.swing.JFrame {
     }//GEN-LAST:event_albedoHelp1ActionPerformed
 
     private void AlbedoMapLoopHelp1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AlbedoMapLoopHelp1ActionPerformed
-        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+
         JFrame help = new JFrame();
         JLabel helptext = new JLabel();
-
+        help.setName("help");
         helptext.setText("<HTML>between 0 ~ 100</HTML>");
         help.setLayout(new BorderLayout());
-        help.setLocation(dim.width / 2 - this.getSize().width / 2, dim.height / 2 - this.getSize().height / 2);
-        help.setSize(600, 200);
+        help.setSize(300, 70);
+        help.setLocationRelativeTo(this);
         help.setResizable(true);
         helptext.setBorder(new EmptyBorder(10, 20, 10, 10));
         help.setVisible(true);
@@ -1652,17 +1740,17 @@ public class EmissiveSection extends javax.swing.JFrame {
     }//GEN-LAST:event_AlbedoMapLoopHelp1ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+
         JFrame help = new JFrame();
         JLabel helptext = new JLabel();
 
-        helptext.setText("<html>Tips : You can add a light source in MMD (PointLight or others)<br><br>"
+        helptext.setText("<html><b>Tips </b>: You can add a light source in MMD (PointLight or others)<br><br>"
                 + "And key it as part of emissive of the model (In other words : set it to follow the bone of model)<br>"
                 + "And same color set it to your light source and emissive color<br></html>");
         help.setLayout(new BorderLayout());
-        help.setLocation(dim.width / 2 - this.getSize().width / 2, dim.height / 2 - this.getSize().height / 2);
-        helptext.setBorder(new EmptyBorder(10, 20, 10, 10));
         help.setSize(700, 250);
+        help.setLocationRelativeTo(this);
+        helptext.setBorder(new EmptyBorder(10, 20, 10, 10));
         help.setResizable(true);
         help.setVisible(true);
         help.add(helptext);
@@ -1694,14 +1782,14 @@ public class EmissiveSection extends javax.swing.JFrame {
     }//GEN-LAST:event_EmissiveMapApplyBlinkActionPerformed
 
     private void AlbedoMapUVFlipHelp2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AlbedoMapUVFlipHelp2ActionPerformed
-        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+
         JFrame help = new JFrame();
         JLabel helptext = new JLabel();
-
+        help.setName("help");
         helptext.setText("<HTML>Texture colors to multiply with color from the morph <b>controller</b> (R+/G+/B+)...</HTML>");
         help.setLayout(new BorderLayout());
-        help.setLocation(dim.width / 2 - this.getSize().width / 2, dim.height / 2 - this.getSize().height / 2);
         help.setSize(500, 160);
+        help.setLocationRelativeTo(this);
         helptext.setBorder(new EmptyBorder(10, 20, 10, 10));
         help.setResizable(true);
         help.setVisible(true);
@@ -1718,14 +1806,14 @@ public class EmissiveSection extends javax.swing.JFrame {
     }//GEN-LAST:event_AlbedoMapUVFlipHelp2ActionPerformed
 
     private void AlbedoMapUVFlipHelp3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AlbedoMapUVFlipHelp3ActionPerformed
-        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+
         JFrame help = new JFrame();
         JLabel helptext = new JLabel();
-
+        help.setName("help");
         helptext.setText("<HTML>Texture colors to multiply with color from the morph <b>controller</b> (R+/G+/B+)...</HTML>");
         help.setLayout(new BorderLayout());
-        help.setLocation(dim.width / 2 - this.getSize().width / 2, dim.height / 2 - this.getSize().height / 2);
         help.setSize(500, 160);
+        help.setLocationRelativeTo(this);
         helptext.setBorder(new EmptyBorder(10, 20, 10, 10));
         help.setResizable(true);
         help.setVisible(true);
@@ -1742,17 +1830,17 @@ public class EmissiveSection extends javax.swing.JFrame {
     }//GEN-LAST:event_AlbedoMapUVFlipHelp3ActionPerformed
 
     private void AlbedoMapUVFlipHelp4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AlbedoMapUVFlipHelp4ActionPerformed
-        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+
         JFrame help = new JFrame();
         JLabel helptext = new JLabel();
-
+        help.setName("help");
         helptext.setText("<HTML>You can set the blink using the following code.<br><br>"
                 + ""
                 + "<ul><li>1 : colors to multiply with frequency from emissiveBlink. like : const float3 emissiveBlink = float3(1.0, 2.0, 3.0);</li>"
                 + "<li>2 : colors to multiply with frequency from morph controller, see Blink morph inside PointLight.pmx</li></ul></HTML>");
         help.setLayout(new BorderLayout());
-        help.setLocation(dim.width / 2 - this.getSize().width / 2, dim.height / 2 - this.getSize().height / 2);
         help.setSize(500, 160);
+        help.setLocationRelativeTo(this);
         helptext.setBorder(new EmptyBorder(10, 20, 10, 10));
         help.setResizable(true);
         help.setVisible(true);
@@ -1767,11 +1855,22 @@ public class EmissiveSection extends javax.swing.JFrame {
             System.out.println("" + ex);
         }
     }//GEN-LAST:event_AlbedoMapUVFlipHelp4ActionPerformed
+    private void closeAllDialogs() {
+        Window[] windows = AlbedoSection.getWindows();
+
+        for (Window window : windows) {
+            if (window.getName().equalsIgnoreCase("help")) {
+                window.dispose();
+            }
+        }
+    }
 
     private void back1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_back1ActionPerformed
+        closeAllDialogs();
         WindowFrame w = new WindowFrame();
         w.setLocation(this.getLocation());
 
+        ErrorWindow.dispose();
         this.dispose();
         w.setSize(960, 549);
         w.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
@@ -1801,10 +1900,10 @@ public class EmissiveSection extends javax.swing.JFrame {
             String catchOld = "";
             String catchNew = "";
             while (line != null) {
-                if (line.contains("#define EMISSIVE_MAP_FROM")) {
+                if (line.contains("#define EMISSIVE_ENABLE")) {
                     catchOld = line; //auxiliar line
                     catchOld = catchOld.replaceAll("\\D+", ""); //extract old digit
-                    catchNew = EmissiveMapFrom.getSelectedItem().toString(); //catchnewdigit
+                    catchNew = EmissiveEnable.getSelectedItem().toString(); //catchnewdigit
                     line = line.replaceAll(catchOld, catchNew); //replace old for the new one
 
                 }
@@ -1821,6 +1920,7 @@ public class EmissiveSection extends javax.swing.JFrame {
         } catch (Exception ex) {
 
         }
+
     }//GEN-LAST:event_EmissiveEnableItemStateChanged
 
     private void EmissiveMapFromItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_EmissiveMapFromItemStateChanged
@@ -1833,10 +1933,10 @@ public class EmissiveSection extends javax.swing.JFrame {
             String catchOld = "";
             String catchNew = "";
             while (line != null) {
-                if (line.contains("#define EMISSIVE_ENABLE")) {
+                if (line.contains("#define EMISSIVE_MAP_FROM")) {
                     catchOld = line; //auxiliar line
                     catchOld = catchOld.replaceAll("\\D+", ""); //extract old digit
-                    catchNew = EmissiveEnable.getSelectedItem().toString(); //catchnewdigit
+                    catchNew = EmissiveMapFrom.getSelectedItem().toString(); //catchnewdigit
                     line = line.replaceAll(catchOld, catchNew); //replace old for the new one
 
                 }
@@ -2014,6 +2114,76 @@ public class EmissiveSection extends javax.swing.JFrame {
 
         }
     }//GEN-LAST:event_EmissiveMapApplyBlinkItemStateChanged
+    public void previewImg(String path) {
+        File f = new File(path);
+        File a = new File(foo.getFilePath());
+        File parentFolder = new File(a.getParent());
+        File b = new File(parentFolder, path);
+        String absolute = "";
+        try {
+            absolute = b.getCanonicalPath();
+            f = new File(absolute);
+        } catch (Exception e) {
+
+        }
+        if (f.exists()) {
+            JDialog jf = new JDialog();
+            JLabel jl = new JLabel();
+            jf.setName("help");
+            jf.setTitle("Map Preview");
+            try {//Icon
+                InputStream imgStream = getClass().getResourceAsStream("/icon/ico.png");
+                BufferedImage myImg = ImageIO.read(imgStream);
+                jf.setIconImage(myImg);
+            } catch (IOException ex) {
+                Logger.getLogger(AlbedoSection.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            BufferedImage img = null;
+            try {//Map
+                img = ImageIO.read(new File(absolute));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            jf.setSize(600, 600);
+            jf.setResizable(false);
+            jf.setModal(true);
+            jf.setLocationRelativeTo(this);
+            jf.setAlwaysOnTop(true);
+            jf.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
+            Image dimg = img.getScaledInstance(jf.getWidth(), jf.getHeight(),
+                    Image.SCALE_SMOOTH);
+            ImageIcon ii = new ImageIcon(dimg);
+            jl.setIcon(ii);
+            jf.add(jl);
+            jf.setVisible(true);
+        } else {
+            JDialog jd = new JDialog();
+            JLabel jl = new JLabel();
+            jl.setText("<html><div style='padding-left: 12px;'>The Map file you are trying to preview doesn't exist.</div></html>");
+            jd.setName("help");
+            jd.setTitle("No such Map File");
+            jd.setSize(300, 100);
+            jd.setModal(true);
+            jd.setResizable(false);
+            jd.setLocationRelativeTo(this);
+            jd.setAlwaysOnTop(true);
+            jd.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
+            try {//Icon
+                InputStream imgStream = getClass().getResourceAsStream("/icon/ico.png");
+                BufferedImage myImg = ImageIO.read(imgStream);
+                jd.setIconImage(myImg);
+            } catch (IOException ex) {
+                Logger.getLogger(AlbedoSection.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            jd.add(jl);
+            jd.setVisible(true);
+
+        }
+    }
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+        previewImg(EmissiveMapFile.getText());
+    }//GEN-LAST:event_jButton3ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -2077,6 +2247,7 @@ public class EmissiveSection extends javax.swing.JFrame {
     private javax.swing.JButton back1;
     private javax.swing.JButton changeFile;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
