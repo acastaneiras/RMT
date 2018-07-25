@@ -29,9 +29,7 @@ package mmd;
 
 import java.awt.BorderLayout;
 import java.awt.Dialog;
-import java.awt.Dimension;
 import java.awt.Image;
-import java.awt.Toolkit;
 import java.awt.Window;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -956,7 +954,7 @@ public class EmissiveSection extends javax.swing.JFrame {
         jMenu1.setText("jMenu1");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Edit Emissive");
+        setTitle("Edit Emissive of "+foo.getFileToEdit().getName());
         setAutoRequestFocus(false);
         setResizable(false);
         setSize(new java.awt.Dimension(960, 549));

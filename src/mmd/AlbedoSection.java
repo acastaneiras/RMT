@@ -30,7 +30,6 @@ package mmd;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dialog;
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Image;
 import java.awt.Window;
@@ -904,7 +903,7 @@ public class AlbedoSection extends javax.swing.JFrame {
         jMenu1.setText("jMenu1");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Edit Albedo");
+        setTitle("Edit Albedo of "+foo.getFileToEdit().getName());
         setAutoRequestFocus(false);
         setResizable(false);
         setSize(new java.awt.Dimension(960, 549));

@@ -14,7 +14,9 @@
   </NonVisualComponents>
   <Properties>
     <Property name="defaultCloseOperation" type="int" value="3"/>
-    <Property name="title" type="java.lang.String" value="Edit Parallax and Occlusion"/>
+    <Property name="title" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+      <Connection code="&quot;Edit Parallax and Occlusion of &quot;+foo.getFileToEdit().getName()" type="code"/>
+    </Property>
     <Property name="autoRequestFocus" type="boolean" value="false"/>
     <Property name="resizable" type="boolean" value="false"/>
     <Property name="size" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
@@ -320,7 +322,7 @@
     <Component class="javax.swing.JComboBox" name="ParallaxMapFrom">
       <Properties>
         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor" postCode="try{">
-          <StringArray count="9">
+          <StringArray count="8">
             <StringItem index="0" value="0"/>
             <StringItem index="1" value="1"/>
             <StringItem index="2" value="2"/>
@@ -329,7 +331,6 @@
             <StringItem index="5" value="5"/>
             <StringItem index="6" value="6"/>
             <StringItem index="7" value="7"/>
-            <StringItem index="8" value="8"/>
           </StringArray>
         </Property>
         <Property name="selectedIndex" type="int" editor="org.netbeans.modules.form.RADConnectionPropertyEditor" postCode="}catch(Exception e){&#xa;errors+=1;&#xa;SomethingWentWrong();&#xa;}">

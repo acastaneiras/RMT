@@ -14,7 +14,9 @@
   </NonVisualComponents>
   <Properties>
     <Property name="defaultCloseOperation" type="int" value="3"/>
-    <Property name="title" type="java.lang.String" value="Edit Specular and Smoothness"/>
+    <Property name="title" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+      <Connection code="&quot;Edit Specular and Smoothness of &quot;+foo.getFileToEdit().getName()" type="code"/>
+    </Property>
     <Property name="autoRequestFocus" type="boolean" value="false"/>
     <Property name="resizable" type="boolean" value="false"/>
     <Property name="size" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">

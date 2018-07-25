@@ -1115,14 +1115,14 @@ public class ParallaxAndOcclusion extends javax.swing.JFrame {
         jMenu1.setText("jMenu1");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Edit Parallax and Occlusion");
+        setTitle("Edit Parallax and Occlusion of "+foo.getFileToEdit().getName());
         setAutoRequestFocus(false);
         setResizable(false);
         setSize(new java.awt.Dimension(960, 540));
 
         jLabel1.setText("<html><b>PARALLAX MAP FROM</b></html>");
 
-        ParallaxMapFrom.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "0", "1", "2", "3", "4", "5", "6", "7", "8" }));
+        ParallaxMapFrom.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "0", "1", "2", "3", "4", "5", "6", "7" }));
         try{
             ParallaxMapFrom.setSelectedIndex(getParallaxMapFrom());
         }catch(Exception e){
@@ -1797,7 +1797,7 @@ public class ParallaxAndOcclusion extends javax.swing.JFrame {
                 + "    <li>5 : Params fetch from Toon map from the pmx.</li><br>"
                 + "    <li>6 : Params fetch from avi/screen from the DummyScreen.x inside extension folder.</li><br>"
                 + "    <li>7 : Params fetch from Ambient Color from the pmx.</li><br>"
-                + "    <li>8 : Params fetch from Parallax Color from the pmx.</li><br>"
+                + "    <li><strike>8 : Params fetch from Parallax Color from the pmx.</strike>, doesn't work on Parallax</li><br>"
                 + "    <li><strike>9 : Params fetch from Parallax Power from the pmx. (this option can only be used for parallax)</strike>, doesn't work on Parallax</li></ul></pre><br><br></HTML>");
         AlbedoMapHelp.setLayout(new BorderLayout());
         AlbedoMapHelp.setSize(700, 550);
@@ -2348,13 +2348,7 @@ public class ParallaxAndOcclusion extends javax.swing.JFrame {
 
         JFrame help = new JFrame();
         JLabel helptext = new JLabel();
-        helptext.setText("<html><b>Parallax Tips :</b> It has no effect on metalness > 0 and CUSTOM_ENABLE > 0.<br><br>"
-                + "The parallax maps are not HDR/environment maps, only modifies the color of basic reflection of the model<br>"
-                + "Used to change the colors of the environment reflect.<br>"
-                + "When the diffuse brighter than parallax reflect,<br>"
-                + "It will be only a very small contribution to change the colors of environment reflect.<br>"
-                + "So you can set the zero to the 'const float3 parallax = 0.0;', if you dot‘t want that model to reflect the parallax color of environment.<br><br><br>"
-                + ""
+        helptext.setText("<html>"
                 + "<b>Occlusion Tips :</b> The ambient occlusion (AO) is an effect that approximates the attenuation of environment light due to occlusion.<br>"
                 + "Bacause sky lighting from many directions, cannot simply to calculating shadows in the real-time.<br>"
                 + "A simply way able to replaced by using occlusion map and SSAO.<br>"
