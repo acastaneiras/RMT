@@ -74,7 +74,7 @@ public class WindowFrame extends javax.swing.JFrame {
         jMenu1.setText("jMenu1");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Edit Material");
+        setTitle("Edit "+foo.getFileToEdit().getName());
         setAutoRequestFocus(false);
         setResizable(false);
         setSize(new java.awt.Dimension(960, 540));
