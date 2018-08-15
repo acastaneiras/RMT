@@ -68,6 +68,7 @@ import javax.swing.event.ChangeListener;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import static mmd.MaterialMakerv2.callMenu;
+import rpmxc.Start;
 
 public class CustomEnableSection extends javax.swing.JFrame {
 
@@ -1506,6 +1507,7 @@ public class CustomEnableSection extends javax.swing.JFrame {
         back.setIcon(new javax.swing.ImageIcon(getClass().getResource("/bg/back.png"))); // NOI18N
         back.setBorder(null);
         back.setContentAreaFilled(false);
+        back.setFocusable(false);
         back.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 backActionPerformed(evt);
@@ -1891,9 +1893,8 @@ public class CustomEnableSection extends javax.swing.JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(12, 12, 12)
-                .addComponent(back, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(34, 34, 34)
+                .addComponent(back, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(16, 16, 16)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(CustomAEnable, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -2050,26 +2051,8 @@ public class CustomEnableSection extends javax.swing.JFrame {
         }
     }
     private void backActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backActionPerformed
-        closeAllDialogs();
-        WindowFrame w = new WindowFrame();
-        w.setLocation(this.getLocation());
-        ErrorWindow.dispose();
-        this.dispose();
-        w.setSize(960, 549);
-        w.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-        w.addWindowListener(new WindowAdapter() {
-            public void windowClosing(WindowEvent we) {
-                callMenu();
-                w.dispose();
-            }
-        });
-        w.setAlwaysOnTop(true);
-        w.setAlwaysOnTop(false);
-        w.setResizable(false);
-        w.setLayout(new BorderLayout());
-        ImageIcon img = new ImageIcon(getClass().getResource("/icon/ico.png"));
-        w.setIconImage(img.getImage());
-        w.setVisible(true);
+                closeAllDialogs();
+        this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
     }//GEN-LAST:event_backActionPerformed
 
     private void AlbedoMapHelpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AlbedoMapHelpActionPerformed

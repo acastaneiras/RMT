@@ -28,9 +28,9 @@
 package mmd;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Desktop;
 import java.awt.Point;
-import java.awt.Window;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
@@ -41,6 +41,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import org.netbeans.lib.awtextra.AbsoluteLayout;
+import rpmxc.Start;
 
 public class WindowFrame extends javax.swing.JFrame {
 
@@ -57,6 +58,10 @@ public class WindowFrame extends javax.swing.JFrame {
     private void initComponents() {
 
         jMenu1 = new javax.swing.JMenu();
+        fromExistingMore = new javax.swing.JButton();
+        EditMore = new javax.swing.JButton();
+        fromDefaultMore = new javax.swing.JButton();
+        BGMore = new javax.swing.JPanel();
         back1 = new javax.swing.JButton();
         gotofolder = new javax.swing.JButton();
         METALNESS = new javax.swing.JButton();
@@ -69,6 +74,8 @@ public class WindowFrame extends javax.swing.JFrame {
         NORMALMAP = new javax.swing.JButton();
         FINISHED = new javax.swing.JButton();
         gotofolder1 = new javax.swing.JButton();
+        BGMore1 = new javax.swing.JPanel();
+        BGMore2 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
 
         jMenu1.setText("jMenu1");
@@ -80,18 +87,69 @@ public class WindowFrame extends javax.swing.JFrame {
         setSize(new java.awt.Dimension(960, 540));
         getContentPane().setLayout(null);
 
+        fromExistingMore.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/moreexisting.png"))); // NOI18N
+        fromExistingMore.setBorderPainted(false);
+        fromExistingMore.setContentAreaFilled(false);
+        fromExistingMore.setFocusPainted(false);
+        fromExistingMore.setFocusable(false);
+        fromExistingMore.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                fromExistingMoreActionPerformed(evt);
+            }
+        });
+        getContentPane().add(fromExistingMore);
+        fromExistingMore.setBounds(440, 10, 60, 60);
+
+        EditMore.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/moredit.png"))); // NOI18N
+        EditMore.setBorderPainted(false);
+        EditMore.setContentAreaFilled(false);
+        EditMore.setFocusPainted(false);
+        EditMore.setFocusable(false);
+        EditMore.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                EditMoreActionPerformed(evt);
+            }
+        });
+        getContentPane().add(EditMore);
+        EditMore.setBounds(520, 10, 60, 60);
+
+        fromDefaultMore.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/moredefault.png"))); // NOI18N
+        fromDefaultMore.setBorderPainted(false);
+        fromDefaultMore.setContentAreaFilled(false);
+        fromDefaultMore.setFocusPainted(false);
+        fromDefaultMore.setFocusable(false);
+        fromDefaultMore.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                fromDefaultMoreActionPerformed(evt);
+            }
+        });
+        getContentPane().add(fromDefaultMore);
+        fromDefaultMore.setBounds(360, 10, 60, 60);
+
+        BGMore.setBackground(new Color(0,0,0,64));
+        BGMore.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255), 2));
+        BGMore.setRequestFocusEnabled(false);
+        getContentPane().add(BGMore);
+        BGMore.setBounds(330, -10, 280, 90);
+
         back1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/bg/back.png"))); // NOI18N
         back1.setBorder(null);
         back1.setContentAreaFilled(false);
+        back1.setFocusPainted(false);
+        back1.setFocusable(false);
         back1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 back1ActionPerformed(evt);
             }
         });
         getContentPane().add(back1);
-        back1.setBounds(30, 20, 35, 35);
+        back1.setBounds(30, 10, 50, 57);
 
-        gotofolder.setText("Open with NotePad");
+        gotofolder.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/notepad.png"))); // NOI18N
+        gotofolder.setBorderPainted(false);
+        gotofolder.setContentAreaFilled(false);
+        gotofolder.setFocusPainted(false);
+        gotofolder.setFocusable(false);
         gotofolder.setOpaque(false);
         gotofolder.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -99,9 +157,11 @@ public class WindowFrame extends javax.swing.JFrame {
             }
         });
         getContentPane().add(gotofolder);
-        gotofolder.setBounds(670, 20, 140, 32);
+        gotofolder.setBounds(790, 20, 50, 40);
 
         METALNESS.setText("METALNESS");
+        METALNESS.setFocusPainted(false);
+        METALNESS.setFocusable(false);
         METALNESS.setMaximumSize(new java.awt.Dimension(172, 30));
         METALNESS.setMinimumSize(new java.awt.Dimension(172, 30));
         METALNESS.setOpaque(false);
@@ -115,6 +175,8 @@ public class WindowFrame extends javax.swing.JFrame {
         METALNESS.setBounds(386, 382, 172, 45);
 
         SPECULARANDSMOOTHNESS.setText("SPECULAR & SMOOTHNESS");
+        SPECULARANDSMOOTHNESS.setFocusPainted(false);
+        SPECULARANDSMOOTHNESS.setFocusable(false);
         SPECULARANDSMOOTHNESS.setMaximumSize(new java.awt.Dimension(172, 30));
         SPECULARANDSMOOTHNESS.setMinimumSize(new java.awt.Dimension(172, 30));
         SPECULARANDSMOOTHNESS.setOpaque(false);
@@ -128,6 +190,8 @@ public class WindowFrame extends javax.swing.JFrame {
         SPECULARANDSMOOTHNESS.setBounds(386, 120, 172, 45);
 
         PARALLAXANDOCCLUSION.setText("PARALLAX & OCCLUSION");
+        PARALLAXANDOCCLUSION.setFocusPainted(false);
+        PARALLAXANDOCCLUSION.setFocusable(false);
         PARALLAXANDOCCLUSION.setMaximumSize(new java.awt.Dimension(172, 35));
         PARALLAXANDOCCLUSION.setMinimumSize(new java.awt.Dimension(172, 35));
         PARALLAXANDOCCLUSION.setOpaque(false);
@@ -141,6 +205,8 @@ public class WindowFrame extends javax.swing.JFrame {
         PARALLAXANDOCCLUSION.setBounds(386, 249, 172, 45);
 
         ALPHA.setText("ALPHA");
+        ALPHA.setFocusPainted(false);
+        ALPHA.setFocusable(false);
         ALPHA.setMaximumSize(new java.awt.Dimension(172, 30));
         ALPHA.setMinimumSize(new java.awt.Dimension(172, 30));
         ALPHA.setOpaque(false);
@@ -154,6 +220,8 @@ public class WindowFrame extends javax.swing.JFrame {
         ALPHA.setBounds(120, 249, 172, 45);
 
         CUSTOMENABLE.setText("CUSTOM ENABLE");
+        CUSTOMENABLE.setFocusPainted(false);
+        CUSTOMENABLE.setFocusable(false);
         CUSTOMENABLE.setMaximumSize(new java.awt.Dimension(172, 35));
         CUSTOMENABLE.setMinimumSize(new java.awt.Dimension(172, 35));
         CUSTOMENABLE.setOpaque(false);
@@ -167,6 +235,8 @@ public class WindowFrame extends javax.swing.JFrame {
         CUSTOMENABLE.setBounds(657, 249, 172, 45);
 
         EMISSIVE.setText("EMISSIVE");
+        EMISSIVE.setFocusPainted(false);
+        EMISSIVE.setFocusable(false);
         EMISSIVE.setMaximumSize(new java.awt.Dimension(172, 35));
         EMISSIVE.setMinimumSize(new java.awt.Dimension(172, 35));
         EMISSIVE.setOpaque(false);
@@ -180,6 +250,8 @@ public class WindowFrame extends javax.swing.JFrame {
         EMISSIVE.setBounds(657, 120, 172, 45);
 
         ALBEDO.setText("ALBEDO");
+        ALBEDO.setFocusPainted(false);
+        ALBEDO.setFocusable(false);
         ALBEDO.setMaximumSize(new java.awt.Dimension(172, 30));
         ALBEDO.setMinimumSize(new java.awt.Dimension(172, 30));
         ALBEDO.setOpaque(false);
@@ -193,6 +265,8 @@ public class WindowFrame extends javax.swing.JFrame {
         ALBEDO.setBounds(120, 120, 172, 45);
 
         NORMALMAP.setText("NORMAL MAP");
+        NORMALMAP.setFocusPainted(false);
+        NORMALMAP.setFocusable(false);
         NORMALMAP.setMaximumSize(new java.awt.Dimension(172, 30));
         NORMALMAP.setMinimumSize(new java.awt.Dimension(172, 30));
         NORMALMAP.setOpaque(false);
@@ -208,6 +282,8 @@ public class WindowFrame extends javax.swing.JFrame {
         FINISHED.setIcon(new javax.swing.ImageIcon(getClass().getResource("/bg/exit.png"))); // NOI18N
         FINISHED.setBorder(null);
         FINISHED.setContentAreaFilled(false);
+        FINISHED.setFocusPainted(false);
+        FINISHED.setFocusable(false);
         FINISHED.setMaximumSize(new java.awt.Dimension(172, 30));
         FINISHED.setMinimumSize(new java.awt.Dimension(172, 30));
         FINISHED.setPreferredSize(new java.awt.Dimension(172, 30));
@@ -217,9 +293,13 @@ public class WindowFrame extends javax.swing.JFrame {
             }
         });
         getContentPane().add(FINISHED);
-        FINISHED.setBounds(80, 20, 40, 40);
+        FINISHED.setBounds(80, 10, 50, 60);
 
-        gotofolder1.setText("Go to Folder");
+        gotofolder1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/folder.png"))); // NOI18N
+        gotofolder1.setBorderPainted(false);
+        gotofolder1.setContentAreaFilled(false);
+        gotofolder1.setFocusPainted(false);
+        gotofolder1.setFocusable(false);
         gotofolder1.setOpaque(false);
         gotofolder1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -227,7 +307,19 @@ public class WindowFrame extends javax.swing.JFrame {
             }
         });
         getContentPane().add(gotofolder1);
-        gotofolder1.setBounds(817, 20, 110, 32);
+        gotofolder1.setBounds(850, 20, 50, 40);
+
+        BGMore1.setBackground(new Color(0,0,0,64));
+        BGMore1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255), 2));
+        BGMore1.setRequestFocusEnabled(false);
+        getContentPane().add(BGMore1);
+        BGMore1.setBounds(20, -10, 130, 90);
+
+        BGMore2.setBackground(new Color(0,0,0,64));
+        BGMore2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255), 2));
+        BGMore2.setRequestFocusEnabled(false);
+        getContentPane().add(BGMore2);
+        BGMore2.setBounds(760, -10, 170, 90);
 
         jLabel2.setIcon(bg);
         jLabel2.addComponentListener(new java.awt.event.ComponentAdapter() {
@@ -244,17 +336,18 @@ public class WindowFrame extends javax.swing.JFrame {
 
         ImageIcon ico = new ImageIcon(getClass().getResource("/icon/ico.png"));
         Menu a = new Menu();
-        a.setBounds(0, 0, 680, 295);
+        a.setBounds(0, 0, 645, 300);
         a.setResizable(false);
         a.setLocationRelativeTo(null);
         a.setDefaultCloseOperation(EXIT_ON_CLOSE);
         a.setLayout(new BorderLayout());
         a.setIconImage(ico.getImage());
         a.setVisible(true);
+        a.setAlwaysOnTop(true);
+        a.setAlwaysOnTop(false);
     }
 
     public void callWindow(Point p) {
-
         WindowFrame w = new WindowFrame();
         w.setAlwaysOnTop(true);
         w.setAlwaysOnTop(false);
@@ -267,14 +360,33 @@ public class WindowFrame extends javax.swing.JFrame {
         }
         w.setLayout(new BorderLayout());
         w.setDefaultCloseOperation(WindowFrame.DO_NOTHING_ON_CLOSE);
-        w.addWindowListener(new WindowAdapter() {
-            public void windowClosing(WindowEvent we) {
-                callMenu();
-                w.dispose();
-            }
-        });
+        if (foo.getRecursive() == true) {
+
+            w.addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosing(WindowEvent we) {
+                    w.dispose();
+                    try {
+                        rpmxc.Options.main(null, Start.parentComponent);
+                    } catch (IOException ex) {
+                    }
+                }
+            });
+
+        } else {
+            w.addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosing(WindowEvent we) {
+                    callMenu();
+                    w.dispose();
+                }
+            });
+        }
         w.setIconImage(img.getImage());
         w.setVisible(true);
+        w.setAlwaysOnTop(true);
+        w.setAlwaysOnTop(false);
+
     }
 
     static boolean bgExists(String image_path) {
@@ -287,48 +399,49 @@ public class WindowFrame extends javax.swing.JFrame {
         }
     }
     private void METALNESSActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_METALNESSActionPerformed
-
-        MetalnessSection ms = new MetalnessSection();
-        ms.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-        ms.addWindowListener(new WindowAdapter() {
+        MetalnessSection met = new MetalnessSection();
+        met.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+        met.addWindowListener(new WindowAdapter() {
+            @Override
             public void windowClosing(WindowEvent we) {
-                Point pos = ms.getLocation();
+                Point pos = met.getLocation();
                 callWindow(pos);
-                ms.dispose();
+                met.dispose();
             }
         });
-        ms.setSize(960, 549);
-        ms.setLayout(new AbsoluteLayout());
-        ms.setLocationRelativeTo(this);
+        met.setSize(960, 549);
+        met.setVisible(true);
+        met.setAlwaysOnTop(true);
+        met.setAlwaysOnTop(false);
+        met.setLocationRelativeTo(this);
+        met.setLayout(new AbsoluteLayout());
         this.dispose();
-        ms.setAlwaysOnTop(true);
-        ms.setAlwaysOnTop(false);
-        ms.setVisible(true);
         ImageIcon img = new ImageIcon(getClass().getResource("/icon/ico.png"));
-        ms.setIconImage(img.getImage());
+        met.setIconImage(img.getImage());
     }//GEN-LAST:event_METALNESSActionPerformed
 
     private void SPECULARANDSMOOTHNESSActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SPECULARANDSMOOTHNESSActionPerformed
 
-        SpecularAndSmoothness ss = new SpecularAndSmoothness();
-        ss.setLocationRelativeTo(this);
-        ss.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-        ss.addWindowListener(new WindowAdapter() {
+        SpecularAndSmoothness sas = new SpecularAndSmoothness();
+        sas.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+        sas.addWindowListener(new WindowAdapter() {
+            @Override
             public void windowClosing(WindowEvent we) {
-                Point pos = ss.getLocation();
+                Point pos = sas.getLocation();
                 callWindow(pos);
-                ss.dispose();
+                sas.dispose();
             }
         });
-
+        sas.setSize(960, 549);
+        sas.setVisible(true);
+        sas.setAlwaysOnTop(true);
+        sas.setAlwaysOnTop(false);
+        sas.setLocationRelativeTo(this);
+        sas.setLayout(new AbsoluteLayout());
         this.dispose();
-        ss.setAlwaysOnTop(true);
-        ss.setAlwaysOnTop(false);
-        ss.setVisible(true);
-
         ImageIcon img = new ImageIcon(getClass().getResource("/icon/ico.png"));
-        ss.setIconImage(img.getImage());
-        ss.AlbedoMapFile1 = "";
+        sas.setIconImage(img.getImage());
+        sas.AlbedoMapFile1 = "";
     }//GEN-LAST:event_SPECULARANDSMOOTHNESSActionPerformed
 
     private void PARALLAXANDOCCLUSIONActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PARALLAXANDOCCLUSIONActionPerformed
@@ -429,6 +542,7 @@ public class WindowFrame extends javax.swing.JFrame {
         AlbedoSection ab = new AlbedoSection();
         ab.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         ab.addWindowListener(new WindowAdapter() {
+            @Override
             public void windowClosing(WindowEvent we) {
                 Point pos = ab.getLocation();
                 callWindow(pos);
@@ -440,7 +554,6 @@ public class WindowFrame extends javax.swing.JFrame {
         ab.setAlwaysOnTop(true);
         ab.setAlwaysOnTop(false);
         ab.setLocationRelativeTo(this);
-
         ab.setLayout(new AbsoluteLayout());
         this.dispose();
         ImageIcon img = new ImageIcon(getClass().getResource("/icon/ico.png"));
@@ -453,20 +566,20 @@ public class WindowFrame extends javax.swing.JFrame {
         NormalSection ns = new NormalSection();
         ns.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         ns.addWindowListener(new WindowAdapter() {
+            @Override
             public void windowClosing(WindowEvent we) {
                 Point pos = ns.getLocation();
                 callWindow(pos);
                 ns.dispose();
             }
         });
-        ns.setLayout(new AbsoluteLayout());
+        ns.setSize(960, 549);
         ns.setVisible(true);
-        ns.setBounds(0, 0, 960, 549);
         ns.setAlwaysOnTop(true);
         ns.setAlwaysOnTop(false);
         ns.setLocationRelativeTo(this);
+        ns.setLayout(new AbsoluteLayout());
         this.dispose();
-        ns.setLayout(new BorderLayout());
         ImageIcon img = new ImageIcon(getClass().getResource("/icon/ico.png"));
         ns.setIconImage(img.getImage());
         ns.AlbedoMapFile1 = "";
@@ -531,15 +644,37 @@ public class WindowFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_jLabel2ComponentMoved
 
     private void back1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_back1ActionPerformed
-
         this.dispose();
-
-        try {
-            MaterialMakerv2.main(null);
-        } catch (Exception ex) {
-            Logger.getLogger(WindowFrame.class.getName()).log(Level.SEVERE, null, ex);
+        if (foo.getRecursive() != true) {
+            try {
+                MaterialMakerv2.main(null);
+            } catch (Exception ex) {
+                Logger.getLogger(WindowFrame.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
+            try {
+                rpmxc.Options.main(null, Start.parentComponent);
+            } catch (IOException ex) {
+                Logger.getLogger(WindowFrame.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }//GEN-LAST:event_back1ActionPerformed
+
+    private void fromDefaultMoreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fromDefaultMoreActionPerformed
+        Point location = this.getLocation();
+        MaterialMakerv2.FromDefault(this, location, true);
+    }//GEN-LAST:event_fromDefaultMoreActionPerformed
+
+    private void EditMoreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EditMoreActionPerformed
+
+        Point location = this.getLocation();
+        MaterialMakerv2.editMaterial(this, location, true);
+    }//GEN-LAST:event_EditMoreActionPerformed
+
+    private void fromExistingMoreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fromExistingMoreActionPerformed
+        Point location = this.getLocation();
+        MaterialMakerv2.FromExisting(this, location, true);
+    }//GEN-LAST:event_fromExistingMoreActionPerformed
 
     /**
      * @param args the command line arguments
@@ -615,14 +750,20 @@ public class WindowFrame extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton ALBEDO;
     private javax.swing.JButton ALPHA;
+    private javax.swing.JPanel BGMore;
+    private javax.swing.JPanel BGMore1;
+    private javax.swing.JPanel BGMore2;
     private javax.swing.JButton CUSTOMENABLE;
     private javax.swing.JButton EMISSIVE;
+    private javax.swing.JButton EditMore;
     private javax.swing.JButton FINISHED;
     private javax.swing.JButton METALNESS;
     private javax.swing.JButton NORMALMAP;
     private javax.swing.JButton PARALLAXANDOCCLUSION;
     private javax.swing.JButton SPECULARANDSMOOTHNESS;
     private javax.swing.JButton back1;
+    private javax.swing.JButton fromDefaultMore;
+    private javax.swing.JButton fromExistingMore;
     private javax.swing.JButton gotofolder;
     private javax.swing.JButton gotofolder1;
     private javax.swing.JLabel jLabel2;

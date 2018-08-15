@@ -45,7 +45,6 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.file.Paths;
 import java.text.DecimalFormat;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -66,6 +65,7 @@ import javax.swing.event.ChangeListener;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import static mmd.MaterialMakerv2.callMenu;
+import rpmxc.Start;
 
 public class AlbedoSection extends javax.swing.JFrame {
 
@@ -661,9 +661,9 @@ public class AlbedoSection extends javax.swing.JFrame {
             }
 
         } catch (FileNotFoundException ex) {
-            Logger.getLogger(WindowFrame.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("fnf" + ex);
         } catch (IOException ex) {
-            Logger.getLogger(WindowFrame.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("io " + ex);
         } finally {
             try {
                 AlbedotoEdit_Br.close();
@@ -1056,6 +1056,7 @@ public class AlbedoSection extends javax.swing.JFrame {
         back.setIcon(new javax.swing.ImageIcon(getClass().getResource("/bg/back.png"))); // NOI18N
         back.setBorder(null);
         back.setContentAreaFilled(false);
+        back.setFocusable(false);
         back.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 backActionPerformed(evt);
@@ -1423,8 +1424,7 @@ public class AlbedoSection extends javax.swing.JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(12, 12, 12)
-                .addComponent(back, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(back, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(55, 55, 55)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -1605,28 +1605,44 @@ public class AlbedoSection extends javax.swing.JFrame {
 
     private void backActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backActionPerformed
         closeAllDialogs();
+        this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
+        /*closeAllDialogs();
         WindowFrame w = new WindowFrame();
         w.setLocation(this.getLocation());
         ErrorWindow.dispose();
-        this.dispose();
-
         w.setSize(960, 549);
         w.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-        w.addWindowListener(new WindowAdapter() {
-            public void windowClosing(WindowEvent we) {
+        if (foo.getRecursive() == true) {
+            System.out.println("true");
+            w.addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosing(WindowEvent we) {
+                    w.dispose();
+                    try {
+                        rpmxc.Options.main(null, Start.parentComponent);
+                    } catch (Exception ex) {
+                    }
+                }
+            });
 
-                callMenu();
-                w.dispose();
-            }
-        });
+        } else {
+            System.out.println("false");
+            w.addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosing(WindowEvent we) {
+                    callMenu();
+                    w.dispose();
+                }
+            });
+        }
+        this.dispose();
         w.setAlwaysOnTop(true);
         w.setAlwaysOnTop(false);
         w.setResizable(false);
         w.setLayout(new BorderLayout());
-
         ImageIcon img = new ImageIcon(getClass().getResource("/icon/ico.png"));
         w.setIconImage(img.getImage());
-        w.setVisible(true);
+        w.setVisible(true);*/
     }//GEN-LAST:event_backActionPerformed
 
     private void AlbedoMapHelpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AlbedoMapHelpActionPerformed

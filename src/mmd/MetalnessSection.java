@@ -60,6 +60,7 @@ import javax.swing.event.ChangeListener;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import static mmd.MaterialMakerv2.callMenu;
+import rpmxc.Start;
 
 public class MetalnessSection extends javax.swing.JFrame {
 
@@ -764,6 +765,7 @@ public class MetalnessSection extends javax.swing.JFrame {
         back1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/bg/back.png"))); // NOI18N
         back1.setBorder(null);
         back1.setContentAreaFilled(false);
+        back1.setFocusable(false);
         back1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 back1ActionPerformed(evt);
@@ -866,8 +868,7 @@ public class MetalnessSection extends javax.swing.JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(12, 12, 12)
-                .addComponent(back1, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(back1, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(39, 39, 39)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -1169,25 +1170,7 @@ public class MetalnessSection extends javax.swing.JFrame {
     }
     private void back1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_back1ActionPerformed
         closeAllDialogs();
-        WindowFrame w = new WindowFrame();
-        w.setLocation(this.getLocation());
-        ErrorWindow.dispose();
-        this.dispose();
-        w.setSize(960, 549);
-        w.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-        w.addWindowListener(new WindowAdapter() {
-            public void windowClosing(WindowEvent we) {
-                callMenu();
-                w.dispose();
-            }
-        });
-        w.setAlwaysOnTop(true);
-        w.setAlwaysOnTop(false);
-        w.setResizable(false);
-        w.setLayout(new BorderLayout());
-        ImageIcon img = new ImageIcon(getClass().getResource("/icon/ico.png"));
-        w.setIconImage(img.getImage());
-        w.setVisible(true);
+        this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
     }//GEN-LAST:event_back1ActionPerformed
 
     private void MetalnessMapFromItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_MetalnessMapFromItemStateChanged

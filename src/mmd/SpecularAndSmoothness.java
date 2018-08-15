@@ -29,11 +29,7 @@ package mmd;
 
 import java.awt.BorderLayout;
 import java.awt.Dialog;
-import java.awt.Dimension;
 import java.awt.Image;
-import java.awt.Point;
-import java.awt.Rectangle;
-import java.awt.Toolkit;
 import java.awt.Window;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -64,6 +60,7 @@ import javax.swing.event.ChangeListener;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import static mmd.MaterialMakerv2.callMenu;
+import rpmxc.Start;
 
 public class SpecularAndSmoothness extends javax.swing.JFrame {
 
@@ -1505,6 +1502,7 @@ public class SpecularAndSmoothness extends javax.swing.JFrame {
         back1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/bg/back.png"))); // NOI18N
         back1.setBorder(null);
         back1.setContentAreaFilled(false);
+        back1.setFocusable(false);
         back1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 back1ActionPerformed(evt);
@@ -1544,6 +1542,7 @@ public class SpecularAndSmoothness extends javax.swing.JFrame {
         jButton2.setBorderPainted(false);
         jButton2.setContentAreaFilled(false);
         jButton2.setDefaultCapable(false);
+        jButton2.setFocusable(false);
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
@@ -1575,7 +1574,7 @@ public class SpecularAndSmoothness extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                                 .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 139, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(changeFile, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -1591,7 +1590,7 @@ public class SpecularAndSmoothness extends javax.swing.JFrame {
                                         .addComponent(SpecularMapFile, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addComponent(jButton4)))
-                                .addGap(0, 123, Short.MAX_VALUE)))
+                                .addGap(0, 0, Short.MAX_VALUE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(AlbedoMapFileHelp))
                     .addGroup(layout.createSequentialGroup()
@@ -1679,10 +1678,9 @@ public class SpecularAndSmoothness extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(12, 12, 12)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(back1, javax.swing.GroupLayout.DEFAULT_SIZE, 43, Short.MAX_VALUE)
-                            .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                            .addComponent(back1, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(31, 31, 31)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -2375,26 +2373,7 @@ public class SpecularAndSmoothness extends javax.swing.JFrame {
 
     private void back1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_back1ActionPerformed
         closeAllDialogs();
-        WindowFrame w = new WindowFrame();
-        w.setLocation(this.getLocation());
-        ErrorWindow.dispose();
-        this.dispose();
-        w.setSize(960, 549);
-        w.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-        w.addWindowListener(new WindowAdapter() {
-            public void windowClosing(WindowEvent we) {
-                callMenu();
-                w.dispose();
-            }
-        });
-        w.setAlwaysOnTop(true);
-        w.setAlwaysOnTop(false);
-        w.setResizable(false);
-        w.setLayout(new BorderLayout());
-
-        ImageIcon img = new ImageIcon(getClass().getResource("/icon/ico.png"));
-        w.setIconImage(img.getImage());
-        w.setVisible(true);
+        this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
     }//GEN-LAST:event_back1ActionPerformed
 
     private void SpecularMapFromItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_SpecularMapFromItemStateChanged
@@ -2741,6 +2720,7 @@ public class SpecularAndSmoothness extends javax.swing.JFrame {
 
         JFrame help = new JFrame();
         JLabel helptext = new JLabel();
+        help.setName("help");
         helptext.setText("<html><b>Tips :</b> It has no effect on metalness > 0 and CUSTOM_ENABLE > 0.<br><br>"
                 + "The specular maps are not HDR/environment maps, only modifies the color of basic reflection of the model<br>"
                 + "Used to change the colors of the environment reflect.<br>"
