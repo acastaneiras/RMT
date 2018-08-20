@@ -46,10 +46,20 @@ public class MaterialMakerv2 {
     private static File fileToEdit;
     private static String filePath;
     private static String fileOldPath;
+    private static boolean fromRecursive = false;
 
-    MaterialMakerv2() {
+    public MaterialMakerv2() {
         File fileToEdit;
         String filePath;
+    }
+
+    public static void addFileToEdit(File file) {
+        MaterialMakerv2.fileToEdit = file;
+        MaterialMakerv2.filePath = file.getPath();
+    }
+
+    public boolean getRecursive() {
+        return this.fromRecursive;
     }
 
     public File getFileToEdit() {
@@ -69,29 +79,33 @@ public class MaterialMakerv2 {
 
         ImageIcon ico = new ImageIcon(MaterialMakerv2.class.getResource("/icon/ico.png"));
         Menu a = new Menu();
-        a.setBounds(0, 0, 680, 295);
+        a.setBounds(0, 0, 645, 300);
         a.setResizable(false);
         a.setLocationRelativeTo(null);
         a.setDefaultCloseOperation(EXIT_ON_CLOSE);
         a.setLayout(new BorderLayout());
         a.setIconImage(ico.getImage());
         a.setVisible(true);
+        a.setAlwaysOnTop(true);
+        a.setAlwaysOnTop(false);
     }
 
     public static void callMenu() {
         ImageIcon ico = new ImageIcon(MaterialMakerv2.class.getResource("/icon/ico.png"));
         Menu a = new Menu();
-        a.setBounds(0, 0, 680, 295);
+        a.setBounds(0, 0, 645, 300);
         a.setResizable(false);
         a.setLocationRelativeTo(null);
         a.setDefaultCloseOperation(EXIT_ON_CLOSE);
         a.setLayout(new BorderLayout());
         a.setIconImage(ico.getImage());
         a.setVisible(true);
+        a.setAlwaysOnTop(true);
+        a.setAlwaysOnTop(false);
     }
 
-    public static void editMaterial(Component a) {
-
+    public static void editMaterial(Component a, Point pos, boolean more) {
+        fromRecursive = false;
         JFileChooser fileChooser = new JFileChooser();
 
         fileChooser.setCurrentDirectory(new java.io.File("../../Materials"));
@@ -117,10 +131,15 @@ public class MaterialMakerv2 {
                 ImageIcon img = new ImageIcon(MaterialMakerv2.class.getResource("/icon/ico.png"));
                 w.setResizable(false);
                 w.setBounds(0, 0, 960, 549);
-                w.setLocationRelativeTo(null);
+                if (more == true) {
+                    w.setLocation(pos);
+                } else {
+                    w.setLocationRelativeTo(null);
+                }
                 w.setLayout(new BorderLayout());
                 w.setDefaultCloseOperation(WindowFrame.DO_NOTHING_ON_CLOSE);
                 w.addWindowListener(new WindowAdapter() {
+                    @Override
                     public void windowClosing(WindowEvent we) {
                         callMenu();
                         w.dispose();
@@ -128,6 +147,8 @@ public class MaterialMakerv2 {
                 });
                 w.setIconImage(img.getImage());
                 w.setVisible(true);
+                w.setAlwaysOnTop(true);
+                w.setAlwaysOnTop(false);
             } catch (Exception e) {
 
             }
@@ -137,7 +158,7 @@ public class MaterialMakerv2 {
 
     }
 
-    public static void FromExisting(Component a) {
+    public static void FromExisting(Component a, Point pos, boolean more) {
         String filePath0 = null;
 
         try {
@@ -218,7 +239,11 @@ public class MaterialMakerv2 {
                                                 w.setAlwaysOnTop(false);
                                                 w.setResizable(false);
                                                 w.setBounds(0, 0, 960, 549);
-                                                w.setLocationRelativeTo(null);
+                                                if (more == true) {
+                                                    w.setLocation(pos);
+                                                } else {
+                                                    w.setLocationRelativeTo(null);
+                                                }
                                                 w.setLayout(new BorderLayout());
                                                 w.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 
@@ -232,6 +257,8 @@ public class MaterialMakerv2 {
                                                 ImageIcon imge = new ImageIcon(MaterialMakerv2.class.getResource("/icon/ico.png"));
                                                 w.setIconImage(imge.getImage());
                                                 w.setVisible(true);
+                                                w.setAlwaysOnTop(true);
+                                                w.setAlwaysOnTop(false);
                                             } catch (Exception e) {
 
                                             }
@@ -264,7 +291,11 @@ public class MaterialMakerv2 {
                                                 w.setAlwaysOnTop(false);
                                                 w.setResizable(false);
                                                 w.setBounds(0, 0, 960, 549);
-                                                w.setLocationRelativeTo(null);
+                                                if (more == true) {
+                                                    w.setLocation(pos);
+                                                } else {
+                                                    w.setLocationRelativeTo(null);
+                                                }
                                                 w.setLayout(new BorderLayout());
                                                 w.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 
@@ -277,6 +308,8 @@ public class MaterialMakerv2 {
                                                 ImageIcon imge = new ImageIcon(MaterialMakerv2.class.getResource("/icon/ico.png"));
                                                 w.setIconImage(imge.getImage());
                                                 w.setVisible(true);
+                                                w.setAlwaysOnTop(true);
+                                                w.setAlwaysOnTop(false);
                                             } catch (Exception e) {
 
                                             }
@@ -302,7 +335,11 @@ public class MaterialMakerv2 {
                                         w.setAlwaysOnTop(false);
                                         w.setResizable(false);
                                         w.setBounds(0, 0, 960, 549);
-                                        w.setLocationRelativeTo(null);
+                                        if (more == true) {
+                                            w.setLocation(pos);
+                                        } else {
+                                            w.setLocationRelativeTo(null);
+                                        }
                                         w.setLayout(new BorderLayout());
                                         w.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
                                         w.addWindowListener(new WindowAdapter() {
@@ -314,6 +351,8 @@ public class MaterialMakerv2 {
                                         ImageIcon imge = new ImageIcon(MaterialMakerv2.class.getResource("/icon/ico.png"));
                                         w.setIconImage(imge.getImage());
                                         w.setVisible(true);
+                                        w.setAlwaysOnTop(true);
+                                        w.setAlwaysOnTop(false);
                                     } catch (Exception e) {
 
                                     }
@@ -350,7 +389,11 @@ public class MaterialMakerv2 {
                                             w.setAlwaysOnTop(false);
                                             w.setResizable(false);
                                             w.setBounds(0, 0, 960, 549);
-                                            w.setLocationRelativeTo(null);
+                                            if (more == true) {
+                                                w.setLocation(pos);
+                                            } else {
+                                                w.setLocationRelativeTo(null);
+                                            }
                                             w.setLayout(new BorderLayout());
                                             w.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 
@@ -364,6 +407,8 @@ public class MaterialMakerv2 {
                                             ImageIcon imge = new ImageIcon(MaterialMakerv2.class.getResource("/icon/ico.png"));
                                             w.setIconImage(imge.getImage());
                                             w.setVisible(true);
+                                            w.setAlwaysOnTop(true);
+                                            w.setAlwaysOnTop(false);
                                         } catch (Exception e) {
 
                                         }
@@ -396,7 +441,11 @@ public class MaterialMakerv2 {
                                             w.setAlwaysOnTop(false);
                                             w.setResizable(false);
                                             w.setBounds(0, 0, 960, 549);
-                                            w.setLocationRelativeTo(null);
+                                            if (more == true) {
+                                                w.setLocation(pos);
+                                            } else {
+                                                w.setLocationRelativeTo(null);
+                                            }
                                             w.setLayout(new BorderLayout());
                                             w.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 
@@ -409,6 +458,8 @@ public class MaterialMakerv2 {
                                             ImageIcon imge = new ImageIcon(MaterialMakerv2.class.getResource("/icon/ico.png"));
                                             w.setIconImage(imge.getImage());
                                             w.setVisible(true);
+                                            w.setAlwaysOnTop(true);
+                                            w.setAlwaysOnTop(false);
                                         } catch (Exception e) {
 
                                         }
@@ -434,7 +485,11 @@ public class MaterialMakerv2 {
                                     w.setAlwaysOnTop(false);
                                     w.setResizable(false);
                                     w.setBounds(0, 0, 960, 549);
-                                    w.setLocationRelativeTo(null);
+                                    if (more == true) {
+                                        w.setLocation(pos);
+                                    } else {
+                                        w.setLocationRelativeTo(null);
+                                    }
                                     w.setLayout(new BorderLayout());
                                     w.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
                                     w.addWindowListener(new WindowAdapter() {
@@ -446,6 +501,8 @@ public class MaterialMakerv2 {
                                     ImageIcon imge = new ImageIcon(MaterialMakerv2.class.getResource("/icon/ico.png"));
                                     w.setIconImage(imge.getImage());
                                     w.setVisible(true);
+                                    w.setAlwaysOnTop(true);
+                                    w.setAlwaysOnTop(false);
                                 } catch (Exception e) {
 
                                 }
@@ -495,7 +552,7 @@ public class MaterialMakerv2 {
         }
     }
 
-    public static void FromDefault(Component a) {
+    public static void FromDefault(Component a, Point pos, boolean more) {
 
         try {
 
@@ -566,7 +623,11 @@ public class MaterialMakerv2 {
                                             w.setAlwaysOnTop(false);
                                             w.setResizable(false);
                                             w.setBounds(0, 0, 960, 549);
-                                            w.setLocationRelativeTo(null);
+                                            if (more == true) {
+                                                w.setLocation(pos);
+                                            } else {
+                                                w.setLocationRelativeTo(null);
+                                            }
                                             w.setLayout(new BorderLayout());
                                             w.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 
@@ -580,6 +641,8 @@ public class MaterialMakerv2 {
                                             ImageIcon imge = new ImageIcon(MaterialMakerv2.class.getResource("/icon/ico.png"));
                                             w.setIconImage(imge.getImage());
                                             w.setVisible(true);
+                                            w.setAlwaysOnTop(true);
+                                            w.setAlwaysOnTop(false);
                                         } catch (Exception e) {
 
                                         }
@@ -612,7 +675,11 @@ public class MaterialMakerv2 {
                                             w.setAlwaysOnTop(false);
                                             w.setResizable(false);
                                             w.setBounds(0, 0, 960, 549);
-                                            w.setLocationRelativeTo(null);
+                                            if (more == true) {
+                                                w.setLocation(pos);
+                                            } else {
+                                                w.setLocationRelativeTo(null);
+                                            }
                                             w.setLayout(new BorderLayout());
                                             w.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 
@@ -625,6 +692,8 @@ public class MaterialMakerv2 {
                                             ImageIcon imge = new ImageIcon(MaterialMakerv2.class.getResource("/icon/ico.png"));
                                             w.setIconImage(imge.getImage());
                                             w.setVisible(true);
+                                            w.setAlwaysOnTop(true);
+                                            w.setAlwaysOnTop(false);
                                         } catch (Exception e) {
 
                                         }
@@ -650,7 +719,11 @@ public class MaterialMakerv2 {
                                     w.setAlwaysOnTop(false);
                                     w.setResizable(false);
                                     w.setBounds(0, 0, 960, 549);
-                                    w.setLocationRelativeTo(null);
+                                    if (more == true) {
+                                        w.setLocation(pos);
+                                    } else {
+                                        w.setLocationRelativeTo(null);
+                                    }
                                     w.setLayout(new BorderLayout());
                                     w.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 
@@ -663,6 +736,8 @@ public class MaterialMakerv2 {
                                     ImageIcon imge = new ImageIcon(MaterialMakerv2.class.getResource("/icon/ico.png"));
                                     w.setIconImage(imge.getImage());
                                     w.setVisible(true);
+                                    w.setAlwaysOnTop(true);
+                                    w.setAlwaysOnTop(false);
                                 } catch (Exception e) {
 
                                 }
@@ -699,7 +774,11 @@ public class MaterialMakerv2 {
                                         wf.setAlwaysOnTop(false);
                                         wf.setResizable(false);
                                         wf.setBounds(0, 0, 960, 549);
-                                        wf.setLocationRelativeTo(null);
+                                        if (more == true) {
+                                            wf.setLocation(pos);
+                                        } else {
+                                            wf.setLocationRelativeTo(null);
+                                        }
                                         wf.setLayout(new BorderLayout());
                                         wf.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 
@@ -712,6 +791,8 @@ public class MaterialMakerv2 {
                                         ImageIcon imge = new ImageIcon(MaterialMakerv2.class.getResource("/icon/ico.png"));
                                         wf.setIconImage(imge.getImage());
                                         wf.setVisible(true);
+                                        wf.setAlwaysOnTop(true);
+                                        wf.setAlwaysOnTop(false);
                                     } catch (Exception e) {
 
                                     } finally {
@@ -744,7 +825,11 @@ public class MaterialMakerv2 {
                                         w.setAlwaysOnTop(false);
                                         w.setResizable(false);
                                         w.setBounds(0, 0, 960, 549);
-                                        w.setLocationRelativeTo(null);
+                                        if (more == true) {
+                                            w.setLocation(pos);
+                                        } else {
+                                            w.setLocationRelativeTo(null);
+                                        }
                                         w.setLayout(new BorderLayout());
                                         w.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 
@@ -757,6 +842,8 @@ public class MaterialMakerv2 {
                                         ImageIcon imge = new ImageIcon(MaterialMakerv2.class.getResource("/icon/ico.png"));
                                         w.setIconImage(imge.getImage());
                                         w.setVisible(true);
+                                        w.setAlwaysOnTop(true);
+                                        w.setAlwaysOnTop(false);
                                     } catch (Exception e) {
 
                                     }
@@ -781,7 +868,11 @@ public class MaterialMakerv2 {
                                 w.setAlwaysOnTop(false);
                                 w.setResizable(false);
                                 w.setBounds(0, 0, 960, 549);
-                                w.setLocationRelativeTo(null);
+                                if (more == true) {
+                                    w.setLocation(pos);
+                                } else {
+                                    w.setLocationRelativeTo(null);
+                                }
                                 w.setLayout(new BorderLayout());
                                 w.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 
@@ -795,6 +886,8 @@ public class MaterialMakerv2 {
                                 ImageIcon imge = new ImageIcon(MaterialMakerv2.class.getResource("/icon/ico.png"));
                                 w.setIconImage(imge.getImage());
                                 w.setVisible(true);
+                                w.setAlwaysOnTop(true);
+                                w.setAlwaysOnTop(false);
                             } catch (Exception e) {
 
                             }
@@ -811,6 +904,10 @@ public class MaterialMakerv2 {
         } catch (Exception e) {
 
         }
+    }
+
+    public void setRecursive(boolean boo) {
+        MaterialMakerv2.fromRecursive = boo;
     }
 
     private static void Windows() {

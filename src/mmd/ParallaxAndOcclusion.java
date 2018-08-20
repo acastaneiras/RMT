@@ -61,6 +61,7 @@ import javax.swing.event.ChangeListener;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import static mmd.MaterialMakerv2.callMenu;
+import rpmxc.Start;
 
 public class ParallaxAndOcclusion extends javax.swing.JFrame {
 
@@ -1464,6 +1465,7 @@ public class ParallaxAndOcclusion extends javax.swing.JFrame {
         back1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/bg/back.png"))); // NOI18N
         back1.setBorder(null);
         back1.setContentAreaFilled(false);
+        back1.setFocusable(false);
         back1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 back1ActionPerformed(evt);
@@ -1475,6 +1477,7 @@ public class ParallaxAndOcclusion extends javax.swing.JFrame {
         jButton2.setBorderPainted(false);
         jButton2.setContentAreaFilled(false);
         jButton2.setDefaultCapable(false);
+        jButton2.setFocusable(false);
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
@@ -1614,10 +1617,9 @@ public class ParallaxAndOcclusion extends javax.swing.JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(12, 12, 12)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(back1, javax.swing.GroupLayout.DEFAULT_SIZE, 43, Short.MAX_VALUE)
-                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(back1, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                 .addGap(47, 47, 47)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -1812,7 +1814,7 @@ public class ParallaxAndOcclusion extends javax.swing.JFrame {
             BufferedImage myImg = ImageIO.read(imgStream);
             AlbedoMapHelp.setIconImage(myImg);
         } catch (IOException ex) {
-            System.out.println("" + ex);
+            
         }
     }//GEN-LAST:event_AlbedoMapHelpActionPerformed
 
@@ -1838,7 +1840,7 @@ public class ParallaxAndOcclusion extends javax.swing.JFrame {
             BufferedImage myImg = ImageIO.read(imgStream);
             help.setIconImage(myImg);
         } catch (IOException ex) {
-            System.out.println("" + ex);
+            
         }
     }//GEN-LAST:event_AlbedoMapUVFlipHelpActionPerformed
 
@@ -1874,7 +1876,7 @@ public class ParallaxAndOcclusion extends javax.swing.JFrame {
             BufferedImage myImg = ImageIO.read(imgStream);
             help.setIconImage(myImg);
         } catch (IOException ex) {
-            System.out.println("" + ex);
+            
         }
     }//GEN-LAST:event_AlbedoMapFileHelpActionPerformed
 
@@ -1899,7 +1901,7 @@ public class ParallaxAndOcclusion extends javax.swing.JFrame {
             BufferedImage myImg = ImageIO.read(imgStream);
             help.setIconImage(myImg);
         } catch (IOException ex) {
-            System.out.println("" + ex);
+            
         }
     }//GEN-LAST:event_albedoHelpActionPerformed
 
@@ -1927,7 +1929,7 @@ public class ParallaxAndOcclusion extends javax.swing.JFrame {
             BufferedImage myImg = ImageIO.read(imgStream);
             help.setIconImage(myImg);
         } catch (IOException ex) {
-            System.out.println("" + ex);
+            
         }
     }//GEN-LAST:event_AlbedoMapLoopHelpActionPerformed
 
@@ -1958,7 +1960,7 @@ public class ParallaxAndOcclusion extends javax.swing.JFrame {
             BufferedImage myImg = ImageIO.read(imgStream);
             help.setIconImage(myImg);
         } catch (IOException ex) {
-            System.out.println("" + ex);
+            
         }
     }//GEN-LAST:event_AlbedoMapHelp3ActionPerformed
 
@@ -1987,7 +1989,7 @@ public class ParallaxAndOcclusion extends javax.swing.JFrame {
             BufferedImage myImg = ImageIO.read(imgStream);
             help.setIconImage(myImg);
         } catch (IOException ex) {
-            System.out.println("" + ex);
+            
         }
     }//GEN-LAST:event_AlbedoMapUVFlipHelp2ActionPerformed
 
@@ -2029,7 +2031,7 @@ public class ParallaxAndOcclusion extends javax.swing.JFrame {
             BufferedImage myImg = ImageIO.read(imgStream);
             AlbedoMapHelp.setIconImage(myImg);
         } catch (IOException ex) {
-            System.out.println("" + ex);
+            
         }
     }//GEN-LAST:event_AlbedoMapHelp1ActionPerformed
 
@@ -2057,7 +2059,7 @@ public class ParallaxAndOcclusion extends javax.swing.JFrame {
             BufferedImage myImg = ImageIO.read(imgStream);
             help.setIconImage(myImg);
         } catch (IOException ex) {
-            System.out.println("" + ex);
+            
         }
     }//GEN-LAST:event_AlbedoMapUVFlipHelp3ActionPerformed
 
@@ -2093,7 +2095,7 @@ public class ParallaxAndOcclusion extends javax.swing.JFrame {
             BufferedImage myImg = ImageIO.read(imgStream);
             help.setIconImage(myImg);
         } catch (IOException ex) {
-            System.out.println("" + ex);
+            
         }
     }//GEN-LAST:event_AlbedoMapFileHelp1ActionPerformed
 
@@ -2118,7 +2120,7 @@ public class ParallaxAndOcclusion extends javax.swing.JFrame {
             BufferedImage myImg = ImageIO.read(imgStream);
             help.setIconImage(myImg);
         } catch (IOException ex) {
-            System.out.println("" + ex);
+            
         }
 
     }//GEN-LAST:event_albedoHelp1ActionPerformed
@@ -2144,7 +2146,7 @@ public class ParallaxAndOcclusion extends javax.swing.JFrame {
             BufferedImage myImg = ImageIO.read(imgStream);
             help.setIconImage(myImg);
         } catch (IOException ex) {
-            System.out.println("" + ex);
+            
         }
     }//GEN-LAST:event_AlbedoMapLoopHelp1ActionPerformed
 
@@ -2246,7 +2248,7 @@ public class ParallaxAndOcclusion extends javax.swing.JFrame {
             BufferedImage myImg = ImageIO.read(imgStream);
             help.setIconImage(myImg);
         } catch (IOException ex) {
-            System.out.println("" + ex);
+            
         }
     }//GEN-LAST:event_AlbedoMapUVFlipHelp4ActionPerformed
 
@@ -2271,7 +2273,7 @@ public class ParallaxAndOcclusion extends javax.swing.JFrame {
             BufferedImage myImg = ImageIO.read(imgStream);
             help.setIconImage(myImg);
         } catch (IOException ex) {
-            System.out.println("" + ex);
+            
         }
     }//GEN-LAST:event_AlbedoMapUVFlipHelp5ActionPerformed
 
@@ -2304,7 +2306,7 @@ public class ParallaxAndOcclusion extends javax.swing.JFrame {
             BufferedImage myImg = ImageIO.read(imgStream);
             help.setIconImage(myImg);
         } catch (IOException ex) {
-            System.out.println("" + ex);
+            
         }
     }//GEN-LAST:event_AlbedoMapHelp4ActionPerformed
 
@@ -2322,32 +2324,14 @@ public class ParallaxAndOcclusion extends javax.swing.JFrame {
     }
     private void back1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_back1ActionPerformed
         closeAllDialogs();
-        WindowFrame w = new WindowFrame();
-        w.setLocation(this.getLocation());
-        ErrorWindow.dispose();
-        this.dispose();
-        w.setSize(960, 549);
-        w.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-        w.addWindowListener(new WindowAdapter() {
-            public void windowClosing(WindowEvent we) {
-                callMenu();
-                w.dispose();
-            }
-        });
-        w.setAlwaysOnTop(true);
-        w.setAlwaysOnTop(false);
-        w.setResizable(false);
-        w.setLayout(new BorderLayout());
-
-        ImageIcon img = new ImageIcon(getClass().getResource("/icon/ico.png"));
-        w.setIconImage(img.getImage());
-        w.setVisible(true);
+        this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
     }//GEN-LAST:event_back1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
 
         JFrame help = new JFrame();
         JLabel helptext = new JLabel();
+        help.setName("help");
         helptext.setText("<html>"
                 + "<b>Occlusion Tips :</b> The ambient occlusion (AO) is an effect that approximates the attenuation of environment light due to occlusion.<br>"
                 + "Bacause sky lighting from many directions, cannot simply to calculating shadows in the real-time.<br>"
@@ -2367,7 +2351,7 @@ public class ParallaxAndOcclusion extends javax.swing.JFrame {
             BufferedImage myImg = ImageIO.read(imgStream);
             help.setIconImage(myImg);
         } catch (IOException ex) {
-            System.out.println("" + ex);
+            
         }
     }//GEN-LAST:event_jButton2ActionPerformed
 
