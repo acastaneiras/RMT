@@ -2159,7 +2159,11 @@ public class EmissiveSection extends javax.swing.JFrame {
                     catchNew = EmissiveScale.getText(); //catchnewdigit
                     catchNew = catchNew.replaceAll(" ", "");
                     line = ("const float3 emissive = " + catchNew + ";");
+<<<<<<< HEAD
                     
+=======
+                    System.out.println("" + catchNew);
+>>>>>>> 29c2b9324a955f83e5bc4c8af8e1d0ae353c16e4
                 }
                 oldtext += line + "\r\n";
                 line = br.readLine();

@@ -156,7 +156,11 @@ public class Start extends javax.swing.JFrame {
         try {
             java.awt.Desktop.getDesktop().browse(java.net.URI.create("https://github.com/Syloid/RMT/wiki/4:-Create-Materials-from-each-.x-file-subset"));
         } catch (java.io.IOException e) {
+<<<<<<< HEAD
             
+=======
+            System.out.println(e.getMessage());
+>>>>>>> 29c2b9324a955f83e5bc4c8af8e1d0ae353c16e4
         }
     }//GEN-LAST:event_jButton3ActionPerformed
     public void run(File f) {
@@ -182,7 +186,11 @@ public class Start extends javax.swing.JFrame {
         } catch (IOException ex) {
         }
         MaterialMakerv2.addFileToEdit(tempFile);
+<<<<<<< HEAD
         
+=======
+        System.out.println("fte " + foo.getFileToEdit());
+>>>>>>> 29c2b9324a955f83e5bc4c8af8e1d0ae353c16e4
 
         WindowFrame w = new WindowFrame();
         w.setAlwaysOnTop(true);

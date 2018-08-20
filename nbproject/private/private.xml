@@ -2,6 +2,22 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
+<<<<<<< HEAD
         <group/>
+=======
+        <group>
+            <file>file:/C:/Users/alex/Documents/NetBeansProjects/RMT/src/mmd/ParallaxAndOcclusion.java</file>
+            <file>file:/C:/Users/alex/Documents/NetBeansProjects/RMT/src/rpmxc/Options.java</file>
+            <file>file:/C:/Users/alex/Documents/NetBeansProjects/RMT/src/mmd/MaterialMakerv2.java</file>
+            <file>file:/C:/Users/alex/Documents/NetBeansProjects/RMT/src/mmd/MetalnessSection.java</file>
+            <file>file:/C:/Users/alex/Documents/NetBeansProjects/RMT/src/mmd/WindowFrame.java</file>
+            <file>file:/C:/Users/alex/Documents/NetBeansProjects/RMT/src/mmd/AlbedoSection.java</file>
+            <file>file:/C:/Users/alex/Documents/NetBeansProjects/RMT/src/mmd/NormalSection.java</file>
+            <file>file:/C:/Users/alex/Documents/NetBeansProjects/RMT/src/rpmxc/Start.java</file>
+            <file>file:/C:/Users/alex/Documents/NetBeansProjects/RMT/src/mmd/Menu.java</file>
+            <file>file:/C:/Users/alex/Documents/NetBeansProjects/RMT/src/mmd/CustomEnableSection.java</file>
+            <file>file:/C:/Users/alex/Documents/NetBeansProjects/RMT/src/mmd/AlphaSection.java</file>
+        </group>
+>>>>>>> 29c2b9324a955f83e5bc4c8af8e1d0ae353c16e4
     </open-files>
 </project-private>
