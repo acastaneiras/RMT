@@ -63,8 +63,6 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import static mmd.MaterialMakerv2.callMenu;
-import rpmxc.Start;
 
 public class EmissiveSection extends javax.swing.JFrame {
 
@@ -1492,7 +1490,7 @@ public class EmissiveSection extends javax.swing.JFrame {
             BufferedImage myImg = ImageIO.read(imgStream);
             AlbedoMapHelp.setIconImage(myImg);
         } catch (IOException ex) {
-            
+            System.out.println("" + ex);
         }
     }//GEN-LAST:event_AlbedoMapHelpActionPerformed
 
@@ -1518,7 +1516,7 @@ public class EmissiveSection extends javax.swing.JFrame {
             BufferedImage myImg = ImageIO.read(imgStream);
             help.setIconImage(myImg);
         } catch (IOException ex) {
-            
+            System.out.println("" + ex);
         }
     }//GEN-LAST:event_AlbedoMapUVFlipHelpActionPerformed
 
@@ -1552,7 +1550,7 @@ public class EmissiveSection extends javax.swing.JFrame {
             BufferedImage myImg = ImageIO.read(imgStream);
             help.setIconImage(myImg);
         } catch (IOException ex) {
-            
+            System.out.println("" + ex);
         }
     }//GEN-LAST:event_AlbedoMapFileHelpActionPerformed
 
@@ -1576,7 +1574,7 @@ public class EmissiveSection extends javax.swing.JFrame {
             BufferedImage myImg = ImageIO.read(imgStream);
             help.setIconImage(myImg);
         } catch (IOException ex) {
-            
+            System.out.println("" + ex);
         }
     }//GEN-LAST:event_albedoHelpActionPerformed
 
@@ -1601,7 +1599,7 @@ public class EmissiveSection extends javax.swing.JFrame {
             BufferedImage myImg = ImageIO.read(imgStream);
             help.setIconImage(myImg);
         } catch (IOException ex) {
-            
+            System.out.println("" + ex);
         }
     }//GEN-LAST:event_AlbedoMapLoopHelpActionPerformed
 
@@ -1629,7 +1627,7 @@ public class EmissiveSection extends javax.swing.JFrame {
             BufferedImage myImg = ImageIO.read(imgStream);
             help.setIconImage(myImg);
         } catch (IOException ex) {
-            
+            System.out.println("" + ex);
         }
     }//GEN-LAST:event_AlbedoMapHelp3ActionPerformed
 
@@ -1655,7 +1653,7 @@ public class EmissiveSection extends javax.swing.JFrame {
             BufferedImage myImg = ImageIO.read(imgStream);
             help.setIconImage(myImg);
         } catch (IOException ex) {
-            
+            System.out.println("" + ex);
         }
     }//GEN-LAST:event_AlbedoMapUVFlipHelp1ActionPerformed
 
@@ -1679,7 +1677,7 @@ public class EmissiveSection extends javax.swing.JFrame {
             BufferedImage myImg = ImageIO.read(imgStream);
             help.setIconImage(myImg);
         } catch (IOException ex) {
-            
+            System.out.println("" + ex);
         }
 
     }//GEN-LAST:event_albedoHelp1ActionPerformed
@@ -1704,7 +1702,7 @@ public class EmissiveSection extends javax.swing.JFrame {
             BufferedImage myImg = ImageIO.read(imgStream);
             help.setIconImage(myImg);
         } catch (IOException ex) {
-            
+            System.out.println("" + ex);
         }
     }//GEN-LAST:event_AlbedoMapLoopHelp1ActionPerformed
 
@@ -1731,7 +1729,7 @@ public class EmissiveSection extends javax.swing.JFrame {
             BufferedImage myImg = ImageIO.read(imgStream);
             help.setIconImage(myImg);
         } catch (IOException ex) {
-            
+            System.out.println("" + ex);
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -1771,7 +1769,7 @@ public class EmissiveSection extends javax.swing.JFrame {
             BufferedImage myImg = ImageIO.read(imgStream);
             help.setIconImage(myImg);
         } catch (IOException ex) {
-            
+            System.out.println("" + ex);
         }
     }//GEN-LAST:event_AlbedoMapUVFlipHelp2ActionPerformed
 
@@ -1795,7 +1793,7 @@ public class EmissiveSection extends javax.swing.JFrame {
             BufferedImage myImg = ImageIO.read(imgStream);
             help.setIconImage(myImg);
         } catch (IOException ex) {
-            
+            System.out.println("" + ex);
         }
     }//GEN-LAST:event_AlbedoMapUVFlipHelp3ActionPerformed
 
@@ -1822,7 +1820,7 @@ public class EmissiveSection extends javax.swing.JFrame {
             BufferedImage myImg = ImageIO.read(imgStream);
             help.setIconImage(myImg);
         } catch (IOException ex) {
-            
+            System.out.println("" + ex);
         }
     }//GEN-LAST:event_AlbedoMapUVFlipHelp4ActionPerformed
     private void closeAllDialogs() {
@@ -2159,11 +2157,7 @@ public class EmissiveSection extends javax.swing.JFrame {
                     catchNew = EmissiveScale.getText(); //catchnewdigit
                     catchNew = catchNew.replaceAll(" ", "");
                     line = ("const float3 emissive = " + catchNew + ";");
-<<<<<<< HEAD
-                    
-=======
                     System.out.println("" + catchNew);
->>>>>>> 29c2b9324a955f83e5bc4c8af8e1d0ae353c16e4
                 }
                 oldtext += line + "\r\n";
                 line = br.readLine();

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright 2018 alex.
+ * Copyright 2018 RedEyedJealousy.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -57,10 +57,6 @@ import mmd.MaterialMakerv2;
  */
 public class Options extends javax.swing.JFrame {
 
-<<<<<<< HEAD
-=======
-    public static String filerrors = ""; //String that will show filerrors
->>>>>>> 29c2b9324a955f83e5bc4c8af8e1d0ae353c16e4
     /*Icons*/
     ImageIcon ico = new ImageIcon(Options.class.getResource("/icon/ico.png"));
     static ImageIcon img = new ImageIcon(Options.class.getResource("/icon/icosmall.png"));
@@ -304,19 +300,11 @@ public class Options extends javax.swing.JFrame {
                 occlusionMapsPath = getMapsPath(destination, parentComponent, "Occlusion");
                 suffixes[5] = getSuffix("Occlusion");
             }
-<<<<<<< HEAD
             
             for (int i = 0; i < suffixes.length; i++) {
                 
             }
             
-=======
-            System.out.println("aqui?");
-            for (int i = 0; i < suffixes.length; i++) {
-                System.out.println("Suffix " + i + ": " + suffixes[i]);
-            }
-            System.out.println("aqui2");
->>>>>>> 29c2b9324a955f83e5bc4c8af8e1d0ae353c16e4
             try {
                 BufferedReader br;
                 br = new BufferedReader(new FileReader(new File(filePath)));
@@ -366,11 +354,7 @@ public class Options extends javax.swing.JFrame {
                                     String destinationParent = new File(destination).toString();
                                     relative[1] = mmd.toRelative.convertToRelativePath(destinationParent, RealFiles[1].toString());//relativize path
                                 }
-<<<<<<< HEAD
                                 
-=======
-                                System.out.println("rel: " + relative[1]);
->>>>>>> 29c2b9324a955f83e5bc4c8af8e1d0ae353c16e4
                             }
                             if (smoothnessCheck) {
                                 try {
@@ -400,11 +384,7 @@ public class Options extends javax.swing.JFrame {
                                 }
                                 if (RealFiles[3].toString().equalsIgnoreCase("error") || RealFiles[3].toString().equalsIgnoreCase("null")) {//ERRORS
                                     relative[3] = "FileNotFound";
-<<<<<<< HEAD
                                     
-=======
-                                    System.out.println("EY");
->>>>>>> 29c2b9324a955f83e5bc4c8af8e1d0ae353c16e4
                                     errors[j] = sub;//saving which sub has an error
                                     j++;
                                 } else {//RELATIVIZE SUCCESSFUL FILES
@@ -450,11 +430,7 @@ public class Options extends javax.swing.JFrame {
 
                             }
                         } catch (Exception e) {
-<<<<<<< HEAD
                             
-=======
-                            System.out.println("e: " + e);
->>>>>>> 29c2b9324a955f83e5bc4c8af8e1d0ae353c16e4
                         }
                         /**
                          * ****************:)*************************
@@ -566,16 +542,11 @@ public class Options extends javax.swing.JFrame {
                     destination = dest.getSelectedFile().toString();
                     //if material common doesnt exist in destiantion/materialcommon create it
                     if (!new File(destination + "/material_common_2.0.fxsub").exists()) {
-<<<<<<< HEAD
                         
-=======
-                        System.out.println("no hey");
->>>>>>> 29c2b9324a955f83e5bc4c8af8e1d0ae353c16e4
                         File orig = new File("../../Materials/material_common_2.0.fxsub");
                         File desti = new File(destination + "/material_common_2.0.fxsub");
                         copyFile(orig, desti);
                     } else {
-<<<<<<< HEAD
                         
                     }
                     initializeOptions(parentComponent);
@@ -592,23 +563,6 @@ public class Options extends javax.swing.JFrame {
                 
 
                 
-=======
-                        System.out.println("hey");
-                    }
-                    initializeOptions(parentComponent);
-                }
-
-            } else {
-                System.out.println("askdjasdjahjk");
-                System.out.println("s: " + st.s.toString());
-                File f = new File(st.s.toString());
-                if (st.s.exists()) {
-                    st.s.delete();
-
-                }
-
-                System.out.println("?????????'");
->>>>>>> 29c2b9324a955f83e5bc4c8af8e1d0ae353c16e4
             }
 
         } catch (Exception e) {
@@ -671,11 +625,7 @@ public class Options extends javax.swing.JFrame {
             }
 
         }
-<<<<<<< HEAD
         
-=======
-        System.out.println("name " + noExtension);
->>>>>>> 29c2b9324a955f83e5bc4c8af8e1d0ae353c16e4
         int input = JOptionPane.showConfirmDialog(a,//component,
                 "<html>Would you like to attach all the " + num + " Materials created into your MikuMikuDance Project?</html>", "Attach Materials",
                 JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE, img);
@@ -712,11 +662,7 @@ public class Options extends javax.swing.JFrame {
                             line = br.readLine();
                         }
                     }
-<<<<<<< HEAD
                     
-=======
-                    System.out.println("NoExtension: " + noExtension);
->>>>>>> 29c2b9324a955f83e5bc4c8af8e1d0ae353c16e4
                     br.close();
                     //Now we read again the file for attaching them materials
                     String fors = "";
@@ -785,11 +731,7 @@ public class Options extends javax.swing.JFrame {
                 try {
                     java.awt.Desktop.getDesktop().browse(java.net.URI.create("https://github.com/Syloid/RMT/issues"));
                 } catch (IOException ex) {
-<<<<<<< HEAD
 
-=======
-                    
->>>>>>> 29c2b9324a955f83e5bc4c8af8e1d0ae353c16e4
                 }
             }
         });
@@ -814,11 +756,7 @@ public class Options extends javax.swing.JFrame {
             String line = br.readLine();
             Boolean firstOne = true;
             String oldtext = "";
-<<<<<<< HEAD
             
-=======
-            System.out.println("PMDNUM btw: " + pmdNum);
->>>>>>> 29c2b9324a955f83e5bc4c8af8e1d0ae353c16e4
             while (line != null) {
                 if (line.contains("[Effect@MaterialMap]")) {//reading materialmap section
                     oldtext += line + "\r\n";
@@ -975,7 +913,6 @@ public class Options extends javax.swing.JFrame {
 
     public String getSuffix(String type) {
         String suffix = "";
-<<<<<<< HEAD
         try {
 
             do {
@@ -991,15 +928,6 @@ public class Options extends javax.swing.JFrame {
             File file_to_delete = v2.getFileToEdit();
             file_to_delete.delete();
         }
-=======
-        do {
-            suffix = (String) JOptionPane.showInputDialog(parentComponent/*a*/, "<html>If all your " + type + " Map Files have a suffix, please, specify it.<br><br>Example:<br>"
-                    + "<ul>"
-                    + "<li>roof<b>_normal</b>.png</li></ul>"
-                    + "<br><br> LEAVE THIS BLANK IF NOT</html>", type + " Maps Suffix", EXIT_ON_CLOSE, img/*img*/, null, null);
-
-        } while (suffix.contains("../") || suffix.contains("./") || suffix.contains("//") || (suffix.contains(".fx") || (suffix.equalsIgnoreCase("fx"))));
->>>>>>> 29c2b9324a955f83e5bc4c8af8e1d0ae353c16e4
         return suffix;
     }
 

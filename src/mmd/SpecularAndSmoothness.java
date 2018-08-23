@@ -59,8 +59,6 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import static mmd.MaterialMakerv2.callMenu;
-import rpmxc.Start;
 
 public class SpecularAndSmoothness extends javax.swing.JFrame {
 
@@ -1158,8 +1156,11 @@ public class SpecularAndSmoothness extends javax.swing.JFrame {
         setAutoRequestFocus(false);
         setResizable(false);
         setSize(new java.awt.Dimension(960, 540));
+        getContentPane().setLayout(null);
 
         jLabel1.setText("<html><b>SPECULAR MAP FROM</b></html>");
+        getContentPane().add(jLabel1);
+        jLabel1.setBounds(54, 90, 161, 20);
 
         SpecularMapFrom.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "0", "1", "2", "3", "4", "5", "6", "7", "8" }));
         try{
@@ -1179,10 +1180,16 @@ public class SpecularAndSmoothness extends javax.swing.JFrame {
                 SpecularMapFromActionPerformed(evt);
             }
         });
+        getContentPane().add(SpecularMapFrom);
+        SpecularMapFrom.setBounds(310, 90, 82, 20);
 
         jLabel2.setText("<html><b>SPECULAR MAP UV FLIP</b></html>");
+        getContentPane().add(jLabel2);
+        jLabel2.setBounds(54, 151, 130, 14);
 
         jLabel6.setText("<html><b>SPECULAR MAP FILE</b></html>");
+        getContentPane().add(jLabel6);
+        jLabel6.setBounds(54, 238, 111, 14);
 
         changeFile.setText("...");
         changeFile.addChangeListener(new javax.swing.event.ChangeListener() {
@@ -1195,10 +1202,16 @@ public class SpecularAndSmoothness extends javax.swing.JFrame {
                 changeFileActionPerformed(evt);
             }
         });
+        getContentPane().add(changeFile);
+        changeFile.setBounds(309, 234, 83, 23);
 
         jLabel8.setText("<html><b>SPECULAR MAP SCALE</b></html>");
+        getContentPane().add(jLabel8);
+        jLabel8.setBounds(54, 298, 122, 26);
 
         jLabel9.setText("<html><b>SPECULAR MAP LOOP</b></html>");
+        getContentPane().add(jLabel9);
+        jLabel9.setBounds(54, 368, 117, 14);
 
         SpecularMapUVFlip.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "0", "1", "2", "3" }));
         try{
@@ -1217,6 +1230,8 @@ public class SpecularAndSmoothness extends javax.swing.JFrame {
                 SpecularMapUVFlipActionPerformed(evt);
             }
         });
+        getContentPane().add(SpecularMapUVFlip);
+        SpecularMapUVFlip.setBounds(310, 148, 82, 20);
 
         AlbedoMapHelp.setText("Help");
         AlbedoMapHelp.addActionListener(new java.awt.event.ActionListener() {
@@ -1224,6 +1239,8 @@ public class SpecularAndSmoothness extends javax.swing.JFrame {
                 AlbedoMapHelpActionPerformed(evt);
             }
         });
+        getContentPane().add(AlbedoMapHelp);
+        AlbedoMapHelp.setBounds(398, 89, 53, 23);
 
         AlbedoMapUVFlipHelp.setText("Help");
         AlbedoMapUVFlipHelp.addActionListener(new java.awt.event.ActionListener() {
@@ -1231,6 +1248,8 @@ public class SpecularAndSmoothness extends javax.swing.JFrame {
                 AlbedoMapUVFlipHelpActionPerformed(evt);
             }
         });
+        getContentPane().add(AlbedoMapUVFlipHelp);
+        AlbedoMapUVFlipHelp.setBounds(398, 147, 53, 23);
 
         AlbedoMapFileHelp.setText("Help");
         AlbedoMapFileHelp.addActionListener(new java.awt.event.ActionListener() {
@@ -1238,6 +1257,8 @@ public class SpecularAndSmoothness extends javax.swing.JFrame {
                 AlbedoMapFileHelpActionPerformed(evt);
             }
         });
+        getContentPane().add(AlbedoMapFileHelp);
+        AlbedoMapFileHelp.setBounds(398, 234, 53, 23);
 
         albedoHelp.setText("Help");
         albedoHelp.addActionListener(new java.awt.event.ActionListener() {
@@ -1245,6 +1266,8 @@ public class SpecularAndSmoothness extends javax.swing.JFrame {
                 albedoHelpActionPerformed(evt);
             }
         });
+        getContentPane().add(albedoHelp);
+        albedoHelp.setBounds(180, 300, 53, 23);
 
         AlbedoMapLoopHelp.setText("Help");
         AlbedoMapLoopHelp.addActionListener(new java.awt.event.ActionListener() {
@@ -1252,8 +1275,12 @@ public class SpecularAndSmoothness extends javax.swing.JFrame {
                 AlbedoMapLoopHelpActionPerformed(evt);
             }
         });
+        getContentPane().add(AlbedoMapLoopHelp);
+        AlbedoMapLoopHelp.setBounds(181, 364, 53, 23);
 
         jLabel3.setText("<html><b>SPECULAR MAP TYPE</b></html>");
+        getContentPane().add(jLabel3);
+        jLabel3.setBounds(54, 119, 161, 20);
 
         SpecularMapType.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "0", "1", "2", "3", "4" }));
         try{
@@ -1273,6 +1300,8 @@ public class SpecularAndSmoothness extends javax.swing.JFrame {
                 SpecularMapTypeActionPerformed(evt);
             }
         });
+        getContentPane().add(SpecularMapType);
+        SpecularMapType.setBounds(310, 119, 82, 20);
 
         AlbedoMapHelp3.setText("Help");
         AlbedoMapHelp3.addActionListener(new java.awt.event.ActionListener() {
@@ -1280,10 +1309,16 @@ public class SpecularAndSmoothness extends javax.swing.JFrame {
                 AlbedoMapHelp3ActionPerformed(evt);
             }
         });
+        getContentPane().add(AlbedoMapHelp3);
+        AlbedoMapHelp3.setBounds(398, 118, 53, 23);
 
         jLabel4.setText("<html><b>SPECULAR MAP SWIZZLE</b></html>");
+        getContentPane().add(jLabel4);
+        jLabel4.setBounds(54, 180, 137, 14);
 
         jLabel5.setText("<html><b>SPECULAR MAP APPLY SCALE</b></html>");
+        getContentPane().add(jLabel5);
+        jLabel5.setBounds(54, 209, 160, 14);
 
         SpecularMapSwizzle.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "0", "1", "2", "3" }));
         try{
@@ -1302,6 +1337,8 @@ public class SpecularAndSmoothness extends javax.swing.JFrame {
                 SpecularMapSwizzleActionPerformed(evt);
             }
         });
+        getContentPane().add(SpecularMapSwizzle);
+        SpecularMapSwizzle.setBounds(310, 177, 82, 20);
 
         SpecularMapApplyScale.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "0", "1", "2" }));
         try{
@@ -1320,6 +1357,8 @@ public class SpecularAndSmoothness extends javax.swing.JFrame {
                 SpecularMapApplyScaleActionPerformed(evt);
             }
         });
+        getContentPane().add(SpecularMapApplyScale);
+        SpecularMapApplyScale.setBounds(310, 206, 82, 20);
 
         AlbedoMapUVFlipHelp1.setText("Help");
         AlbedoMapUVFlipHelp1.addActionListener(new java.awt.event.ActionListener() {
@@ -1327,6 +1366,8 @@ public class SpecularAndSmoothness extends javax.swing.JFrame {
                 AlbedoMapUVFlipHelp1ActionPerformed(evt);
             }
         });
+        getContentPane().add(AlbedoMapUVFlipHelp1);
+        AlbedoMapUVFlipHelp1.setBounds(398, 205, 53, 23);
 
         AlbedoMapUVFlipHelp2.setText("Help");
         AlbedoMapUVFlipHelp2.addActionListener(new java.awt.event.ActionListener() {
@@ -1334,10 +1375,16 @@ public class SpecularAndSmoothness extends javax.swing.JFrame {
                 AlbedoMapUVFlipHelp2ActionPerformed(evt);
             }
         });
+        getContentPane().add(AlbedoMapUVFlipHelp2);
+        AlbedoMapUVFlipHelp2.setBounds(398, 176, 53, 23);
 
         jLabel10.setText("<html><b>SMOOTHNESS MAP SCALE</b></html>");
+        getContentPane().add(jLabel10);
+        jLabel10.setBounds(505, 298, 140, 26);
 
         jLabel11.setText("<html><b>SMOOTHNESS MAP LOOP</b></html>");
+        getContentPane().add(jLabel11);
+        jLabel11.setBounds(505, 368, 135, 14);
 
         SmoothnessMapUVFlip.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "0", "1", "2", "3" }));
         try{
@@ -1356,6 +1403,8 @@ public class SpecularAndSmoothness extends javax.swing.JFrame {
                 SmoothnessMapUVFlipActionPerformed(evt);
             }
         });
+        getContentPane().add(SmoothnessMapUVFlip);
+        SmoothnessMapUVFlip.setBounds(746, 148, 82, 20);
 
         AlbedoMapHelp1.setText("Help");
         AlbedoMapHelp1.addActionListener(new java.awt.event.ActionListener() {
@@ -1363,6 +1412,8 @@ public class SpecularAndSmoothness extends javax.swing.JFrame {
                 AlbedoMapHelp1ActionPerformed(evt);
             }
         });
+        getContentPane().add(AlbedoMapHelp1);
+        AlbedoMapHelp1.setBounds(834, 86, 53, 23);
 
         AlbedoMapUVFlipHelp3.setText("Help");
         AlbedoMapUVFlipHelp3.addActionListener(new java.awt.event.ActionListener() {
@@ -1370,6 +1421,8 @@ public class SpecularAndSmoothness extends javax.swing.JFrame {
                 AlbedoMapUVFlipHelp3ActionPerformed(evt);
             }
         });
+        getContentPane().add(AlbedoMapUVFlipHelp3);
+        AlbedoMapUVFlipHelp3.setBounds(834, 147, 53, 23);
 
         AlbedoMapFileHelp1.setText("Help");
         AlbedoMapFileHelp1.addActionListener(new java.awt.event.ActionListener() {
@@ -1377,6 +1430,8 @@ public class SpecularAndSmoothness extends javax.swing.JFrame {
                 AlbedoMapFileHelp1ActionPerformed(evt);
             }
         });
+        getContentPane().add(AlbedoMapFileHelp1);
+        AlbedoMapFileHelp1.setBounds(834, 234, 53, 23);
 
         albedoHelp1.setText("Help");
         albedoHelp1.addActionListener(new java.awt.event.ActionListener() {
@@ -1384,6 +1439,8 @@ public class SpecularAndSmoothness extends javax.swing.JFrame {
                 albedoHelp1ActionPerformed(evt);
             }
         });
+        getContentPane().add(albedoHelp1);
+        albedoHelp1.setBounds(649, 300, 53, 23);
 
         AlbedoMapLoopHelp1.setText("Help");
         AlbedoMapLoopHelp1.addActionListener(new java.awt.event.ActionListener() {
@@ -1391,8 +1448,12 @@ public class SpecularAndSmoothness extends javax.swing.JFrame {
                 AlbedoMapLoopHelp1ActionPerformed(evt);
             }
         });
+        getContentPane().add(AlbedoMapLoopHelp1);
+        AlbedoMapLoopHelp1.setBounds(650, 364, 53, 23);
 
         jLabel12.setText("<html><b>SMOOTHNESS MAP FROM</b></html>");
+        getContentPane().add(jLabel12);
+        jLabel12.setBounds(505, 87, 161, 20);
 
         SmoothnessMapFrom.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9" }));
         try{
@@ -1412,10 +1473,16 @@ public class SpecularAndSmoothness extends javax.swing.JFrame {
                 SmoothnessMapFromActionPerformed(evt);
             }
         });
+        getContentPane().add(SmoothnessMapFrom);
+        SmoothnessMapFrom.setBounds(746, 87, 82, 20);
 
         jLabel13.setText("<html><b>SMOOTHNESS MAP UV FLIP</b></html>");
+        getContentPane().add(jLabel13);
+        jLabel13.setBounds(505, 151, 148, 14);
 
         jLabel14.setText("<html><b>SMOOTHNESS MAP FILE</b></html>");
+        getContentPane().add(jLabel14);
+        jLabel14.setBounds(505, 232, 129, 14);
 
         changeFile1.setText("...");
         changeFile1.addChangeListener(new javax.swing.event.ChangeListener() {
@@ -1428,10 +1495,16 @@ public class SpecularAndSmoothness extends javax.swing.JFrame {
                 changeFile1ActionPerformed(evt);
             }
         });
+        getContentPane().add(changeFile1);
+        changeFile1.setBounds(746, 234, 82, 23);
 
         jLabel15.setText("<html><b>SMOOTHNESS MAP SWIZZLE</b></html>");
+        getContentPane().add(jLabel15);
+        jLabel15.setBounds(505, 180, 155, 14);
 
         jLabel16.setText("<html><b>SMOOTHNESS MAP APPLY SCALE</b></html>");
+        getContentPane().add(jLabel16);
+        jLabel16.setBounds(505, 209, 178, 14);
 
         SmoothnessMapSwizzle.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "0", "1", "2", "3" }));
         try{
@@ -1450,6 +1523,8 @@ public class SpecularAndSmoothness extends javax.swing.JFrame {
                 SmoothnessMapSwizzleActionPerformed(evt);
             }
         });
+        getContentPane().add(SmoothnessMapSwizzle);
+        SmoothnessMapSwizzle.setBounds(746, 177, 82, 20);
 
         SmoothnessMapApplyScale.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "0", "1", "2" }));
         try{
@@ -1468,6 +1543,8 @@ public class SpecularAndSmoothness extends javax.swing.JFrame {
                 SmoothnessMapApplyScaleActionPerformed(evt);
             }
         });
+        getContentPane().add(SmoothnessMapApplyScale);
+        SmoothnessMapApplyScale.setBounds(746, 206, 82, 20);
 
         AlbedoMapUVFlipHelp4.setText("Help");
         AlbedoMapUVFlipHelp4.addActionListener(new java.awt.event.ActionListener() {
@@ -1475,6 +1552,8 @@ public class SpecularAndSmoothness extends javax.swing.JFrame {
                 AlbedoMapUVFlipHelp4ActionPerformed(evt);
             }
         });
+        getContentPane().add(AlbedoMapUVFlipHelp4);
+        AlbedoMapUVFlipHelp4.setBounds(834, 205, 53, 23);
 
         AlbedoMapUVFlipHelp5.setText("Help");
         AlbedoMapUVFlipHelp5.addActionListener(new java.awt.event.ActionListener() {
@@ -1482,6 +1561,8 @@ public class SpecularAndSmoothness extends javax.swing.JFrame {
                 AlbedoMapUVFlipHelp5ActionPerformed(evt);
             }
         });
+        getContentPane().add(AlbedoMapUVFlipHelp5);
+        AlbedoMapUVFlipHelp5.setBounds(834, 176, 53, 23);
 
         try{
             SpecularMapFile.setEditable(false);
@@ -1490,6 +1571,8 @@ public class SpecularAndSmoothness extends javax.swing.JFrame {
             errors+=1;
             SomethingWentWrong();
         }
+        getContentPane().add(SpecularMapFile);
+        SpecularMapFile.setBounds(54, 258, 134, 20);
 
         try{
             SmoothnessMapFile.setEditable(false);
@@ -1498,6 +1581,8 @@ public class SpecularAndSmoothness extends javax.swing.JFrame {
             errors+=1;
             SomethingWentWrong();
         }
+        getContentPane().add(SmoothnessMapFile);
+        SmoothnessMapFile.setBounds(505, 258, 134, 20);
 
         back1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/bg/back.png"))); // NOI18N
         back1.setBorder(null);
@@ -1508,8 +1593,12 @@ public class SpecularAndSmoothness extends javax.swing.JFrame {
                 back1ActionPerformed(evt);
             }
         });
+        getContentPane().add(back1);
+        back1.setBounds(54, 0, 47, 55);
 
         jLabel17.setText("<html><b>SMOOTHNESS MAP TYPE</b></html>");
+        getContentPane().add(jLabel17);
+        jLabel17.setBounds(505, 119, 161, 20);
 
         SmoothnessMapType.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "0", "1", "2" }));
         try{
@@ -1529,6 +1618,8 @@ public class SpecularAndSmoothness extends javax.swing.JFrame {
                 SmoothnessMapTypeActionPerformed(evt);
             }
         });
+        getContentPane().add(SmoothnessMapType);
+        SmoothnessMapType.setBounds(746, 119, 82, 20);
 
         AlbedoMapHelp4.setText("Help");
         AlbedoMapHelp4.addActionListener(new java.awt.event.ActionListener() {
@@ -1536,6 +1627,8 @@ public class SpecularAndSmoothness extends javax.swing.JFrame {
                 AlbedoMapHelp4ActionPerformed(evt);
             }
         });
+        getContentPane().add(AlbedoMapHelp4);
+        AlbedoMapHelp4.setBounds(834, 118, 53, 23);
 
         jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/bg/tip.png"))); // NOI18N
         jButton2.setBorder(null);
@@ -1548,6 +1641,8 @@ public class SpecularAndSmoothness extends javax.swing.JFrame {
                 jButton2ActionPerformed(evt);
             }
         });
+        getContentPane().add(jButton2);
+        jButton2.setBounds(107, 0, 40, 55);
 
         jButton4.setText("Preview");
         jButton4.addActionListener(new java.awt.event.ActionListener() {
@@ -1555,6 +1650,8 @@ public class SpecularAndSmoothness extends javax.swing.JFrame {
                 jButton4ActionPerformed(evt);
             }
         });
+        getContentPane().add(jButton4);
+        jButton4.setBounds(194, 257, 71, 23);
 
         jButton5.setText("Preview");
         jButton5.addActionListener(new java.awt.event.ActionListener() {
@@ -1562,210 +1659,8 @@ public class SpecularAndSmoothness extends javax.swing.JFrame {
                 jButton5ActionPerformed(evt);
             }
         });
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(54, 54, 54)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(changeFile, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                        .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(AlbedoMapLoopHelp))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                        .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(albedoHelp))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                        .addComponent(SpecularMapFile, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jButton4)))
-                                .addGap(0, 0, Short.MAX_VALUE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(AlbedoMapFileHelp))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addGroup(layout.createSequentialGroup()
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGroup(layout.createSequentialGroup()
-                                            .addComponent(back1, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                            .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                    .addGap(95, 95, 95)
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                        .addComponent(SpecularMapFrom, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(SpecularMapType, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addComponent(SpecularMapUVFlip, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(SpecularMapSwizzle, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(SpecularMapApplyScale, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(AlbedoMapHelp, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(AlbedoMapUVFlipHelp)
-                            .addComponent(AlbedoMapHelp3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(AlbedoMapUVFlipHelp1)
-                            .addComponent(AlbedoMapUVFlipHelp2))))
-                .addGap(54, 54, 54)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addGroup(layout.createSequentialGroup()
-                            .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(albedoHelp1)
-                            .addGap(1, 1, 1))
-                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                            .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addComponent(AlbedoMapLoopHelp1)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(SmoothnessMapFile, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton5))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(SmoothnessMapFrom, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel17, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(SmoothnessMapType, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(SmoothnessMapUVFlip, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(SmoothnessMapSwizzle, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(changeFile1, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 63, Short.MAX_VALUE)
-                                .addComponent(SmoothnessMapApplyScale, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(AlbedoMapHelp1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(AlbedoMapUVFlipHelp3)
-                            .addComponent(AlbedoMapUVFlipHelp4)
-                            .addComponent(AlbedoMapUVFlipHelp5)
-                            .addComponent(AlbedoMapFileHelp1)
-                            .addComponent(AlbedoMapHelp4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                .addGap(53, 57, Short.MAX_VALUE))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                            .addComponent(back1, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(31, 31, 31)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(SmoothnessMapFrom, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(AlbedoMapHelp1)))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(89, 89, 89)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(SpecularMapFrom, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(AlbedoMapHelp)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addGap(6, 6, 6)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(SmoothnessMapFile, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton5)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(SpecularMapType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(AlbedoMapHelp3)
-                                .addComponent(jLabel17, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(SmoothnessMapType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(AlbedoMapHelp4)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(SpecularMapUVFlip, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(AlbedoMapUVFlipHelp)
-                            .addComponent(SmoothnessMapUVFlip, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(AlbedoMapUVFlipHelp3)
-                            .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(SpecularMapSwizzle, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(AlbedoMapUVFlipHelp2)
-                            .addComponent(SmoothnessMapSwizzle, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(AlbedoMapUVFlipHelp5))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(SpecularMapApplyScale, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(AlbedoMapUVFlipHelp1)
-                            .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(SmoothnessMapApplyScale, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(AlbedoMapUVFlipHelp4))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(changeFile)
-                            .addComponent(AlbedoMapFileHelp)
-                            .addComponent(changeFile1)
-                            .addComponent(AlbedoMapFileHelp1))
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(SpecularMapFile, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton4))))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(albedoHelp))
-                        .addGap(40, 40, 40)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(AlbedoMapLoopHelp)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(albedoHelp1))
-                        .addGap(40, 40, 40)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(AlbedoMapLoopHelp1))))
-                .addGap(86, 86, 86))
-        );
+        getContentPane().add(jButton5);
+        jButton5.setBounds(645, 257, 71, 23);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents

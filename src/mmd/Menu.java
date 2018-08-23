@@ -176,11 +176,7 @@ public class Menu extends javax.swing.JFrame {
         try {
             java.awt.Desktop.getDesktop().browse(java.net.URI.create("https://www.paypal.me/RedEyedJealousy"));
         } catch (java.io.IOException e) {
-<<<<<<< HEAD
-            
-=======
             System.out.println(e.getMessage());
->>>>>>> 29c2b9324a955f83e5bc4c8af8e1d0ae353c16e4
         }
     }//GEN-LAST:event_jButton2ActionPerformed
 

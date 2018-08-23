@@ -64,8 +64,6 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import static mmd.MaterialMakerv2.callMenu;
-import rpmxc.Start;
 
 public class AlbedoSection extends javax.swing.JFrame {
 
@@ -661,15 +659,9 @@ public class AlbedoSection extends javax.swing.JFrame {
             }
 
         } catch (FileNotFoundException ex) {
-<<<<<<< HEAD
 
         } catch (IOException ex) {
 
-=======
-            System.out.println("fnf" + ex);
-        } catch (IOException ex) {
-            System.out.println("io " + ex);
->>>>>>> 29c2b9324a955f83e5bc4c8af8e1d0ae353c16e4
         } finally {
             try {
                 AlbedotoEdit_Br.close();
@@ -1612,46 +1604,6 @@ public class AlbedoSection extends javax.swing.JFrame {
     private void backActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backActionPerformed
         closeAllDialogs();
         this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
-<<<<<<< HEAD
-=======
-        /*closeAllDialogs();
-        WindowFrame w = new WindowFrame();
-        w.setLocation(this.getLocation());
-        ErrorWindow.dispose();
-        w.setSize(960, 549);
-        w.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-        if (foo.getRecursive() == true) {
-            System.out.println("true");
-            w.addWindowListener(new WindowAdapter() {
-                @Override
-                public void windowClosing(WindowEvent we) {
-                    w.dispose();
-                    try {
-                        rpmxc.Options.main(null, Start.parentComponent);
-                    } catch (Exception ex) {
-                    }
-                }
-            });
-
-        } else {
-            System.out.println("false");
-            w.addWindowListener(new WindowAdapter() {
-                @Override
-                public void windowClosing(WindowEvent we) {
-                    callMenu();
-                    w.dispose();
-                }
-            });
-        }
-        this.dispose();
-        w.setAlwaysOnTop(true);
-        w.setAlwaysOnTop(false);
-        w.setResizable(false);
-        w.setLayout(new BorderLayout());
-        ImageIcon img = new ImageIcon(getClass().getResource("/icon/ico.png"));
-        w.setIconImage(img.getImage());
-        w.setVisible(true);*/
->>>>>>> 29c2b9324a955f83e5bc4c8af8e1d0ae353c16e4
     }//GEN-LAST:event_backActionPerformed
 
     private void AlbedoMapHelpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AlbedoMapHelpActionPerformed
@@ -2745,7 +2697,6 @@ public class AlbedoSection extends javax.swing.JFrame {
 
             }
         });
-        
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
