@@ -150,7 +150,6 @@ public class WindowFrame extends javax.swing.JFrame {
         gotofolder.setContentAreaFilled(false);
         gotofolder.setFocusPainted(false);
         gotofolder.setFocusable(false);
-        gotofolder.setOpaque(false);
         gotofolder.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 gotofolderActionPerformed(evt);
@@ -179,7 +178,6 @@ public class WindowFrame extends javax.swing.JFrame {
         SPECULARANDSMOOTHNESS.setFocusable(false);
         SPECULARANDSMOOTHNESS.setMaximumSize(new java.awt.Dimension(172, 30));
         SPECULARANDSMOOTHNESS.setMinimumSize(new java.awt.Dimension(172, 30));
-        SPECULARANDSMOOTHNESS.setOpaque(false);
         SPECULARANDSMOOTHNESS.setPreferredSize(new java.awt.Dimension(172, 30));
         SPECULARANDSMOOTHNESS.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -300,7 +298,6 @@ public class WindowFrame extends javax.swing.JFrame {
         gotofolder1.setContentAreaFilled(false);
         gotofolder1.setFocusPainted(false);
         gotofolder1.setFocusable(false);
-        gotofolder1.setOpaque(false);
         gotofolder1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 gotofolder1ActionPerformed(evt);
