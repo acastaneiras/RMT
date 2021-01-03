@@ -84,7 +84,8 @@ namespace RMT
 
             //saveFileDialog1.InitialDirectory = this.applicationBaseCreationPath;
             saveFileDialog1.Filter = "Material files (*.fx)|*.fx";
-            saveFileDialog1.FileName = "New_Material.fx";
+            saveFileDialog1.FileName = "New_Material";
+			saveFileDialog1.AddExtension = true;
             saveFileDialog1.Title = "Save new material file";
             saveFileDialog1.RestoreDirectory = true;
             bool? result = saveFileDialog1.ShowDialog();
