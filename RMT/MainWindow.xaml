@@ -17,16 +17,55 @@
         <DockPanel HorizontalAlignment="Stretch"  LastChildFill="False" VerticalAlignment="Stretch"  Grid.ColumnSpan="3">
             <Menu DockPanel.Dock="Top">
                 <MenuItem Header="_File">
-                    <MenuItem Header="New Material" HorizontalAlignment="Left" />
-                    <MenuItem Header="Edit Material" HorizontalAlignment="Left" />
-                    <MenuItem Header="_Exit" />
-                </MenuItem>
-                <MenuItem Header="_Tools">
+                    <MenuItem Name="newMaterial" Header="New Material" HorizontalAlignment="Left" Click="newMaterial_Click"/>
+                    <MenuItem Name="editMaterial" Header="Edit Material" HorizontalAlignment="Left" Click="editMaterial_Click" />
+                    <MenuItem Name="exit" Header="_Exit" Click="exit_Click" />
                 </MenuItem>
             </Menu>
-            <TabControl HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  >
+            <TabControl Name="TabPanel" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" IsEnabled="False"  >
                 <TabItem Header="Albedo">
                     <Grid Background="#FFE5E5E5" Margin="0,0,0,6">
+                        <Label Content="ALBEDO__MAP__FROM" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="121"/>
+                        <ComboBox Name="albedoMapFrom" SelectionChanged="albedoMapFrom_SelectionChanged" HorizontalAlignment="Left" Margin="138,14,0,0" VerticalAlignment="Top" Width="35">
+                            <ComboBoxItem Content="0" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" />
+                            <ComboBoxItem Content="1" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"  />
+                            <ComboBoxItem Content="2" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"  />
+                            <ComboBoxItem Content="3" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"  />
+                            <ComboBoxItem Content="4" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"  />
+                            <ComboBoxItem Content="5" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"  />
+                            <ComboBoxItem Content="6" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"  />
+                            <ComboBoxItem Content="7" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"  />
+                            <ComboBoxItem Content="8" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"  />
+                            <ComboBoxItem Content="9" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"  />
+                        </ComboBox>
+                        <Button Content="?" HorizontalAlignment="Left" Margin="175,14,0,0" VerticalAlignment="Top" Width="23" Height="22"/>
+                        <Label Content="ALBEDO__MAP__UV_FLIP" HorizontalAlignment="Left" Margin="10,41,0,0" VerticalAlignment="Top" Width="128"/>
+                        <ComboBox Name="albedoMapUVFlip" SelectionChanged="albedoMapUVFlip_SelectionChanged" HorizontalAlignment="Left" Margin="138,41,0,0" VerticalAlignment="Top" Width="35">
+                            <ComboBoxItem Content="0" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" />
+                            <ComboBoxItem Content="1" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"  />
+                            <ComboBoxItem Content="2" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"  />
+                            <ComboBoxItem Content="3" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"  />
+                        </ComboBox>
+                        <Label Content="ALBEDO__MAP__APPLY__SCALE" HorizontalAlignment="Left" Margin="10,72,0,0" VerticalAlignment="Top" Width="162"/>
+                        <ComboBox Name="albedoMapApplyScale" SelectionChanged="albedoMapApplyScale_SelectionChanged" HorizontalAlignment="Left" Margin="177,76,0,0" VerticalAlignment="Top" Width="35">
+                            <ComboBoxItem Content="0" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" />
+                            <ComboBoxItem Content="1" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"  />
+                            <ComboBoxItem Content="2" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"  />
+                        </ComboBox>
+                        <Label Content="ALBEDO__MAP__APPLY__DIFFUSE" HorizontalAlignment="Left" Margin="10,103,0,0" VerticalAlignment="Top" Width="172"/>
+                        <ComboBox Name="albedoMapApplyDiffuse" SelectionChanged="albedoMapApplyDiffuse_SelectionChanged" HorizontalAlignment="Left" Margin="182,107,0,0" VerticalAlignment="Top" Width="35">
+                            <ComboBoxItem Content="0" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" />
+                            <ComboBoxItem Content="1" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"  />
+                            <ComboBoxItem Content="2" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"  />
+                        </ComboBox>
+                        <Label Content="ALBEDO__MAP__APPLY__MORPH__COLOR" HorizontalAlignment="Left" Margin="10,134,0,0" VerticalAlignment="Top" Width="213"/>
+                        <ComboBox x:Name="albedoMapApplyMorphColor" SelectionChanged="albedoMapApplyMorphColor_SelectionChanged" HorizontalAlignment="Left" Margin="228,138,0,0" VerticalAlignment="Top" Width="35">
+                            <ComboBoxItem Content="0" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" />
+                            <ComboBoxItem Content="1" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"  />
+                        </ComboBox>
+                        <Label Content="ALBEDO__MAP__FILE" HorizontalAlignment="Left" Margin="10,165,0,0" VerticalAlignment="Top" Width="113"/>
+                        <Button Name="albedoMapFile" Content="Set Map File" Click="albedoMapFile_Click" HorizontalAlignment="Left" Margin="228,168,0,0" VerticalAlignment="Top" Width="75"/>
+
                     </Grid>
                 </TabItem>
                 <TabItem Header="Alpha">

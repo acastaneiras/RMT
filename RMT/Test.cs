@@ -10,9 +10,7 @@ namespace RMT.Model
     {
         public static void Main(string[] args)
         {
-            RayMaterial m = new RayMaterial();
-            m.FetchMaterial("D:/MikuMikuDanceE_v932x64/UserFile/Accessory/ray-mmd-1.5.2/Materials/Cloth/material_cloth.fx");
-            Console.WriteLine(m.ToString());
+            //RayMaterial m = new RayMaterial();
         }
     }
 }

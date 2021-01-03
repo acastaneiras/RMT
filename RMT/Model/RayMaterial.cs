@@ -11,6 +11,7 @@ namespace RMT.Model
 {
     class RayMaterial
     {
+        private String filePath;
         //AlbedoMap
         private int albedoMapFrom;
         private int albedoMapUVFlip;
@@ -227,10 +228,9 @@ namespace RMT.Model
         public string CustomB { get => customB; set => customB = value; }
         public string CustomBLoopNum { get => customBLoopNum; set => customBLoopNum = value; }
         public string IncludeFxsub { get => includeFxsub; set => includeFxsub = value; }
+        public string FilePath { get => filePath; set => filePath = value; }
 
-        public RayMaterial() { }
-
-        public RayMaterial(int albedoMapFrom = 3, int albedoMapUVFlip = 0, int albedoMapApplyScale =0, int albedoMapApplyDiffuse = 1, int albedoMapApplyMorphColor = 0, string albedoMapFile="\"albedo.png\"", string albedo = "1.0", string albedoLoopNum = "1.0", int albedoSubEnable = 0, int albedoSubMapFrom = 0, int albedoSubMapUVFlip = 0, int albedoSubMapApplyScale = 0, string albedoSubMapFile = "\"albedo.png\"", string albedoSub = "1.0", string albedoSubLoopNum = "1.0", int alphaMapFrom = 3, int alphaMapUVFlip = 0, int alphaMapSwizzle =3, string alphaMapFile = "\"alpha.png\"", float alpha = 1.0f, string alphaLoopNum = "1.0", int normalMapFrom = 0, int normalMapType = 0, int normalMapUVFlip = 0, string normalMapFile = "\"normal.png\"", float normal = 1.0f, string normalLoopNum = "1.0", int normalSubMapFrom = 0, int normalSubMapType = 0, int normalSubMapUVFlip = 0, string normalSubMapFile = "\"normal.png\"", float normalSub = 1.0f, string normalSubLoopNum = "1.0", int smoothnessMapFrom = 9, int smoothnessMapType = 0, int smoothnessMapUVFlip = 0, int smoothnessMapSwizzle = 0, int smoothnessMapApplyScale = 0, string smoothnessMapFile = "\"smoothness.png\"", float smoothness = 0.0f, string smoothnessLoopNum = "1.0", int metalnessMapFrom = 0, int metalnessMapUVFlip = 0, int metalnessMapSwizzle = 0, int metalnessMapApplyScale = 0, string metalnessMapFile = "\"metalness.png\"", float metalness = 0.0f, string metalnessLoopNum = "1.0", int specularMapFrom = 0, int specularMapType = 0, int specularMapUVFlip = 0, int specularMapSwizzle = 0, int specularMapApplyScale = 0, string specularMapFile = "\"specular.png\"", float specular = 0.5f, string specularLoopNum = "1.0", int occlusionMapFrom = 0, int occlusionMapType = 0, int occlusionMapUVFlip = 0, int occlusionMapSwizzle = 0, int occlusionMapApplyScale = 0, string occlusionMapFile = "\"occlusion.png\"", float occlusion = 1.0f, string occlusionLoopNum = "1.0", int parallaxMapFrom = 0, int parallaxMapType = 0, int parallaxMapUVFlip = 0, int parallaxMapSwizzle = 0, string parallaxMapFile = "\"height.png\"", float parallax = 1.0f, string parallaxLoopNum = "1.0", int emissiveEnable = 0, int emissiveMapFrom = 0, int emissiveMapUVFlip = 0, int emissiveMapApplyScale = 0, int emissiveMapApplyMorphColor = 0, int emissiveMapApplyMorphIntensity = 0, int emissiveMapApplyBlink = 0, string emissiveMapFile = "\"emissive.png\"", float emissive = 1.0f, float emissiveBlink = 1.0f, float emissiveIntensity = 1.0f, string emissiveLoopNum = "1.0", int customEnable = 0, int customAMapFrom = 0, int customAMapUVFlip = 0, int customAMapColorFlip = 0, int customAMapSwizzle = 0, int customAMapApplyScale = 0, string customAMapFile = "\"custom.png\"", float customA = 0.0f, string customALoopNum = "1.0", int customBMapFrom = 0, int customBMapUVFlip = 0, int customBMapColorFlip = 0, int customBMapApplyScale = 0, string customBMapFile = "\"custom.png\"", string customB = "0.0", string customBLoopNum = "1.0", string includeFxsub = "\"../material_common_2.0.fxsub\"")
+        public RayMaterial(int albedoMapFrom = 3, int albedoMapUVFlip = 0, int albedoMapApplyScale =0, int albedoMapApplyDiffuse = 1, int albedoMapApplyMorphColor = 0, string albedoMapFile="\"albedo.png\"", string albedo = "1.0", string albedoLoopNum = "1.0", int albedoSubEnable = 0, int albedoSubMapFrom = 0, int albedoSubMapUVFlip = 0, int albedoSubMapApplyScale = 0, string albedoSubMapFile = "\"albedo.png\"", string albedoSub = "1.0", string albedoSubLoopNum = "1.0", int alphaMapFrom = 3, int alphaMapUVFlip = 0, int alphaMapSwizzle =3, string alphaMapFile = "\"alpha.png\"", float alpha = 1.0f, string alphaLoopNum = "1.0", int normalMapFrom = 0, int normalMapType = 0, int normalMapUVFlip = 0, string normalMapFile = "\"normal.png\"", float normal = 1.0f, string normalLoopNum = "1.0", int normalSubMapFrom = 0, int normalSubMapType = 0, int normalSubMapUVFlip = 0, string normalSubMapFile = "\"normal.png\"", float normalSub = 1.0f, string normalSubLoopNum = "1.0", int smoothnessMapFrom = 9, int smoothnessMapType = 0, int smoothnessMapUVFlip = 0, int smoothnessMapSwizzle = 0, int smoothnessMapApplyScale = 0, string smoothnessMapFile = "\"smoothness.png\"", float smoothness = 0.0f, string smoothnessLoopNum = "1.0", int metalnessMapFrom = 0, int metalnessMapUVFlip = 0, int metalnessMapSwizzle = 0, int metalnessMapApplyScale = 0, string metalnessMapFile = "\"metalness.png\"", float metalness = 0.0f, string metalnessLoopNum = "1.0", int specularMapFrom = 0, int specularMapType = 0, int specularMapUVFlip = 0, int specularMapSwizzle = 0, int specularMapApplyScale = 0, string specularMapFile = "\"specular.png\"", float specular = 0.5f, string specularLoopNum = "1.0", int occlusionMapFrom = 0, int occlusionMapType = 0, int occlusionMapUVFlip = 0, int occlusionMapSwizzle = 0, int occlusionMapApplyScale = 0, string occlusionMapFile = "\"occlusion.png\"", float occlusion = 1.0f, string occlusionLoopNum = "1.0", int parallaxMapFrom = 0, int parallaxMapType = 0, int parallaxMapUVFlip = 0, int parallaxMapSwizzle = 0, string parallaxMapFile = "\"height.png\"", float parallax = 1.0f, string parallaxLoopNum = "1.0", int emissiveEnable = 0, int emissiveMapFrom = 0, int emissiveMapUVFlip = 0, int emissiveMapApplyScale = 0, int emissiveMapApplyMorphColor = 0, int emissiveMapApplyMorphIntensity = 0, int emissiveMapApplyBlink = 0, string emissiveMapFile = "\"emissive.png\"", float emissive = 1.0f, float emissiveBlink = 1.0f, float emissiveIntensity = 1.0f, string emissiveLoopNum = "1.0", int customEnable = 0, int customAMapFrom = 0, int customAMapUVFlip = 0, int customAMapColorFlip = 0, int customAMapSwizzle = 0, int customAMapApplyScale = 0, string customAMapFile = "\"custom.png\"", float customA = 0.0f, string customALoopNum = "1.0", int customBMapFrom = 0, int customBMapUVFlip = 0, int customBMapColorFlip = 0, int customBMapApplyScale = 0, string customBMapFile = "\"custom.png\"", string customB = "0.0", string customBLoopNum = "1.0", string includeFxsub = "\"../material_common_2.0.fxsub\"", string filePath = "")
         {
             this.albedoMapFrom = albedoMapFrom;
             this.albedoMapUVFlip = albedoMapUVFlip;
@@ -332,6 +332,7 @@ namespace RMT.Model
             this.customB = customB;
             this.customBLoopNum = customBLoopNum;
             this.includeFxsub = includeFxsub;
+            this.filePath = filePath;
         }
 
 
@@ -339,9 +340,9 @@ namespace RMT.Model
         /*
          * Fetches a .fx ray-mmd material file
          */
-        public void FetchMaterial(String materialFile)
+        public void FetchMaterial()
         {
-            String[] materialContents = System.IO.File.ReadAllLines(materialFile);
+            String[] materialContents = System.IO.File.ReadAllLines(this.FilePath);
 
             foreach (String line in materialContents)
             {
@@ -768,9 +769,9 @@ namespace RMT.Model
         /*
          * Function that saves a material file
          */
-        private void SaveMaterial(String materialPath)
+        public void Save()
         {
-            File.WriteAllText(materialPath, this.ToString());
+            File.WriteAllText(this.FilePath, this.ToString());
         }
 
         public override string ToString()
