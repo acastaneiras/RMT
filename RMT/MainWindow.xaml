@@ -5,31 +5,29 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:RMT"
         mc:Ignorable="d"
-        Title="Red's Material Tool v2.0" Height="450" Width="795">
+        Title="Red's Material Tool v2.0" Height="450" Width="589"
+        MinHeight="400" MinWidth="550"
+        MaxHeight="450" MaxWidth="589">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="21*"/>
             <ColumnDefinition Width="13*"/>
             <ColumnDefinition Width="362*"/>
         </Grid.ColumnDefinitions>
-        <DockPanel HorizontalAlignment="Left" Height="419" LastChildFill="False" VerticalAlignment="Top" Width="792" Grid.ColumnSpan="3">
+        <DockPanel HorizontalAlignment="Stretch"  LastChildFill="False" VerticalAlignment="Stretch"  Grid.ColumnSpan="3">
             <Menu DockPanel.Dock="Top">
                 <MenuItem Header="_File">
+                    <MenuItem Header="New Material" HorizontalAlignment="Left" />
+                    <MenuItem Header="Edit Material" HorizontalAlignment="Left" />
                     <MenuItem Header="_Exit" />
                 </MenuItem>
                 <MenuItem Header="_Tools">
-                    <MenuItem Header="_Manage users">
-                        <MenuItem.Icon>
-                            <Image Source="/WpfTutorialSamples;component/Images/user.png" />
-                        </MenuItem.Icon>
-                    </MenuItem>
-                    <MenuItem Header="_Show groups" IsCheckable="True" IsChecked="True" />
                 </MenuItem>
             </Menu>
-            <TabControl HorizontalAlignment="Left" Height="379" Margin="10,22,0,0" VerticalAlignment="Top" Width="772">
+            <TabControl HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  >
                 <TabItem Header="Albedo">
-                    <Grid Background="#FFE5E5E5" Margin="0,0,0,6"/>
-
+                    <Grid Background="#FFE5E5E5" Margin="0,0,0,6">
+                    </Grid>
                 </TabItem>
                 <TabItem Header="Alpha">
                     <Grid Background="#FFE5E5E5"/>
@@ -65,6 +63,5 @@
                 </TabItem>
             </TabControl>
         </DockPanel>
-
     </Grid>
 </Window>
