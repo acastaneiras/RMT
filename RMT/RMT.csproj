@@ -35,7 +35,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject>WpfApp1.Model.Test</StartupObject>
+    <StartupObject>RMT.Model.Test</StartupObject>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />

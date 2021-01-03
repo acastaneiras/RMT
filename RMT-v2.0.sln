@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30717.126
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RMT", "WpfApp1\RMT.csproj", "{F7FD44C6-0C6B-411A-8721-583236F59825}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RMT", "RMT\RMT.csproj", "{F7FD44C6-0C6B-411A-8721-583236F59825}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
