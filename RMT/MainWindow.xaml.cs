@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -15,7 +16,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Microsoft.Win32;
 using RMT.Model;
-
+using Path = System.IO.Path;
 namespace RMT
 {
     /// <summary>
@@ -23,14 +24,16 @@ namespace RMT
     /// </summary>
     public partial class MainWindow : Window
     {
-        private const String APP_NAME = "Red's Material Tool v2.0";
+        private const String APP_NAME = "Ray-mmd Material Tool v2.0";
+        private enum MAP_MODES : int {LINEAR_COLOR =0, SRGB = 1, LINEAR_SRGB = 2 };
+
 
         private RayMaterial material;
 
         public bool initializationEnded;
         //Directory where the materials are created by default... TODO
         private String applicationBaseCreationPath = Directory.GetCurrentDirectory();
-
+        private string imageFilters = "All Graphics Types|*.bmp;*.jpg;*.jpeg;*.png;*.tif;*.tiff"+ "BMP(*.bmp)|*.bmp|GIF(*.gif)|*.gif|JPG(*.jpg)|*.jpg;*.jpeg|PNG(*.png)|*.png|TIFF(*.tif)|*.tif;*.tiff|";
         public MainWindow()
         {
             initializationEnded = false;
@@ -47,7 +50,29 @@ namespace RMT
             this.albedoMapApplyScale.SelectedIndex = this.material.AlbedoMapApplyScale;
             this.albedoMapApplyDiffuse.SelectedIndex = this.material.AlbedoMapApplyDiffuse;
             this.albedoMapApplyMorphColor.SelectedIndex = this.material.AlbedoMapApplyMorphColor;
-            
+            this.albedoMapFile.Content = this.material.AlbedoMapFile;
+            this.albedo.Text = this.material.Albedo;
+            ChangeMapScaleMode(this.material.Albedo, this.albedoMode);
+
+        }
+        /*
+         * Used to know in which mode the xMapScale is 
+         * Case scenarios: 1.0 | float3(255, 0.0, 0.0) / 255.0 | pow(float3(r, g, b) / 255.0, 2.2)
+         */
+        private void ChangeMapScaleMode(String mapScale, ComboBox comboBoxMode)
+        {
+            switch (mapScale)
+            {
+                case string a when !a.Contains("float"):
+                    comboBoxMode.SelectedIndex = (int)MAP_MODES.LINEAR_COLOR;
+                    break;
+                case string a when a.Contains("pow"):
+                    comboBoxMode.SelectedIndex = (int)MAP_MODES.LINEAR_SRGB; 
+                    break;
+                default:
+                    comboBoxMode.SelectedIndex = (int)MAP_MODES.SRGB;
+                    break;
+            }
         }
 
         /*
@@ -56,23 +81,15 @@ namespace RMT
          */
         private void handleChanges()
         {
-            if (initializationEnded) 
+            if (initializationEnded && !this.material.FilePath.Equals("")) 
                 //Call to Save function
-                if (!this.material.FilePath.Equals(""))
-                {
                     this.material.Save();
-                } else
-                {
-                    createNewMaterial();
-                }
         }
 
         private void enablePanel()
         {
             if (!this.material.FilePath.Equals("") && TabPanel.IsEnabled == false)
-            {
                 TabPanel.IsEnabled = true;
-            }
         }
 
         private void createNewMaterial()
@@ -94,7 +111,7 @@ namespace RMT
             {
                 if ((myStream = saveFileDialog1.OpenFile()) != null)
                 {
-                    material.FilePath = System.IO.Path.GetFullPath(saveFileDialog1.FileName);
+                    material.FilePath = Path.GetFullPath(saveFileDialog1.FileName);
                     myStream.Close();
                     material.Save();
                     InitializeValues();
@@ -111,6 +128,7 @@ namespace RMT
             openFileDialog.InitialDirectory = initialDirectory;
             openFileDialog.Filter = filter;
             openFileDialog.Title = title;
+            openFileDialog.AddExtension = true;
             openFileDialog.RestoreDirectory = true;
 
             bool? result = openFileDialog.ShowDialog();
@@ -161,8 +179,13 @@ namespace RMT
 
         private void albedoMapFile_Click(object sender, RoutedEventArgs e)
         {
-
-
+            String mapFile = handleOpenDialog("c:\\", imageFilters);
+            if (!mapFile.Equals(""))
+            {
+                this.material.AlbedoMapFile = Util.GetRelativePath(this.material.FilePath, mapFile);
+                this.albedoMapFile.Content = this.material.AlbedoMapFile;
+                handleChanges();
+            }
         }
 
         private void newMaterial_Click(object sender, RoutedEventArgs e)
@@ -188,6 +211,53 @@ namespace RMT
                 this.Title = APP_NAME + " | Editing " + this.GetFileName(fileName);
             }
 
+        }
+
+        private void albedoMode_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            switch (this.albedoMode.SelectedIndex)
+            {
+                case (int) MAP_MODES.LINEAR_COLOR:
+                    albedoLinearColor.Visibility = Visibility.Visible;
+                    albedoRGB.Visibility = Visibility.Hidden;
+                    albedo.IsEnabled = true;
+                    break;
+                default:
+                    albedoLinearColor.Visibility = Visibility.Hidden;
+                    albedoRGB.Visibility = Visibility.Visible;
+                    albedo.IsEnabled = false;
+                    break;
+            }
+        }
+
+        private void albedoLinearColor_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+
+        }
+
+        private void albedo_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            bool approvedDecimalPoint = false;
+
+            if (e.Text == ".")
+            {
+                if (!((TextBox)sender).Text.Contains("."))
+                    approvedDecimalPoint = true;
+            }
+
+            if (!(char.IsDigit(e.Text, e.Text.Length - 1) || approvedDecimalPoint))
+                e.Handled = true;
+        }
+
+        private void albedo_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            this.material.Albedo = albedo.Text;
+            handleChanges();
+        }
+
+        private void albedoRGB_SelectedColorChanged(object sender, RoutedPropertyChangedEventArgs<Color?> e)
+        {
+            Console.WriteLine(albedoRGB.SelectedColor.ToString());
         }
     }
 }

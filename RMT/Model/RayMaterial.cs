@@ -363,403 +363,403 @@ namespace RMT.Model
             switch (line)
             {
                 case string a when a.Contains("ALBEDO_MAP_FROM"):
-                    integerFetchedValue = FetchNumberParamValue(line);
+                    integerFetchedValue =  Util.FetchNumberParamValue(line);
                     this.AlbedoMapFrom = integerFetchedValue > -1 ? integerFetchedValue : this.AlbedoMapFrom;
                     break;
                 case string a when a.Contains("ALBEDO_MAP_UV_FLIP"):
-                    integerFetchedValue = FetchNumberParamValue(line);
+                    integerFetchedValue =  Util.FetchNumberParamValue(line);
                     this.AlbedoMapUVFlip = integerFetchedValue > -1 ? integerFetchedValue : this.AlbedoMapUVFlip;
                     break;
                 case string a when a.Contains("ALBEDO_MAP_APPLY_SCALE"):
-                    integerFetchedValue = FetchNumberParamValue(line);
+                    integerFetchedValue =  Util.FetchNumberParamValue(line);
                     this.AlbedoMapApplyScale = integerFetchedValue > -1 ? integerFetchedValue : this.AlbedoMapApplyScale;
                     break;
                 case string a when a.Contains("ALBEDO_MAP_APPLY_DIFFUSE"):
-                    integerFetchedValue = FetchNumberParamValue(line);
+                    integerFetchedValue =  Util.FetchNumberParamValue(line);
                     this.AlbedoMapApplyDiffuse = integerFetchedValue > -1 ? integerFetchedValue : this.AlbedoMapApplyDiffuse;
                     break;
                 case string a when a.Contains("ALBEDO_MAP_APPLY_MORPH_COLOR"):
-                    integerFetchedValue = FetchNumberParamValue(line);
+                    integerFetchedValue =  Util.FetchNumberParamValue(line);
                     this.AlbedoMapApplyMorphColor = integerFetchedValue > -1 ? integerFetchedValue : this.AlbedoMapApplyMorphColor;
                     break;
                 case string a when a.Contains("ALBEDO_MAP_FILE"):
-                    stringFetchedValue = FetchSubStringBetween(line, '"');
+                    stringFetchedValue =  Util.FetchSubStringBetween(line, '"');
                     this.AlbedoMapFile = !stringFetchedValue.Equals("") ? stringFetchedValue : this.AlbedoMapFile;
                     break;
                 case string a when a.Contains("albedo "):
-                    stringFetchedValue = FetchSubStringBetween(line, '=', true, 1);
+                    stringFetchedValue =  Util.FetchSubStringBetween(line, '=', true, 1);
                     this.Albedo = !stringFetchedValue.Equals("") ? stringFetchedValue : this.Albedo;
                     break;
                 case string a when a.Contains("albedoMapLoopNum"):
-                    stringFetchedValue = FetchSubStringBetween(line, '=', true, 1);
+                    stringFetchedValue =  Util.FetchSubStringBetween(line, '=', true, 1);
                     this.AlbedoLoopNum = !stringFetchedValue.Equals("") ? stringFetchedValue : this.AlbedoLoopNum;
                     break;
                 case string a when a.Contains("ALBEDO_SUB_ENABLE"):
-                    integerFetchedValue = FetchNumberParamValue(line);
+                    integerFetchedValue =  Util.FetchNumberParamValue(line);
                     this.AlbedoSubEnable = integerFetchedValue > -1 ? integerFetchedValue : this.AlbedoSubEnable;
                     break;
                 case string a when a.Contains("ALBEDO_SUB_MAP_FROM"):
-                    integerFetchedValue = FetchNumberParamValue(line);
+                    integerFetchedValue =  Util.FetchNumberParamValue(line);
                     this.AlbedoSubMapFrom = integerFetchedValue > -1 ? integerFetchedValue : this.AlbedoSubMapFrom;
                     break;
                 case string a when a.Contains("ALBEDO_SUB_MAP_UV_FLIP"):
-                    integerFetchedValue = FetchNumberParamValue(line);
+                    integerFetchedValue =  Util.FetchNumberParamValue(line);
                     this.AlbedoSubMapUVFlip = integerFetchedValue > -1 ? integerFetchedValue : this.AlbedoSubMapUVFlip;
                     break;
                 case string a when a.Contains("ALBEDO_SUB_MAP_APPLY_SCALE"):
-                    integerFetchedValue = FetchNumberParamValue(line);
+                    integerFetchedValue =  Util.FetchNumberParamValue(line);
                     this.AlbedoSubMapApplyScale = integerFetchedValue > -1 ? integerFetchedValue : this.AlbedoSubMapApplyScale;
                     break;
                 case string a when a.Contains("ALBEDO_SUB_MAP_FILE"):
-                    stringFetchedValue = FetchSubStringBetween(line, '"');
+                    stringFetchedValue =  Util.FetchSubStringBetween(line, '"');
                     this.AlbedoSubMapFile = !stringFetchedValue.Equals("") ? stringFetchedValue : this.AlbedoSubMapFile;
                     break;
                 case string a when a.Contains("albedoSub "):
-                    stringFetchedValue = FetchSubStringBetween(line, '=', true, 1);
+                    stringFetchedValue =  Util.FetchSubStringBetween(line, '=', true, 1);
                     this.AlbedoSub = !stringFetchedValue.Equals("") ? stringFetchedValue : this.AlbedoSub;
                     break;
                 case string a when a.Contains("albedoSubMapLoopNum"):
-                    stringFetchedValue = FetchSubStringBetween(line, '=', true, 1);
+                    stringFetchedValue =  Util.FetchSubStringBetween(line, '=', true, 1);
                     this.AlbedoSubLoopNum = !stringFetchedValue.Equals("") ? stringFetchedValue : this.AlbedoSubLoopNum;
                     break;
                 case string a when a.Contains("ALPHA_MAP_FROM"):
-                    integerFetchedValue = FetchNumberParamValue(line);
+                    integerFetchedValue =  Util.FetchNumberParamValue(line);
                     this.AlphaMapFrom = integerFetchedValue > -1 ? integerFetchedValue : this.AlphaMapFrom;
                     break;
                 case string a when a.Contains("ALPHA_MAP_UV_FLIP"):
-                    integerFetchedValue = FetchNumberParamValue(line);
+                    integerFetchedValue =  Util.FetchNumberParamValue(line);
                     this.AlphaMapUVFlip = integerFetchedValue > -1 ? integerFetchedValue : this.AlphaMapUVFlip;
                     break;
                 case string a when a.Contains("ALPHA_MAP_SWIZZLE"):
-                    integerFetchedValue = FetchNumberParamValue(line);
+                    integerFetchedValue =  Util.FetchNumberParamValue(line);
                     this.AlphaMapSwizzle = integerFetchedValue > -1 ? integerFetchedValue : this.AlphaMapSwizzle;
                     break;
                 case string a when a.Contains("ALPHA_MAP_FILE"):
-                    stringFetchedValue = FetchSubStringBetween(line, '"');
+                    stringFetchedValue =  Util.FetchSubStringBetween(line, '"');
                     this.AlphaMapFile = !stringFetchedValue.Equals("") ? stringFetchedValue : this.AlphaMapFile;
                     break;
                 case string a when a.Contains("alpha ="):
-                    floatFetechedValue = FetchFloatNumber(line);
+                    floatFetechedValue = Util.FetchFloatNumber(line);
                     this.Alpha = floatFetechedValue;
                     break;
                 case string a when a.Contains("alphaMapLoopNum"):
-                    stringFetchedValue = FetchSubStringBetween(line, '=', true, 1);
+                    stringFetchedValue =  Util.FetchSubStringBetween(line, '=', true, 1);
                     this.AlphaLoopNum = !stringFetchedValue.Equals("") ? stringFetchedValue : this.AlphaLoopNum;
                     break;
                 case string a when a.Contains("NORMAL_MAP_FROM"):
-                    integerFetchedValue = FetchNumberParamValue(line);
+                    integerFetchedValue =  Util.FetchNumberParamValue(line);
                     this.NormalMapFrom = integerFetchedValue > -1 ? integerFetchedValue : this.NormalMapFrom;
                     break;
                 case string a when a.Contains("NORMAL_MAP_TYPE"):
-                    integerFetchedValue = FetchNumberParamValue(line);
+                    integerFetchedValue =  Util.FetchNumberParamValue(line);
                     this.NormalMapType = integerFetchedValue > -1 ? integerFetchedValue : this.NormalMapType;
                     break;
                 case string a when a.Contains("NORMAL_MAP_UV_FLIP"):
-                    integerFetchedValue = FetchNumberParamValue(line);
+                    integerFetchedValue =  Util.FetchNumberParamValue(line);
                     this.NormalMapUVFlip = integerFetchedValue > -1 ? integerFetchedValue : this.NormalMapUVFlip;
                     break;
                 case string a when a.Contains("NORMAL_MAP_FILE"):
-                    stringFetchedValue = FetchSubStringBetween(line, '"');
+                    stringFetchedValue =  Util.FetchSubStringBetween(line, '"');
                     this.NormalMapFile = !stringFetchedValue.Equals("") ? stringFetchedValue : this.NormalMapFile;
                     break;
                 case string a when a.Contains("normalMapScale ="):
-                    floatFetechedValue = FetchFloatNumber(line);
+                    floatFetechedValue = Util.FetchFloatNumber(line);
                     this.Normal = floatFetechedValue;
                     break;
                 case string a when a.Contains("normalMapLoopNum"):
-                    stringFetchedValue = FetchSubStringBetween(line, '=', true, 1);
+                    stringFetchedValue =  Util.FetchSubStringBetween(line, '=', true, 1);
                     this.NormalLoopNum = !stringFetchedValue.Equals("") ? stringFetchedValue : this.NormalLoopNum;
                     break;
                 case string a when a.Contains("NORMAL_SUB_MAP_FROM"):
-                    integerFetchedValue = FetchNumberParamValue(line);
+                    integerFetchedValue =  Util.FetchNumberParamValue(line);
                     this.NormalSubMapFrom = integerFetchedValue > -1 ? integerFetchedValue : this.NormalSubMapFrom;
                     break;
                 case string a when a.Contains("NORMAL_SUB_MAP_TYPE"):
-                    integerFetchedValue = FetchNumberParamValue(line);
+                    integerFetchedValue =  Util.FetchNumberParamValue(line);
                     this.NormalSubMapType = integerFetchedValue > -1 ? integerFetchedValue : this.NormalSubMapType;
                     break;
                 case string a when a.Contains("NORMAL_SUB_MAP_UV_FLIP"):
-                    integerFetchedValue = FetchNumberParamValue(line);
+                    integerFetchedValue =  Util.FetchNumberParamValue(line);
                     this.NormalSubMapUVFlip = integerFetchedValue > -1 ? integerFetchedValue : this.NormalSubMapUVFlip;
                     break;
                 case string a when a.Contains("NORMAL_SUB_MAP_FILE"):
-                    stringFetchedValue = FetchSubStringBetween(line, '"');
+                    stringFetchedValue =  Util.FetchSubStringBetween(line, '"');
                     this.NormalSubMapFile = !stringFetchedValue.Equals("") ? stringFetchedValue : this.NormalSubMapFile;
                     break;
                 case string a when a.Contains("normalSubMapScale ="):
-                    floatFetechedValue = FetchFloatNumber(line);
+                    floatFetechedValue = Util.FetchFloatNumber(line);
                     this.NormalSub = floatFetechedValue;
                     break;
                 case string a when a.Contains("normalSubMapLoopNum"):
-                    stringFetchedValue = FetchSubStringBetween(line, '=', true, 1);
+                    stringFetchedValue =  Util.FetchSubStringBetween(line, '=', true, 1);
                     this.NormalSubLoopNum = !stringFetchedValue.Equals("") ? stringFetchedValue : this.NormalSubLoopNum;
                     break;
                 case string a when a.Contains("SMOOTHNESS_MAP_FROM"):
-                    integerFetchedValue = FetchNumberParamValue(line);
+                    integerFetchedValue =  Util.FetchNumberParamValue(line);
                     this.SmoothnessMapFrom = integerFetchedValue > -1 ? integerFetchedValue : this.SmoothnessMapFrom;
                     break;
                 case string a when a.Contains("SMOOTHNESS_MAP_TYPE"):
-                    integerFetchedValue = FetchNumberParamValue(line);
+                    integerFetchedValue =  Util.FetchNumberParamValue(line);
                     this.SmoothnessMapType = integerFetchedValue > -1 ? integerFetchedValue : this.SmoothnessMapType;
                     break;
                 case string a when a.Contains("SMOOTHNESS_MAP_UV_FLIP"):
-                    integerFetchedValue = FetchNumberParamValue(line);
+                    integerFetchedValue =  Util.FetchNumberParamValue(line);
                     this.SmoothnessMapUVFlip = integerFetchedValue > -1 ? integerFetchedValue : this.SmoothnessMapUVFlip;
                     break;
                 case string a when a.Contains("SMOOTHNESS_MAP_SWIZZLE"):
-                    integerFetchedValue = FetchNumberParamValue(line);
+                    integerFetchedValue =  Util.FetchNumberParamValue(line);
                     this.SmoothnessMapSwizzle = integerFetchedValue > -1 ? integerFetchedValue : this.SmoothnessMapSwizzle;
                     break;
                 case string a when a.Contains("SMOOTHNESS_MAP_APPLY_SCALE"):
-                    integerFetchedValue = FetchNumberParamValue(line);
+                    integerFetchedValue =  Util.FetchNumberParamValue(line);
                     this.SmoothnessMapApplyScale = integerFetchedValue > -1 ? integerFetchedValue : this.SmoothnessMapApplyScale;
                     break;
                 case string a when a.Contains("SMOOTHNESS_MAP_FILE"):
-                    stringFetchedValue = FetchSubStringBetween(line, '"');
+                    stringFetchedValue =  Util.FetchSubStringBetween(line, '"');
                     this.SmoothnessMapFile = !stringFetchedValue.Equals("") ? stringFetchedValue : this.SmoothnessMapFile;
                     break;
                 case string a when a.Contains("smoothness ="):
-                    floatFetechedValue = FetchFloatNumber(line);
+                    floatFetechedValue = Util.FetchFloatNumber(line);
                     this.Smoothness = floatFetechedValue;
                     break;
                 case string a when a.Contains("smoothnessMapLoopNum"):
-                    stringFetchedValue = FetchSubStringBetween(line, '=', true, 1);
+                    stringFetchedValue =  Util.FetchSubStringBetween(line, '=', true, 1);
                     this.SmoothnessLoopNum = !stringFetchedValue.Equals("") ? stringFetchedValue : this.SmoothnessLoopNum;
                     break;
                 case string a when a.Contains("METALNESS_MAP_FROM"):
-                    integerFetchedValue = FetchNumberParamValue(line);
+                    integerFetchedValue =  Util.FetchNumberParamValue(line);
                     this.MetalnessMapFrom = integerFetchedValue > -1 ? integerFetchedValue : this.MetalnessMapFrom;
                     break;
                 case string a when a.Contains("METALNESS_MAP_UV_FLIP"):
-                    integerFetchedValue = FetchNumberParamValue(line);
+                    integerFetchedValue =  Util.FetchNumberParamValue(line);
                     this.MetalnessMapUVFlip = integerFetchedValue > -1 ? integerFetchedValue : this.MetalnessMapUVFlip;
                     break;
                 case string a when a.Contains("METALNESS_MAP_SWIZZLE"):
-                    integerFetchedValue = FetchNumberParamValue(line);
+                    integerFetchedValue =  Util.FetchNumberParamValue(line);
                     this.MetalnessMapSwizzle = integerFetchedValue > -1 ? integerFetchedValue : this.MetalnessMapSwizzle;
                     break;
                 case string a when a.Contains("METALNESS_MAP_APPLY_SCALE"):
-                    integerFetchedValue = FetchNumberParamValue(line);
+                    integerFetchedValue =  Util.FetchNumberParamValue(line);
                     this.MetalnessMapApplyScale = integerFetchedValue > -1 ? integerFetchedValue : this.MetalnessMapApplyScale;
                     break;
                 case string a when a.Contains("METALNESS_MAP_FILE"):
-                    stringFetchedValue = FetchSubStringBetween(line, '"');
+                    stringFetchedValue =  Util.FetchSubStringBetween(line, '"');
                     this.MetalnessMapFile = !stringFetchedValue.Equals("") ? stringFetchedValue : this.MetalnessMapFile;
                     break;
                 case string a when a.Contains("metalness ="):
-                    floatFetechedValue = FetchFloatNumber(line);
+                    floatFetechedValue = Util.FetchFloatNumber(line);
                     this.Metalness = floatFetechedValue;
                     break;
                 case string a when a.Contains("metalnessMapLoopNum"):
-                    stringFetchedValue = FetchSubStringBetween(line, '=', true, 1);
+                    stringFetchedValue =  Util.FetchSubStringBetween(line, '=', true, 1);
                     this.MetalnessLoopNum = !stringFetchedValue.Equals("") ? stringFetchedValue : this.MetalnessLoopNum;
                     break;
                 case string a when a.Contains("SPECULAR_MAP_FROM"):
-                    integerFetchedValue = FetchNumberParamValue(line);
+                    integerFetchedValue =  Util.FetchNumberParamValue(line);
                     this.SpecularMapFrom = integerFetchedValue > -1 ? integerFetchedValue : this.SpecularMapFrom;
                     break;
                 case string a when a.Contains("SPECULAR_MAP_TYPE"):
-                    integerFetchedValue = FetchNumberParamValue(line);
+                    integerFetchedValue =  Util.FetchNumberParamValue(line);
                     this.SpecularMapType = integerFetchedValue > -1 ? integerFetchedValue : this.SpecularMapType;
                     break;
                 case string a when a.Contains("SPECULAR_MAP_UV_FLIP"):
-                    integerFetchedValue = FetchNumberParamValue(line);
+                    integerFetchedValue =  Util.FetchNumberParamValue(line);
                     this.SpecularMapUVFlip = integerFetchedValue > -1 ? integerFetchedValue : this.SpecularMapUVFlip;
                     break;
                 case string a when a.Contains("SPECULAR_MAP_SWIZZLE"):
-                    integerFetchedValue = FetchNumberParamValue(line);
+                    integerFetchedValue =  Util.FetchNumberParamValue(line);
                     this.SpecularMapSwizzle = integerFetchedValue > -1 ? integerFetchedValue : this.SpecularMapSwizzle;
                     break;
                 case string a when a.Contains("SPECULAR_MAP_APPLY_SCALE"):
-                    integerFetchedValue = FetchNumberParamValue(line);
+                    integerFetchedValue =  Util.FetchNumberParamValue(line);
                     this.SpecularMapApplyScale = integerFetchedValue > -1 ? integerFetchedValue : this.SpecularMapApplyScale;
                     break;
                 case string a when a.Contains("SPECULAR_MAP_FILE"):
-                    stringFetchedValue = FetchSubStringBetween(line, '"');
+                    stringFetchedValue =  Util.FetchSubStringBetween(line, '"');
                     this.SpecularMapFile = !stringFetchedValue.Equals("") ? stringFetchedValue : this.SpecularMapFile;
                     break;
                 case string a when a.Contains("specular ="):
-                    floatFetechedValue = FetchFloatNumber(line);
+                    floatFetechedValue = Util.FetchFloatNumber(line);
                     this.Specular = floatFetechedValue;
                     break;
                 case string a when a.Contains("specularMapLoopNum"):
-                    stringFetchedValue = FetchSubStringBetween(line, '=', true, 1);
+                    stringFetchedValue =  Util.FetchSubStringBetween(line, '=', true, 1);
                     this.SpecularLoopNum = !stringFetchedValue.Equals("") ? stringFetchedValue : this.SpecularLoopNum;
                     break;
                 case string a when a.Contains("OCCLUSION_MAP_FROM"):
-                    integerFetchedValue = FetchNumberParamValue(line);
+                    integerFetchedValue =  Util.FetchNumberParamValue(line);
                     this.OcclusionMapFrom = integerFetchedValue > -1 ? integerFetchedValue : this.OcclusionMapFrom;
                     break;
                 case string a when a.Contains("OCCLUSION_MAP_TYPE"):
-                    integerFetchedValue = FetchNumberParamValue(line);
+                    integerFetchedValue =  Util.FetchNumberParamValue(line);
                     this.OcclusionMapType = integerFetchedValue > -1 ? integerFetchedValue : this.OcclusionMapType;
                     break;
                 case string a when a.Contains("OCCLUSION_MAP_UV_FLIP"):
-                    integerFetchedValue = FetchNumberParamValue(line);
+                    integerFetchedValue =  Util.FetchNumberParamValue(line);
                     this.OcclusionMapUVFlip = integerFetchedValue > -1 ? integerFetchedValue : this.OcclusionMapUVFlip;
                     break;
                 case string a when a.Contains("OCCLUSION_MAP_SWIZZLE"):
-                    integerFetchedValue = FetchNumberParamValue(line);
+                    integerFetchedValue =  Util.FetchNumberParamValue(line);
                     this.OcclusionMapSwizzle = integerFetchedValue > -1 ? integerFetchedValue : this.OcclusionMapSwizzle;
                     break;
                 case string a when a.Contains("OCCLUSION_MAP_APPLY_SCALE"):
-                    integerFetchedValue = FetchNumberParamValue(line);
+                    integerFetchedValue =  Util.FetchNumberParamValue(line);
                     this.OcclusionMapApplyScale = integerFetchedValue > -1 ? integerFetchedValue : this.OcclusionMapApplyScale;
                     break;
                 case string a when a.Contains("OCCLUSION_MAP_FILE"):
-                    stringFetchedValue = FetchSubStringBetween(line, '"');
+                    stringFetchedValue =  Util.FetchSubStringBetween(line, '"');
                     this.OcclusionMapFile = !stringFetchedValue.Equals("") ? stringFetchedValue : this.OcclusionMapFile;
                     break;
                 case string a when a.Contains("occlusion ="):
-                    floatFetechedValue = FetchFloatNumber(line);
+                    floatFetechedValue = Util.FetchFloatNumber(line);
                     this.Occlusion = floatFetechedValue;
                     break;
                 case string a when a.Contains("occlusionMapLoopNum"):
-                    stringFetchedValue = FetchSubStringBetween(line, '=', true, 1);
+                    stringFetchedValue =  Util.FetchSubStringBetween(line, '=', true, 1);
                     this.OcclusionLoopNum = !stringFetchedValue.Equals("") ? stringFetchedValue : this.OcclusionLoopNum;
                     break;
                 case string a when a.Contains("PARALLAX_MAP_FROM"):
-                    integerFetchedValue = FetchNumberParamValue(line);
+                    integerFetchedValue =  Util.FetchNumberParamValue(line);
                     this.ParallaxMapFrom = integerFetchedValue > -1 ? integerFetchedValue : this.ParallaxMapFrom;
                     break;
                 case string a when a.Contains("PARALLAX_MAP_TYPE"):
-                    integerFetchedValue = FetchNumberParamValue(line);
+                    integerFetchedValue =  Util.FetchNumberParamValue(line);
                     this.ParallaxMapType = integerFetchedValue > -1 ? integerFetchedValue : this.ParallaxMapType;
                     break;
                 case string a when a.Contains("PARALLAX_MAP_UV_FLIP"):
-                    integerFetchedValue = FetchNumberParamValue(line);
+                    integerFetchedValue =  Util.FetchNumberParamValue(line);
                     this.ParallaxMapUVFlip = integerFetchedValue > -1 ? integerFetchedValue : this.ParallaxMapUVFlip;
                     break;
                 case string a when a.Contains("PARALLAX_MAP_SWIZZLE"):
-                    integerFetchedValue = FetchNumberParamValue(line);
+                    integerFetchedValue =  Util.FetchNumberParamValue(line);
                     this.ParallaxMapSwizzle = integerFetchedValue > -1 ? integerFetchedValue : this.ParallaxMapSwizzle;
                     break;
                 case string a when a.Contains("PARALLAX_MAP_FILE"):
-                    stringFetchedValue = FetchSubStringBetween(line, '"');
+                    stringFetchedValue =  Util.FetchSubStringBetween(line, '"');
                     this.ParallaxMapFile = !stringFetchedValue.Equals("") ? stringFetchedValue : this.ParallaxMapFile;
                     break;
                 case string a when a.Contains("parallaxMapScale ="):
-                    floatFetechedValue = FetchFloatNumber(line);
+                    floatFetechedValue = Util.FetchFloatNumber(line);
                     this.Parallax = floatFetechedValue;
                     break;
                 case string a when a.Contains("parallaxMapLoopNum"):
-                    stringFetchedValue = FetchSubStringBetween(line, '=', true, 1);
+                    stringFetchedValue =  Util.FetchSubStringBetween(line, '=', true, 1);
                     this.ParallaxLoopNum = !stringFetchedValue.Equals("") ? stringFetchedValue : this.ParallaxLoopNum;
                     break;
                 case string a when a.Contains("EMISSIVE_ENABLE"):
-                    integerFetchedValue = FetchNumberParamValue(line);
+                    integerFetchedValue =  Util.FetchNumberParamValue(line);
                     this.ParallaxMapFrom = integerFetchedValue > -1 ? integerFetchedValue : this.ParallaxMapFrom;
                     break;
                 case string a when a.Contains("EMISSIVE_MAP_FROM"):
-                    integerFetchedValue = FetchNumberParamValue(line);
+                    integerFetchedValue =  Util.FetchNumberParamValue(line);
                     this.EmissiveMapFrom = integerFetchedValue > -1 ? integerFetchedValue : this.EmissiveMapFrom;
                     break;
                 case string a when a.Contains("EMISSIVE_MAP_UV_FLIP"):
-                    integerFetchedValue = FetchNumberParamValue(line);
+                    integerFetchedValue =  Util.FetchNumberParamValue(line);
                     this.EmissiveMapUVFlip = integerFetchedValue > -1 ? integerFetchedValue : this.EmissiveMapUVFlip;
                     break;
                 case string a when a.Contains("EMISSIVE_MAP_APPLY_SCALE"):
-                    integerFetchedValue = FetchNumberParamValue(line);
+                    integerFetchedValue =  Util.FetchNumberParamValue(line);
                     this.EmissiveMapApplyScale = integerFetchedValue > -1 ? integerFetchedValue : this.EmissiveMapApplyScale;
                     break;
                 case string a when a.Contains("EMISSIVE_MAP_APPLY_MORPH_COLOR"):
-                    integerFetchedValue = FetchNumberParamValue(line);
+                    integerFetchedValue =  Util.FetchNumberParamValue(line);
                     this.EmissiveMapApplyMorphColor = integerFetchedValue > -1 ? integerFetchedValue : this.EmissiveMapApplyMorphColor;
                     break;
                 case string a when a.Contains("EMISSIVE_MAP_APPLY_MORPH_INTENSITY"):
-                    integerFetchedValue = FetchNumberParamValue(line);
+                    integerFetchedValue =  Util.FetchNumberParamValue(line);
                     this.EmissiveMapApplyMorphIntensity = integerFetchedValue > -1 ? integerFetchedValue : this.EmissiveMapApplyMorphIntensity;
                     break;
                 case string a when a.Contains("EMISSIVE_MAP_APPLY_BLINK"):
-                    integerFetchedValue = FetchNumberParamValue(line);
+                    integerFetchedValue =  Util.FetchNumberParamValue(line);
                     this.EmissiveMapApplyBlink = integerFetchedValue > -1 ? integerFetchedValue : this.EmissiveMapApplyBlink;
                     break;
                 case string a when a.Contains("EMISSIVE_MAP_FILE"):
-                    stringFetchedValue = FetchSubStringBetween(line, '"');
+                    stringFetchedValue =  Util.FetchSubStringBetween(line, '"');
                     this.EmissiveMapFile = !stringFetchedValue.Equals("") ? stringFetchedValue : this.EmissiveMapFile;
                     break;
                 case string a when a.Contains("emissive ="):
-                    floatFetechedValue = FetchFloatNumber(line);
+                    floatFetechedValue = Util.FetchFloatNumber(line);
                     this.Emissive = floatFetechedValue;
                     break;
                 case string a when a.Contains("emissiveBlink"):
-                    floatFetechedValue = FetchFloatNumber(line);
+                    floatFetechedValue = Util.FetchFloatNumber(line);
                     this.EmissiveBlink = floatFetechedValue;
                     break;
                 case string a when a.Contains("emissiveIntensity"):
-                    floatFetechedValue = FetchFloatNumber(line);
+                    floatFetechedValue = Util.FetchFloatNumber(line);
                     this.EmissiveIntensity = floatFetechedValue;
                     break;
                 case string a when a.Contains("emissiveMapLoopNum"):
-                    stringFetchedValue = FetchSubStringBetween(line, '=', true, 1);
+                    stringFetchedValue =  Util.FetchSubStringBetween(line, '=', true, 1);
                     this.EmissiveLoopNum = !stringFetchedValue.Equals("") ? stringFetchedValue : this.EmissiveLoopNum;
                     break;
                 case string a when a.Contains("CUSTOM_ENABLE"):
-                    integerFetchedValue = FetchNumberParamValue(line);
+                    integerFetchedValue =  Util.FetchNumberParamValue(line);
                     this.CustomEnable = integerFetchedValue > -1 ? integerFetchedValue : this.CustomEnable;
                     break;
                 case string a when a.Contains("CUSTOM_A_MAP_FROM"):
-                    integerFetchedValue = FetchNumberParamValue(line);
+                    integerFetchedValue =  Util.FetchNumberParamValue(line);
                     this.CustomAMapFrom = integerFetchedValue > -1 ? integerFetchedValue : this.CustomAMapFrom;
                     break;
                 case string a when a.Contains("CUSTOM_A_MAP_UV_FLIP"):
-                    integerFetchedValue = FetchNumberParamValue(line);
+                    integerFetchedValue =  Util.FetchNumberParamValue(line);
                     this.CustomAMapUVFlip = integerFetchedValue > -1 ? integerFetchedValue : this.CustomAMapUVFlip;
                     break;
                 case string a when a.Contains("CUSTOM_A_MAP_COLOR_FLIP"):
-                    integerFetchedValue = FetchNumberParamValue(line);
+                    integerFetchedValue =  Util.FetchNumberParamValue(line);
                     this.CustomAMapColorFlip = integerFetchedValue > -1 ? integerFetchedValue : this.CustomAMapColorFlip;
                     break;
                 case string a when a.Contains("CUSTOM_A_MAP_SWIZZLE"):
-                    integerFetchedValue = FetchNumberParamValue(line);
+                    integerFetchedValue =  Util.FetchNumberParamValue(line);
                     this.CustomAMapSwizzle = integerFetchedValue > -1 ? integerFetchedValue : this.CustomAMapSwizzle;
                     break;
                 case string a when a.Contains("CUSTOM_A_MAP_APPLY_SCALE"):
-                    integerFetchedValue = FetchNumberParamValue(line);
+                    integerFetchedValue =  Util.FetchNumberParamValue(line);
                     this.CustomAMapApplyScale = integerFetchedValue > -1 ? integerFetchedValue : this.CustomAMapApplyScale;
                     break;
                 case string a when a.Contains("CUSTOM_A_MAP_FILE"):
-                    stringFetchedValue = FetchSubStringBetween(line, '"');
+                    stringFetchedValue =  Util.FetchSubStringBetween(line, '"');
                     this.CustomAMapFile = !stringFetchedValue.Equals("") ? stringFetchedValue : this.CustomAMapFile;
                     break;
                 case string a when a.Contains("customA "):
-                    floatFetechedValue = FetchFloatNumber(line);
+                    floatFetechedValue = Util.FetchFloatNumber(line);
                     this.CustomA = floatFetechedValue;
                     break;
                 case string a when a.Contains("customAMapLoopNum"):
-                    stringFetchedValue = FetchSubStringBetween(line, '=', true, 1);
+                    stringFetchedValue =  Util.FetchSubStringBetween(line, '=', true, 1);
                     this.CustomALoopNum = !stringFetchedValue.Equals("") ? stringFetchedValue : this.CustomALoopNum;
                     break;
                 case string a when a.Contains("CUSTOM_B_MAP_FROM"):
-                    integerFetchedValue = FetchNumberParamValue(line);
+                    integerFetchedValue =  Util.FetchNumberParamValue(line);
                     this.CustomBMapFrom = integerFetchedValue > -1 ? integerFetchedValue : this.CustomBMapFrom;
                     break;
                 case string a when a.Contains("CUSTOM_B_MAP_UV_FLIP"):
-                    integerFetchedValue = FetchNumberParamValue(line);
+                    integerFetchedValue =  Util.FetchNumberParamValue(line);
                     this.CustomBMapUVFlip = integerFetchedValue > -1 ? integerFetchedValue : this.CustomBMapUVFlip;
                     break;
                 case string a when a.Contains("CUSTOM_B_MAP_COLOR_FLIP"):
-                    integerFetchedValue = FetchNumberParamValue(line);
+                    integerFetchedValue =  Util.FetchNumberParamValue(line);
                     this.CustomBMapColorFlip = integerFetchedValue > -1 ? integerFetchedValue : this.CustomBMapColorFlip;
                     break;
                 case string a when a.Contains("CUSTOM_B_MAP_APPLY_SCALE"):
-                    integerFetchedValue = FetchNumberParamValue(line);
+                    integerFetchedValue =  Util.FetchNumberParamValue(line);
                     this.CustomBMapApplyScale = integerFetchedValue > -1 ? integerFetchedValue : this.CustomBMapApplyScale;
                     break;
                 case string a when a.Contains("CUSTOM_B_MAP_FILE"):
-                    stringFetchedValue = FetchSubStringBetween(line, '"');
+                    stringFetchedValue =  Util.FetchSubStringBetween(line, '"');
                     this.CustomBMapFile = !stringFetchedValue.Equals("") ? stringFetchedValue : this.CustomBMapFile;
                     break;
                 case string a when a.Contains("customB ="):
-                    stringFetchedValue = FetchSubStringBetween(line, '=', true, 1);
+                    stringFetchedValue =  Util.FetchSubStringBetween(line, '=', true, 1);
                     this.CustomB = !stringFetchedValue.Equals("") ? stringFetchedValue : this.CustomB;
                     break;
                 case string a when a.Contains("customBMapLoopNum"):
-                    stringFetchedValue = FetchSubStringBetween(line, '=', true, 1);
+                    stringFetchedValue =  Util.FetchSubStringBetween(line, '=', true, 1);
                     this.CustomBLoopNum = !stringFetchedValue.Equals("") ? stringFetchedValue : this.CustomBLoopNum;
                     break;
                 case string a when a.Contains("#include"):
-                    stringFetchedValue = FetchSubStringBetween(line, '"');
+                    stringFetchedValue =  Util.FetchSubStringBetween(line, '"');
                     this.IncludeFxsub = !stringFetchedValue.Equals("") ? stringFetchedValue : this.IncludeFxsub;
                     break;
 
@@ -905,41 +905,6 @@ namespace RMT.Model
                     "#include " + this.IncludeFxsub + "\r\n";
         }
 
-        /*
-         * Fetches a float number from the '=' character of the line passed through params
-         */
-        private float FetchFloatNumber(string line)
-        {
-            var floatNumber = 1.0;
-            String substring = line.Substring(line.IndexOf("="));
-            var match = Regex.Match(substring, @"([-+]?[0-9]*\.?[0-9]+)");
-            if (match.Success)
-                floatNumber = Convert.ToSingle(match.Groups[1].Value);
-
-            return (float)floatNumber;
-        }
-        /*
-         * Fetches a string value between char character (usually a "\"")
-         */
-        private String FetchSubStringBetween(String line, char character, bool excludeLastCharacter = false, int firstCharacterPadding =0)
-        {
-
-            String substring = line.Substring(line.IndexOf(character)+ firstCharacterPadding);
-            if (excludeLastCharacter)
-                substring = substring.Remove(substring.Length - 1);
-
-            return substring;
-        }
-        /*
-         * Fetches an integer number
-         */
-        private int FetchNumberParamValue(string line)
-        {
-            String resultString = Regex.Match(line, @"\d+").Value;
-            int value = -1;
-            int.TryParse(resultString, out value);
-            return value;
-        }
 
     }
 }
