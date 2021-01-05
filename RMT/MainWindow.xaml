@@ -18,9 +18,9 @@
         <DockPanel HorizontalAlignment="Stretch"  LastChildFill="False" VerticalAlignment="Stretch"  Grid.ColumnSpan="3">
             <DockPanel.Resources>
                 <Style TargetType="Slider" x:Key="style">
-                            <Setter Property="Minimum" Value="-24" />
-                            <Setter Property="Maximum" Value="24" />
-                            <Setter Property="Orientation" Value="Horizontal" />
+                    <Setter Property="Minimum" Value="-24" />
+                    <Setter Property="Maximum" Value="24" />
+                    <Setter Property="Orientation" Value="Horizontal" />
                 </Style>
             </DockPanel.Resources>
             <Menu DockPanel.Dock="Top">
@@ -75,16 +75,14 @@
                         <Button x:Name="albedoMapFileButton" Content="Set Map File" Click="albedoMapFile_Click" HorizontalAlignment="Left" Margin="228,168,0,0" VerticalAlignment="Top" Width="75"/>
                         <Label x:Name="albedoMapFile" FlowDirection="RightToLeft" HorizontalContentAlignment="Right" Content="albedo.png" HorizontalAlignment="Left" Margin="123,165,0,0" VerticalAlignment="Top" Width="94"/>
                         <Label Content="ALBEDO" HorizontalAlignment="Left" Margin="10,210,0,0" VerticalAlignment="Top" Width="57"/>
-                        <ComboBox x:Name="albedoMode" SelectionChanged="albedoMode_SelectionChanged" HorizontalAlignment="Left" Margin="198,214,0,0" VerticalAlignment="Top" Width="100">
+                        <ComboBox x:Name="albedoMode" SelectionChanged="albedoMode_SelectionChanged" HorizontalAlignment="Left" Margin="228,213,0,0" VerticalAlignment="Top" Width="100">
                             <ComboBoxItem Content="Linear Color"  HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"/>
                             <ComboBoxItem Content="sRGB"  HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"/>
                             <ComboBoxItem Content="Linear sRGB"  HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"/>
                         </ComboBox>
-                        <Slider Style="{StaticResource style}" Visibility="Hidden" x:Name="albedoLinearColor" TickFrequency="0.05" IsSnapToTickEnabled="True" ValueChanged="albedoLinearColor_ValueChanged" HorizontalAlignment="Left" Margin="10,241,0,0" VerticalAlignment="Top" Width="150"/>
-                        <TextBox x:Name="albedo" HorizontalAlignment="Left" TextChanged="albedo_TextChanged" PreviewTextInput="albedo_PreviewTextInput" TextAlignment="Center" VerticalContentAlignment="Center" IsEnabled="False" Height="23" Margin="72,213,0,0" TextWrapping="Wrap" Text="{Binding ElementName=albedoLinearColor, Path=Value, StringFormat=N2,UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="110"/>
-
-                        <xctk:ColorPicker Visibility="Hidden" ShowStandardColors="True" ShowAvailableColors="True" ShowDropDownButton="True" ShowTabHeaders="True" SelectedColorChanged="albedoRGB_SelectedColorChanged" Name="albedoRGB" HorizontalAlignment="Left" Margin="10,264,0,0" VerticalAlignment="Top" Width="97"/>
-
+                        <Slider Style="{StaticResource style}" Visibility="Hidden" x:Name="albedoLinearColor" TickFrequency="0.05" IsSnapToTickEnabled="True" ValueChanged="albedoLinearColor_ValueChanged" HorizontalAlignment="Left" Margin="10,240,0,0" VerticalAlignment="Top" Width="213"/>
+                        <TextBox x:Name="albedo" FontSize="10" HorizontalAlignment="Left" TextChanged="albedo_TextChanged" PreviewTextInput="albedo_PreviewTextInput" TextAlignment="Center" VerticalContentAlignment="Center" IsEnabled="True" Height="23" Margin="72,213,0,0" TextWrapping="Wrap" Text="{Binding ElementName=albedoLinearColor, Mode=TwoWay, Path=Value, StringFormat=N2,UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="151"/>
+                        <xctk:ColorPicker Visibility="Hidden" UsingAlphaChannel="False"  Closed="albedoRGB_Closed" SelectedColorChanged="albedoRGB_SelectedColorChanged" Name="albedoRGB" HorizontalAlignment="Left" Margin="72,213,0,0" VerticalAlignment="Top" Width="151"/>
                     </Grid>
                 </TabItem>
                 <TabItem Header="Alpha">

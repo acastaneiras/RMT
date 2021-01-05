@@ -27,13 +27,16 @@ namespace RMT
         private const String APP_NAME = "Ray-mmd Material Tool v2.0";
         private enum MAP_MODES : int {LINEAR_COLOR =0, SRGB = 1, LINEAR_SRGB = 2 };
 
-
         private RayMaterial material;
 
         public bool initializationEnded;
         //Directory where the materials are created by default... TODO
         private String applicationBaseCreationPath = Directory.GetCurrentDirectory();
         private string imageFilters = "All Graphics Types|*.bmp;*.jpg;*.jpeg;*.png;*.tif;*.tiff"+ "BMP(*.bmp)|*.bmp|GIF(*.gif)|*.gif|JPG(*.jpg)|*.jpg;*.jpeg|PNG(*.png)|*.png|TIFF(*.tif)|*.tif;*.tiff|";
+
+        //Handling ColorPicker changes with variables, since the event triggers the ColorChanged even when you're dragging your cursor
+        private Color? albedoSelectedColor;
+
         public MainWindow()
         {
             initializationEnded = false;
@@ -220,12 +223,14 @@ namespace RMT
                 case (int) MAP_MODES.LINEAR_COLOR:
                     albedoLinearColor.Visibility = Visibility.Visible;
                     albedoRGB.Visibility = Visibility.Hidden;
-                    albedo.IsEnabled = true;
+                    albedo.Visibility = Visibility.Visible;
+                    this.material.Albedo = this.albedo.Text;
+                    handleChanges();
                     break;
                 default:
                     albedoLinearColor.Visibility = Visibility.Hidden;
                     albedoRGB.Visibility = Visibility.Visible;
-                    albedo.IsEnabled = false;
+                    albedo.Visibility = Visibility.Hidden;
                     break;
             }
         }
@@ -238,7 +243,6 @@ namespace RMT
         private void albedo_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
             bool approvedDecimalPoint = false;
-
             if (e.Text == ".")
             {
                 if (!((TextBox)sender).Text.Contains("."))
@@ -251,13 +255,39 @@ namespace RMT
 
         private void albedo_TextChanged(object sender, TextChangedEventArgs e)
         {
-            this.material.Albedo = albedo.Text;
-            handleChanges();
+                this.material.Albedo = albedo.Text;
+                handleChanges();
         }
 
         private void albedoRGB_SelectedColorChanged(object sender, RoutedPropertyChangedEventArgs<Color?> e)
         {
-            Console.WriteLine(albedoRGB.SelectedColor.ToString());
+
+        }
+
+        private void albedoRGB_Closed(object sender, RoutedEventArgs e)
+        {
+            if (albedoRGB.SelectedColor != this.albedoSelectedColor)
+            {
+                this.albedoSelectedColor = albedoRGB.SelectedColor;
+                this.material.Albedo = this.GetRGBColor(this.albedoMode.SelectedIndex, this.albedoSelectedColor.Value);
+                handleChanges();
+            }
+        }
+
+        private String GetRGBColor(int selectedIndex, Color color)
+        {
+            String colorString = "";
+
+            switch (selectedIndex)
+            {
+                case (int) MAP_MODES.SRGB:
+                    colorString = "float3(" + color.R + "," + color.G + "," + color.B + ")/255";
+                    break;
+                case (int) MAP_MODES.LINEAR_SRGB:
+                    colorString = "pow(float3(" + color.R + "," + color.G + "," + color.B + ")/255, 2.2)";
+                    break;
+            }
+            return colorString;
         }
     }
 }
