@@ -59,5 +59,19 @@ namespace RMT
 
             return substring;
         }
+
+        // Fetches mapLoopNum params
+        public static String FetchMapLoop(String line, char character)
+        {
+
+            String substring = line.Substring(line.IndexOf(character) + 1);
+            substring = substring.Remove(substring.Length - 1);
+            if (!substring.Contains("float"))
+            {
+                substring = "float2(" + substring + "," + substring + ")";
+            }
+
+            return substring;
+        }
     }
 }

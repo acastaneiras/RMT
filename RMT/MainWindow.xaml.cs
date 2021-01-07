@@ -35,7 +35,7 @@ namespace RMT
         private string imageFilters = "All Graphics Types|*.bmp;*.jpg;*.jpeg;*.png;*.tif;*.tiff"+ "BMP(*.bmp)|*.bmp|GIF(*.gif)|*.gif|JPG(*.jpg)|*.jpg;*.jpeg|PNG(*.png)|*.png|TIFF(*.tif)|*.tif;*.tiff|";
 
         //Handling ColorPicker changes with variables, since the event triggers the ColorChanged even when you're dragging your cursor
-        private Color? albedoSelectedColor;
+        private Color albedoSelectedColor;
 
         public MainWindow()
         {
@@ -55,13 +55,26 @@ namespace RMT
             this.albedoMapApplyMorphColor.SelectedIndex = this.material.AlbedoMapApplyMorphColor;
             this.albedoMapFile.Content = this.material.AlbedoMapFile;
             this.albedo.Text = this.material.Albedo;
+            this.albedoLoopNumX.Value= handleLoopNums(this.material.AlbedoLoopNum)[0];
+            this.albedoLoopNumY.Value= handleLoopNums(this.material.AlbedoLoopNum)[1];
+            
             ChangeMapScaleMode(this.material.Albedo, this.albedoMode);
 
         }
+
+        private double[] handleLoopNums(string line)
+        {
+            String substring = line.Substring(line.IndexOf("(") + 1);
+            substring = substring.Remove(substring.Length - 1);
+            Console.WriteLine(substring);
+            
+            return Array.ConvertAll(substring.Split(','), Double.Parse); ;
+        }
+
         /*
-         * Used to know in which mode the xMapScale is 
-         * Case scenarios: 1.0 | float3(255, 0.0, 0.0) / 255.0 | pow(float3(r, g, b) / 255.0, 2.2)
-         */
+        * Used to know in which mode the xMapScale is 
+        * Case scenarios: 1.0 | float3(255, 0.0, 0.0) / 255.0 | pow(float3(r, g, b) / 255.0, 2.2)
+        */
         private void ChangeMapScaleMode(String mapScale, ComboBox comboBoxMode)
         {
             switch (mapScale)
@@ -85,10 +98,12 @@ namespace RMT
         private void handleChanges()
         {
             if (initializationEnded && !this.material.FilePath.Equals("")) 
-                //Call to Save function
                     this.material.Save();
         }
 
+        /*
+         * Enables all the tabs 
+         */
         private void enablePanel()
         {
             if (!this.material.FilePath.Equals("") && TabPanel.IsEnabled == false)
@@ -102,7 +117,6 @@ namespace RMT
             Stream myStream;
             SaveFileDialog saveFileDialog1 = new SaveFileDialog();
 
-            //saveFileDialog1.InitialDirectory = this.applicationBaseCreationPath;
             saveFileDialog1.Filter = "Material files (*.fx)|*.fx";
             saveFileDialog1.FileName = "New_Material";
 			saveFileDialog1.AddExtension = true;
@@ -146,6 +160,23 @@ namespace RMT
         private String GetFileName(String filePath)
         {
             return filePath.Substring(filePath.LastIndexOf("\\")+1);
+        }
+
+
+        private String GetRGBColor(int selectedIndex, Color color)
+        {
+            String colorString = "";
+
+            switch (selectedIndex)
+            {
+                case (int)MAP_MODES.SRGB:
+                    colorString = " float3(" + color.R + "," + color.G + "," + color.B + ")/255";
+                    break;
+                case (int)MAP_MODES.LINEAR_SRGB:
+                    colorString = " pow(float3(" + color.R + "," + color.G + "," + color.B + ")/255, 2.2)";
+                    break;
+            }
+            return colorString;
         }
 
         //UI Events
@@ -224,20 +255,30 @@ namespace RMT
                     albedoLinearColor.Visibility = Visibility.Visible;
                     albedoRGB.Visibility = Visibility.Hidden;
                     albedo.Visibility = Visibility.Visible;
+                    if (this.albedo.Text.Contains("float"))
+                        this.albedo.Text = "1.0";
                     this.material.Albedo = this.albedo.Text;
-                    handleChanges();
                     break;
-                default:
+                case (int) MAP_MODES.SRGB:
                     albedoLinearColor.Visibility = Visibility.Hidden;
                     albedoRGB.Visibility = Visibility.Visible;
                     albedo.Visibility = Visibility.Hidden;
+                    if (this.albedoSelectedColor != null)
+                    {
+                        this.material.Albedo = this.GetRGBColor(this.albedoMode.SelectedIndex, this.albedoSelectedColor);
+                    }
+                    break;
+                case (int)MAP_MODES.LINEAR_SRGB:
+                    albedoLinearColor.Visibility = Visibility.Hidden;
+                    albedoRGB.Visibility = Visibility.Visible;
+                    albedo.Visibility = Visibility.Hidden;
+                    if (this.albedoSelectedColor != null)
+                    {
+                        this.material.Albedo = this.GetRGBColor(this.albedoMode.SelectedIndex, this.albedoSelectedColor);
+                    }
                     break;
             }
-        }
-
-        private void albedoLinearColor_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
-        {
-
+            handleChanges();
         }
 
         private void albedo_PreviewTextInput(object sender, TextCompositionEventArgs e)
@@ -255,39 +296,56 @@ namespace RMT
 
         private void albedo_TextChanged(object sender, TextChangedEventArgs e)
         {
-                this.material.Albedo = albedo.Text;
-                handleChanges();
-        }
-
-        private void albedoRGB_SelectedColorChanged(object sender, RoutedPropertyChangedEventArgs<Color?> e)
-        {
-
+            this.material.Albedo = albedo.Text;
+            handleChanges();
         }
 
         private void albedoRGB_Closed(object sender, RoutedEventArgs e)
         {
-            if (albedoRGB.SelectedColor != this.albedoSelectedColor)
+            if ((albedoRGB.SelectedColor.HasValue) && (albedoRGB.SelectedColor != this.albedoSelectedColor))
             {
-                this.albedoSelectedColor = albedoRGB.SelectedColor;
-                this.material.Albedo = this.GetRGBColor(this.albedoMode.SelectedIndex, this.albedoSelectedColor.Value);
+                this.albedoSelectedColor = albedoRGB.SelectedColor.Value;
+                this.material.Albedo = this.GetRGBColor(this.albedoMode.SelectedIndex, this.albedoSelectedColor);
                 handleChanges();
             }
         }
 
-        private String GetRGBColor(int selectedIndex, Color color)
+        private void albedoLoopNumX_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            String colorString = "";
-
-            switch (selectedIndex)
-            {
-                case (int) MAP_MODES.SRGB:
-                    colorString = "float3(" + color.R + "," + color.G + "," + color.B + ")/255";
-                    break;
-                case (int) MAP_MODES.LINEAR_SRGB:
-                    colorString = "pow(float3(" + color.R + "," + color.G + "," + color.B + ")/255, 2.2)";
-                    break;
+            if (albedoLoopNumLock.IsChecked == true) {
+                this.albedoLoopNumY.Value = this.albedoLoopNumX.Value;
             }
-            return colorString;
+            this.albedoLoopNum.Text = "float2("+Math.Round(this.albedoLoopNumX.Value, 2) +","+ Math.Round(this.albedoLoopNumY.Value, 2) + ")";
+            handleChanges();
+        }
+
+        private void albedoLoopNumY_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            if (albedoLoopNumLock.IsChecked == false)
+            {
+                this.albedoLoopNum.Text = "float2(" + Math.Round(this.albedoLoopNumX.Value, 2) + "," + Math.Round(this.albedoLoopNumY.Value, 2) + ")";
+            }
+            handleChanges();
+        }
+
+        private void albedoLoopNumLock_Checked(object sender, RoutedEventArgs e)
+        {
+            if (albedoLoopNumY.IsEnabled)
+            {
+                albedoLoopNumY.IsEnabled = false;
+            }
+            this.albedoLoopNumY.Value = this.albedoLoopNumX.Value;
+            this.albedoLoopNum.Text = "float2(" + Math.Round(this.albedoLoopNumX.Value, 2) + "," + Math.Round(this.albedoLoopNumY.Value, 2) + ")";
+            handleChanges();
+        }
+
+        private void albedoLoopNumLock_Unchecked(object sender, RoutedEventArgs e)
+        {
+            if (!albedoLoopNumY.IsEnabled)
+            {
+                albedoLoopNumY.IsEnabled = true;
+            }
+            this.albedoLoopNumY.Value = this.albedoLoopNumX.Value;
         }
     }
 }

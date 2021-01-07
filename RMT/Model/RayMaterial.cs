@@ -230,7 +230,7 @@ namespace RMT.Model
         public string IncludeFxsub { get => includeFxsub; set => includeFxsub = value; }
         public string FilePath { get => filePath; set => filePath = value; }
 
-        public RayMaterial(int albedoMapFrom = 3, int albedoMapUVFlip = 0, int albedoMapApplyScale =0, int albedoMapApplyDiffuse = 1, int albedoMapApplyMorphColor = 0, string albedoMapFile="\"albedo.png\"", string albedo = "1.0", string albedoLoopNum = "1.0", int albedoSubEnable = 0, int albedoSubMapFrom = 0, int albedoSubMapUVFlip = 0, int albedoSubMapApplyScale = 0, string albedoSubMapFile = "\"albedo.png\"", string albedoSub = "1.0", string albedoSubLoopNum = "1.0", int alphaMapFrom = 3, int alphaMapUVFlip = 0, int alphaMapSwizzle =3, string alphaMapFile = "\"alpha.png\"", float alpha = 1.0f, string alphaLoopNum = "1.0", int normalMapFrom = 0, int normalMapType = 0, int normalMapUVFlip = 0, string normalMapFile = "\"normal.png\"", float normal = 1.0f, string normalLoopNum = "1.0", int normalSubMapFrom = 0, int normalSubMapType = 0, int normalSubMapUVFlip = 0, string normalSubMapFile = "\"normal.png\"", float normalSub = 1.0f, string normalSubLoopNum = "1.0", int smoothnessMapFrom = 9, int smoothnessMapType = 0, int smoothnessMapUVFlip = 0, int smoothnessMapSwizzle = 0, int smoothnessMapApplyScale = 0, string smoothnessMapFile = "\"smoothness.png\"", float smoothness = 0.0f, string smoothnessLoopNum = "1.0", int metalnessMapFrom = 0, int metalnessMapUVFlip = 0, int metalnessMapSwizzle = 0, int metalnessMapApplyScale = 0, string metalnessMapFile = "\"metalness.png\"", float metalness = 0.0f, string metalnessLoopNum = "1.0", int specularMapFrom = 0, int specularMapType = 0, int specularMapUVFlip = 0, int specularMapSwizzle = 0, int specularMapApplyScale = 0, string specularMapFile = "\"specular.png\"", float specular = 0.5f, string specularLoopNum = "1.0", int occlusionMapFrom = 0, int occlusionMapType = 0, int occlusionMapUVFlip = 0, int occlusionMapSwizzle = 0, int occlusionMapApplyScale = 0, string occlusionMapFile = "\"occlusion.png\"", float occlusion = 1.0f, string occlusionLoopNum = "1.0", int parallaxMapFrom = 0, int parallaxMapType = 0, int parallaxMapUVFlip = 0, int parallaxMapSwizzle = 0, string parallaxMapFile = "\"height.png\"", float parallax = 1.0f, string parallaxLoopNum = "1.0", int emissiveEnable = 0, int emissiveMapFrom = 0, int emissiveMapUVFlip = 0, int emissiveMapApplyScale = 0, int emissiveMapApplyMorphColor = 0, int emissiveMapApplyMorphIntensity = 0, int emissiveMapApplyBlink = 0, string emissiveMapFile = "\"emissive.png\"", float emissive = 1.0f, float emissiveBlink = 1.0f, float emissiveIntensity = 1.0f, string emissiveLoopNum = "1.0", int customEnable = 0, int customAMapFrom = 0, int customAMapUVFlip = 0, int customAMapColorFlip = 0, int customAMapSwizzle = 0, int customAMapApplyScale = 0, string customAMapFile = "\"custom.png\"", float customA = 0.0f, string customALoopNum = "1.0", int customBMapFrom = 0, int customBMapUVFlip = 0, int customBMapColorFlip = 0, int customBMapApplyScale = 0, string customBMapFile = "\"custom.png\"", string customB = "0.0", string customBLoopNum = "1.0", string includeFxsub = "\"../material_common_2.0.fxsub\"", string filePath = "")
+        public RayMaterial(int albedoMapFrom = 3, int albedoMapUVFlip = 0, int albedoMapApplyScale =0, int albedoMapApplyDiffuse = 1, int albedoMapApplyMorphColor = 0, string albedoMapFile="\"albedo.png\"", string albedo = "1.0", string albedoLoopNum = "float2(1,1)", int albedoSubEnable = 0, int albedoSubMapFrom = 0, int albedoSubMapUVFlip = 0, int albedoSubMapApplyScale = 0, string albedoSubMapFile = "\"albedo.png\"", string albedoSub = "1.0", string albedoSubLoopNum = "float2(1,1)", int alphaMapFrom = 3, int alphaMapUVFlip = 0, int alphaMapSwizzle =3, string alphaMapFile = "\"alpha.png\"", float alpha = 1.0f, string alphaLoopNum = "float2(1,1)", int normalMapFrom = 0, int normalMapType = 0, int normalMapUVFlip = 0, string normalMapFile = "\"normal.png\"", float normal = 1.0f, string normalLoopNum = "float2(1,1)", int normalSubMapFrom = 0, int normalSubMapType = 0, int normalSubMapUVFlip = 0, string normalSubMapFile = "\"normal.png\"", float normalSub = 1.0f, string normalSubLoopNum = "float2(1,1)", int smoothnessMapFrom = 9, int smoothnessMapType = 0, int smoothnessMapUVFlip = 0, int smoothnessMapSwizzle = 0, int smoothnessMapApplyScale = 0, string smoothnessMapFile = "\"smoothness.png\"", float smoothness = 0.0f, string smoothnessLoopNum = "float2(1,1)", int metalnessMapFrom = 0, int metalnessMapUVFlip = 0, int metalnessMapSwizzle = 0, int metalnessMapApplyScale = 0, string metalnessMapFile = "\"metalness.png\"", float metalness = 0.0f, string metalnessLoopNum = "float2(1,1)", int specularMapFrom = 0, int specularMapType = 0, int specularMapUVFlip = 0, int specularMapSwizzle = 0, int specularMapApplyScale = 0, string specularMapFile = "\"specular.png\"", float specular = 0.5f, string specularLoopNum = "float2(1,1)", int occlusionMapFrom = 0, int occlusionMapType = 0, int occlusionMapUVFlip = 0, int occlusionMapSwizzle = 0, int occlusionMapApplyScale = 0, string occlusionMapFile = "\"occlusion.png\"", float occlusion = 1.0f, string occlusionLoopNum = "float2(1,1)", int parallaxMapFrom = 0, int parallaxMapType = 0, int parallaxMapUVFlip = 0, int parallaxMapSwizzle = 0, string parallaxMapFile = "\"height.png\"", float parallax = 1.0f, string parallaxLoopNum = "float2(1,1)", int emissiveEnable = 0, int emissiveMapFrom = 0, int emissiveMapUVFlip = 0, int emissiveMapApplyScale = 0, int emissiveMapApplyMorphColor = 0, int emissiveMapApplyMorphIntensity = 0, int emissiveMapApplyBlink = 0, string emissiveMapFile = "\"emissive.png\"", float emissive = 1.0f, float emissiveBlink = 1.0f, float emissiveIntensity = 1.0f, string emissiveLoopNum = "float2(1,1)", int customEnable = 0, int customAMapFrom = 0, int customAMapUVFlip = 0, int customAMapColorFlip = 0, int customAMapSwizzle = 0, int customAMapApplyScale = 0, string customAMapFile = "\"custom.png\"", float customA = 0.0f, string customALoopNum = "float2(1,1)", int customBMapFrom = 0, int customBMapUVFlip = 0, int customBMapColorFlip = 0, int customBMapApplyScale = 0, string customBMapFile = "\"custom.png\"", string customB = "0.0", string customBLoopNum = "float2(1,1)", string includeFxsub = "\"../material_common_2.0.fxsub\"", string filePath = "")
         {
             this.albedoMapFrom = albedoMapFrom;
             this.albedoMapUVFlip = albedoMapUVFlip;
@@ -391,7 +391,7 @@ namespace RMT.Model
                     this.Albedo = !stringFetchedValue.Equals("") ? stringFetchedValue : this.Albedo;
                     break;
                 case string a when a.Contains("albedoMapLoopNum"):
-                    stringFetchedValue =  Util.FetchSubStringBetween(line, '=', true, 1);
+                    stringFetchedValue =  Util.FetchMapLoop(line, '=');
                     this.AlbedoLoopNum = !stringFetchedValue.Equals("") ? stringFetchedValue : this.AlbedoLoopNum;
                     break;
                 case string a when a.Contains("ALBEDO_SUB_ENABLE"):
@@ -419,7 +419,7 @@ namespace RMT.Model
                     this.AlbedoSub = !stringFetchedValue.Equals("") ? stringFetchedValue : this.AlbedoSub;
                     break;
                 case string a when a.Contains("albedoSubMapLoopNum"):
-                    stringFetchedValue =  Util.FetchSubStringBetween(line, '=', true, 1);
+                    stringFetchedValue = Util.FetchMapLoop(line, '=');
                     this.AlbedoSubLoopNum = !stringFetchedValue.Equals("") ? stringFetchedValue : this.AlbedoSubLoopNum;
                     break;
                 case string a when a.Contains("ALPHA_MAP_FROM"):
@@ -443,7 +443,7 @@ namespace RMT.Model
                     this.Alpha = floatFetechedValue;
                     break;
                 case string a when a.Contains("alphaMapLoopNum"):
-                    stringFetchedValue =  Util.FetchSubStringBetween(line, '=', true, 1);
+                    stringFetchedValue = Util.FetchMapLoop(line, '=');
                     this.AlphaLoopNum = !stringFetchedValue.Equals("") ? stringFetchedValue : this.AlphaLoopNum;
                     break;
                 case string a when a.Contains("NORMAL_MAP_FROM"):
@@ -467,7 +467,7 @@ namespace RMT.Model
                     this.Normal = floatFetechedValue;
                     break;
                 case string a when a.Contains("normalMapLoopNum"):
-                    stringFetchedValue =  Util.FetchSubStringBetween(line, '=', true, 1);
+                    stringFetchedValue = Util.FetchMapLoop(line, '=');
                     this.NormalLoopNum = !stringFetchedValue.Equals("") ? stringFetchedValue : this.NormalLoopNum;
                     break;
                 case string a when a.Contains("NORMAL_SUB_MAP_FROM"):
@@ -491,7 +491,7 @@ namespace RMT.Model
                     this.NormalSub = floatFetechedValue;
                     break;
                 case string a when a.Contains("normalSubMapLoopNum"):
-                    stringFetchedValue =  Util.FetchSubStringBetween(line, '=', true, 1);
+                    stringFetchedValue = Util.FetchMapLoop(line, '=');
                     this.NormalSubLoopNum = !stringFetchedValue.Equals("") ? stringFetchedValue : this.NormalSubLoopNum;
                     break;
                 case string a when a.Contains("SMOOTHNESS_MAP_FROM"):
@@ -523,7 +523,7 @@ namespace RMT.Model
                     this.Smoothness = floatFetechedValue;
                     break;
                 case string a when a.Contains("smoothnessMapLoopNum"):
-                    stringFetchedValue =  Util.FetchSubStringBetween(line, '=', true, 1);
+                    stringFetchedValue = Util.FetchMapLoop(line, '=');
                     this.SmoothnessLoopNum = !stringFetchedValue.Equals("") ? stringFetchedValue : this.SmoothnessLoopNum;
                     break;
                 case string a when a.Contains("METALNESS_MAP_FROM"):
@@ -551,7 +551,7 @@ namespace RMT.Model
                     this.Metalness = floatFetechedValue;
                     break;
                 case string a when a.Contains("metalnessMapLoopNum"):
-                    stringFetchedValue =  Util.FetchSubStringBetween(line, '=', true, 1);
+                    stringFetchedValue = Util.FetchMapLoop(line, '=');
                     this.MetalnessLoopNum = !stringFetchedValue.Equals("") ? stringFetchedValue : this.MetalnessLoopNum;
                     break;
                 case string a when a.Contains("SPECULAR_MAP_FROM"):
@@ -583,7 +583,7 @@ namespace RMT.Model
                     this.Specular = floatFetechedValue;
                     break;
                 case string a when a.Contains("specularMapLoopNum"):
-                    stringFetchedValue =  Util.FetchSubStringBetween(line, '=', true, 1);
+                    stringFetchedValue = Util.FetchMapLoop(line, '=');
                     this.SpecularLoopNum = !stringFetchedValue.Equals("") ? stringFetchedValue : this.SpecularLoopNum;
                     break;
                 case string a when a.Contains("OCCLUSION_MAP_FROM"):
@@ -615,7 +615,7 @@ namespace RMT.Model
                     this.Occlusion = floatFetechedValue;
                     break;
                 case string a when a.Contains("occlusionMapLoopNum"):
-                    stringFetchedValue =  Util.FetchSubStringBetween(line, '=', true, 1);
+                    stringFetchedValue = Util.FetchMapLoop(line, '=');
                     this.OcclusionLoopNum = !stringFetchedValue.Equals("") ? stringFetchedValue : this.OcclusionLoopNum;
                     break;
                 case string a when a.Contains("PARALLAX_MAP_FROM"):
@@ -643,7 +643,7 @@ namespace RMT.Model
                     this.Parallax = floatFetechedValue;
                     break;
                 case string a when a.Contains("parallaxMapLoopNum"):
-                    stringFetchedValue =  Util.FetchSubStringBetween(line, '=', true, 1);
+                    stringFetchedValue = Util.FetchMapLoop(line, '=');
                     this.ParallaxLoopNum = !stringFetchedValue.Equals("") ? stringFetchedValue : this.ParallaxLoopNum;
                     break;
                 case string a when a.Contains("EMISSIVE_ENABLE"):
@@ -691,7 +691,7 @@ namespace RMT.Model
                     this.EmissiveIntensity = floatFetechedValue;
                     break;
                 case string a when a.Contains("emissiveMapLoopNum"):
-                    stringFetchedValue =  Util.FetchSubStringBetween(line, '=', true, 1);
+                    stringFetchedValue = Util.FetchMapLoop(line, '=');
                     this.EmissiveLoopNum = !stringFetchedValue.Equals("") ? stringFetchedValue : this.EmissiveLoopNum;
                     break;
                 case string a when a.Contains("CUSTOM_ENABLE"):
@@ -727,7 +727,7 @@ namespace RMT.Model
                     this.CustomA = floatFetechedValue;
                     break;
                 case string a when a.Contains("customAMapLoopNum"):
-                    stringFetchedValue =  Util.FetchSubStringBetween(line, '=', true, 1);
+                    stringFetchedValue = Util.FetchMapLoop(line, '=');
                     this.CustomALoopNum = !stringFetchedValue.Equals("") ? stringFetchedValue : this.CustomALoopNum;
                     break;
                 case string a when a.Contains("CUSTOM_B_MAP_FROM"):
@@ -755,7 +755,7 @@ namespace RMT.Model
                     this.CustomB = !stringFetchedValue.Equals("") ? stringFetchedValue : this.CustomB;
                     break;
                 case string a when a.Contains("customBMapLoopNum"):
-                    stringFetchedValue =  Util.FetchSubStringBetween(line, '=', true, 1);
+                    stringFetchedValue = Util.FetchMapLoop(line, '=');
                     this.CustomBLoopNum = !stringFetchedValue.Equals("") ? stringFetchedValue : this.CustomBLoopNum;
                     break;
                 case string a when a.Contains("#include"):
