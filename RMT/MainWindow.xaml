@@ -30,9 +30,9 @@
                     <MenuItem x:Name="exit" Header="_Exit" Click="exit_Click" />
                 </MenuItem>
             </Menu>
-            <TabControl x:Name="TabPanel" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" IsEnabled="False"  >
+            <TabControl x:Name="TabPanel" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" IsEnabled="False" Width="580"  >
                 <TabItem Header="Albedo">
-                    <Grid Background="#FFE5E5E5" Margin="0,0,0,-3">
+                    <Grid Background="#FFE5E5E5" Margin="1,0,0,-3">
                         <Label Content="ALBEDO MAP FROM" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="121"/>
                         <ComboBox x:Name="albedoMapFrom" SelectionChanged="albedoMapFrom_SelectionChanged" HorizontalAlignment="Left" Margin="138,14,0,0" VerticalAlignment="Top" Width="35">
                             <ComboBoxItem Content="0" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" />
@@ -80,14 +80,15 @@
                             <ComboBoxItem Content="sRGB"  HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"/>
                             <ComboBoxItem Content="Linear sRGB"  HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"/>
                         </ComboBox>
-                        <Slider Style="{StaticResource style}" Visibility="Hidden" x:Name="albedoLinearColor" TickFrequency="0.05" IsSnapToTickEnabled="True" HorizontalAlignment="Left" Margin="10,240,0,0" VerticalAlignment="Top" Width="213"/>
-                        <TextBox x:Name="albedo" FontSize="10" HorizontalAlignment="Left" TextChanged="albedo_TextChanged" PreviewTextInput="albedo_PreviewTextInput" TextAlignment="Center" VerticalContentAlignment="Center" IsEnabled="True" Height="23" Margin="72,213,0,0" TextWrapping="Wrap" Text="{Binding ElementName=albedoLinearColor, Mode=TwoWay, Path=Value, StringFormat=N2,UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="151"/>
+                        <Slider Style="{StaticResource style}" Thumb.DragCompleted="albedoLinearColor_DragCompleted" Visibility="Hidden" x:Name="albedoLinearColor" TickFrequency="0.05" IsSnapToTickEnabled="True" HorizontalAlignment="Left" Margin="10,240,0,0" VerticalAlignment="Top" Width="213"/>
+                        <TextBox x:Name="albedo" FontSize="10" HorizontalAlignment="Left" PreviewTextInput="albedo_PreviewTextInput" TextAlignment="Center" VerticalContentAlignment="Center" IsEnabled="True" Height="23" Margin="72,213,0,0" TextWrapping="Wrap" Text="{Binding ElementName=albedoLinearColor, Mode=TwoWay, Path=Value, StringFormat=N2,UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="151"/>
                         <xctk:ColorPicker Visibility="Hidden" UsingAlphaChannel="False"  Closed="albedoRGB_Closed" Name="albedoRGB" HorizontalAlignment="Left" Margin="72,213,0,0" VerticalAlignment="Top" Width="151"/>
                         <Label Content="ALBEDO LOOP NUM" HorizontalAlignment="Left" Margin="10,263,0,0" VerticalAlignment="Top" Width="121"/>
-                        <TextBox Name="albedoLoopNum" FontSize="10" HorizontalAlignment="Left" Height="23" Margin="138,266,0,0" TextWrapping="Wrap" Text="" TextAlignment="Center" VerticalContentAlignment="Center" IsEnabled="True" VerticalAlignment="Top" Width="139"/>
+                        <TextBox  Name="albedoLoopNum" IsEnabled="False" FontSize="10" HorizontalAlignment="Left" Height="23" Margin="138,266,0,0" TextWrapping="Wrap" Text="" TextAlignment="Center" VerticalContentAlignment="Center" VerticalAlignment="Top" Width="139"/>
                         <CheckBox Name="albedoLoopNumLock" Checked="albedoLoopNumLock_Checked" Unchecked="albedoLoopNumLock_Unchecked" Content="Lock" HorizontalAlignment="Left" Margin="282,270,0,0" VerticalAlignment="Top" Width="46"/>
-                        <Slider Style="{StaticResource style}" ValueChanged="albedoLoopNumX_ValueChanged" Name="albedoLoopNumX"  HorizontalAlignment="Left" Margin="18,294,0,0" VerticalAlignment="Top" Width="259"/>
-                        <Slider Style="{StaticResource style}" ValueChanged="albedoLoopNumY_ValueChanged" Name="albedoLoopNumY" HorizontalAlignment="Left" TickFrequency="0.05" IsSnapToTickEnabled="True" Margin="18,317,0,0" VerticalAlignment="Top" Width="259"/>
+                        <Slider Style="{StaticResource style}" Thumb.DragCompleted="albedoLoopNumX_DragCompleted" Name="albedoLoopNumX" ValueChanged="albedoLoopNumX_ValueChanged"  HorizontalAlignment="Left" TickFrequency="0.05" IsSnapToTickEnabled="True" Margin="18,294,0,0" VerticalAlignment="Top" Width="259"/>
+                        <Slider Style="{StaticResource style}" Thumb.DragCompleted="albedoLoopNumY_DragCompleted" Name="albedoLoopNumY" ValueChanged="albedoLoopNumY_ValueChanged" HorizontalAlignment="Left" TickFrequency="0.05" IsSnapToTickEnabled="True" Margin="18,317,0,0" VerticalAlignment="Top" Width="259"/>
+                        <Button Name="albedoLoopNumReset" Click="albedoLoopNumReset_Click" Content="Reset" HorizontalAlignment="Left" Margin="282,297,0,0" VerticalAlignment="Top" Width="46"/>
                     </Grid>
                 </TabItem>
                 <TabItem Header="Alpha">

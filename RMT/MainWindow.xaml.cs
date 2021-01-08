@@ -57,16 +57,31 @@ namespace RMT
             this.albedo.Text = this.material.Albedo;
             this.albedoLoopNumX.Value= handleLoopNums(this.material.AlbedoLoopNum)[0];
             this.albedoLoopNumY.Value= handleLoopNums(this.material.AlbedoLoopNum)[1];
+            this.albedoLoopNum.Text = assignLoopNum(this.albedoLoopNumX.Value, this.albedoLoopNumY.Value);
             
             ChangeMapScaleMode(this.material.Albedo, this.albedoMode);
 
         }
 
+        /*
+         * Returns text with LoopNum format: float2(x,y) 
+         */
+        private string assignLoopNum(double value1, double value2)
+        {
+            value1 = Math.Round(value1, 2);
+            value2 = Math.Round(value2, 2);
+            return "float2(" + value1 + "," + value2 + ")";
+        }
+
+        /*
+         * Splits the X & Y Values of the LoopNum param
+         * Eg.  arr[0] = X
+         *      arr[1] = Y
+         */
         private double[] handleLoopNums(string line)
         {
             String substring = line.Substring(line.IndexOf("(") + 1);
             substring = substring.Remove(substring.Length - 1);
-            Console.WriteLine(substring);
             
             return Array.ConvertAll(substring.Split(','), Double.Parse); ;
         }
@@ -181,6 +196,7 @@ namespace RMT
 
         //UI Events
 
+        /*ALBEDO*/
         private void albedoMapFrom_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             this.material.AlbedoMapFrom = albedoMapFrom.SelectedIndex;
@@ -244,7 +260,6 @@ namespace RMT
                 enablePanel();
                 this.Title = APP_NAME + " | Editing " + this.GetFileName(fileName);
             }
-
         }
 
         private void albedoMode_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -292,11 +307,8 @@ namespace RMT
 
             if (!(char.IsDigit(e.Text, e.Text.Length - 1) || approvedDecimalPoint))
                 e.Handled = true;
-        }
 
-        private void albedo_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            this.material.Albedo = albedo.Text;
+            this.material.Albedo = this.albedo.Text;
             handleChanges();
         }
 
@@ -310,24 +322,6 @@ namespace RMT
             }
         }
 
-        private void albedoLoopNumX_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
-        {
-            if (albedoLoopNumLock.IsChecked == true) {
-                this.albedoLoopNumY.Value = this.albedoLoopNumX.Value;
-            }
-            this.albedoLoopNum.Text = "float2("+Math.Round(this.albedoLoopNumX.Value, 2) +","+ Math.Round(this.albedoLoopNumY.Value, 2) + ")";
-            handleChanges();
-        }
-
-        private void albedoLoopNumY_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
-        {
-            if (albedoLoopNumLock.IsChecked == false)
-            {
-                this.albedoLoopNum.Text = "float2(" + Math.Round(this.albedoLoopNumX.Value, 2) + "," + Math.Round(this.albedoLoopNumY.Value, 2) + ")";
-            }
-            handleChanges();
-        }
-
         private void albedoLoopNumLock_Checked(object sender, RoutedEventArgs e)
         {
             if (albedoLoopNumY.IsEnabled)
@@ -335,7 +329,8 @@ namespace RMT
                 albedoLoopNumY.IsEnabled = false;
             }
             this.albedoLoopNumY.Value = this.albedoLoopNumX.Value;
-            this.albedoLoopNum.Text = "float2(" + Math.Round(this.albedoLoopNumX.Value, 2) + "," + Math.Round(this.albedoLoopNumY.Value, 2) + ")";
+            this.albedoLoopNum.Text = assignLoopNum(this.albedoLoopNumX.Value, this.albedoLoopNumY.Value);
+            this.material.AlbedoLoopNum = this.albedoLoopNum.Text;
             handleChanges();
         }
 
@@ -346,6 +341,60 @@ namespace RMT
                 albedoLoopNumY.IsEnabled = true;
             }
             this.albedoLoopNumY.Value = this.albedoLoopNumX.Value;
+            this.material.AlbedoLoopNum = this.albedoLoopNum.Text;
+            handleChanges();
         }
+
+        private void albedoLoopNumX_DragCompleted(object sender, System.Windows.Controls.Primitives.DragCompletedEventArgs e)
+        {
+            if (albedoLoopNumLock.IsChecked == true)
+            {
+                this.albedoLoopNumY.Value = this.albedoLoopNumX.Value;
+            }
+            this.albedoLoopNum.Text = assignLoopNum(this.albedoLoopNumX.Value, this.albedoLoopNumY.Value);
+            this.material.AlbedoLoopNum = this.albedoLoopNum.Text;
+            handleChanges();
+        }
+
+        private void albedoLoopNumY_DragCompleted(object sender, System.Windows.Controls.Primitives.DragCompletedEventArgs e)
+        {
+            if (albedoLoopNumLock.IsChecked == false)
+            {
+                this.albedoLoopNum.Text = assignLoopNum(this.albedoLoopNumX.Value, this.albedoLoopNumY.Value);
+                this.material.AlbedoLoopNum = this.albedoLoopNum.Text;
+            }
+            handleChanges();
+        }
+
+        private void albedoLinearColor_DragCompleted(object sender, System.Windows.Controls.Primitives.DragCompletedEventArgs e)
+        {
+            this.material.Albedo = albedo.Text;
+            handleChanges();
+        }
+
+        private void albedoLoopNumX_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            if (albedoLoopNumLock.IsChecked == true)
+            {
+                this.albedoLoopNumY.Value = this.albedoLoopNumX.Value;
+            }
+            this.albedoLoopNum.Text = assignLoopNum(this.albedoLoopNumX.Value, this.albedoLoopNumY.Value);
+        }
+
+        private void albedoLoopNumY_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            if (albedoLoopNumLock.IsChecked == false)
+            {
+                this.albedoLoopNum.Text = assignLoopNum(this.albedoLoopNumX.Value, this.albedoLoopNumY.Value);
+            }
+        }
+
+        private void albedoLoopNumReset_Click(object sender, RoutedEventArgs e)
+        {
+            this.albedoLoopNum.Text = assignLoopNum(1.00f, 1.00f);
+            this.material.AlbedoLoopNum = this.albedoLoopNum.Text;
+            handleChanges();
+        }
+        /*END ALBEDO*/
     }
 }
