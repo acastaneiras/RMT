@@ -46,6 +46,14 @@ namespace RMT
             InitializeComponent();
             InitializeValues();
             initializationEnded = true;
+	    checkArgs(Environment.GetCommandLineArgs());
+        }
+	
+        private void checkArgs(string[] args)
+        {
+	    if (args.Length > 1) {
+	    	openMaterial(args[1]);
+	    }
         }
 
         private void InitializeValues()
@@ -154,6 +162,19 @@ namespace RMT
                 }
             }
         }
+	
+        private void openMaterial(string fileName) 
+        {
+            material = new RayMaterial();
+            if (!fileName.Equals(""))
+            {
+                material.FilePath = System.IO.Path.GetFullPath(fileName);
+                material.FetchMaterial();
+                InitializeValues();
+                enablePanel();
+                this.Title = APP_NAME + " | Editing " + this.GetFileName(fileName);
+            }
+        }
 
         private String handleOpenDialog(String initialDirectory = "c:\\", String filter = "Material files (*.fx)|*.fx", String title = "Select map file")
         {
@@ -216,16 +237,7 @@ namespace RMT
 	
         private void editMaterial_Click(object sender, RoutedEventArgs e)
         {
-            material = new RayMaterial();
-            String fileName = this.handleOpenDialog(Directory.GetCurrentDirectory(), "Material files (*.fx)|*.fx", "Open material file");
-            if (!fileName.Equals(""))
-            {
-                material.FilePath = System.IO.Path.GetFullPath(fileName);
-                material.FetchMaterial();
-                InitializeValues();
-                enablePanel();
-                this.Title = APP_NAME + " | Editing " + this.GetFileName(fileName);
-            }
+            openMaterial(this.handleOpenDialog(Directory.GetCurrentDirectory(), "Material files (*.fx)|*.fx", "Open material file"));
         }
 	
 	private void exit_Click(object sender, RoutedEventArgs e)
