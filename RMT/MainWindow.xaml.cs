@@ -27,6 +27,8 @@ namespace RMT
         private const String APP_NAME = "Ray-mmd Material Tool v2.0";
         private enum MAP_MODES : int {LINEAR_COLOR =0, SRGB = 1, LINEAR_SRGB = 2 };
 
+	private EMM project;
+	
         private RayMaterial material;
 
         public bool initializationEnded;
@@ -201,16 +203,16 @@ namespace RMT
             createNewMaterial();
         }
 	
-	private void loadProject_Click(object sender, RoutedEventArgs e)
-	{
+        private void loadProject_Click(object sender, RoutedEventArgs e)
+        {
             project = new EMM();
             String fileName = this.handleOpenDialog(Directory.GetCurrentDirectory(), "MME project files (*.emm)|*.emm", "Open project file");
-	    if (!fileName.Equals("")) {
+            if (!fileName.Equals("")) {
                 project.FilePath = System.IO.Path.GetFullPath(fileName);
                 project.FetchEMM();
                 MessageBox.Show("Project successfully loaded. \n This currently means jack shit though.");
             }
-	}
+        }
 	
         private void editMaterial_Click(object sender, RoutedEventArgs e)
         {
