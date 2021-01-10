@@ -26,7 +26,8 @@
             <Menu DockPanel.Dock="Top">
                 <MenuItem Header="_File">
                     <MenuItem x:Name="newMaterial" Header="New Material" HorizontalAlignment="Left" Click="newMaterial_Click"/>
-                    <MenuItem x:Name="editMaterial" Header="Edit Material" HorizontalAlignment="Left" Click="editMaterial_Click" />
+                    <MenuItem x:Name="editMaterial" Header="Edit Material" HorizontalAlignment="Left" Click="editMaterial_Click"/>
+                    <MenuItem Name="loadProject" Header="Load Project" HorizontalAlignment="Left" Click="loadProject_Click"/>
                     <MenuItem x:Name="exit" Header="_Exit" Click="exit_Click" />
                 </MenuItem>
             </Menu>
