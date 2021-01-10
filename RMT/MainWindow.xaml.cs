@@ -196,6 +196,41 @@ namespace RMT
 
         //UI Events
 
+	private void newMaterial_Click(object sender, RoutedEventArgs e)
+        {
+            createNewMaterial();
+        }
+	
+	private void loadProject_Click(object sender, RoutedEventArgs e)
+	{
+            project = new EMM();
+            String fileName = this.handleOpenDialog(Directory.GetCurrentDirectory(), "MME project files (*.emm)|*.emm", "Open project file");
+	    if (!fileName.Equals("")) {
+                project.FilePath = System.IO.Path.GetFullPath(fileName);
+                project.FetchEMM();
+                MessageBox.Show("Project successfully loaded. \n This currently means jack shit though.");
+            }
+	}
+	
+        private void editMaterial_Click(object sender, RoutedEventArgs e)
+        {
+            material = new RayMaterial();
+            String fileName = this.handleOpenDialog(Directory.GetCurrentDirectory(), "Material files (*.fx)|*.fx", "Open material file");
+            if (!fileName.Equals(""))
+            {
+                material.FilePath = System.IO.Path.GetFullPath(fileName);
+                material.FetchMaterial();
+                InitializeValues();
+                enablePanel();
+                this.Title = APP_NAME + " | Editing " + this.GetFileName(fileName);
+            }
+        }
+	
+	private void exit_Click(object sender, RoutedEventArgs e)
+        {
+            Application.Current.Shutdown();
+        }
+
         /*ALBEDO*/
         private void albedoMapFrom_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -235,30 +270,6 @@ namespace RMT
                 this.material.AlbedoMapFile = Util.GetRelativePath(this.material.FilePath, mapFile);
                 this.albedoMapFile.Content = this.material.AlbedoMapFile;
                 handleChanges();
-            }
-        }
-
-        private void newMaterial_Click(object sender, RoutedEventArgs e)
-        {
-            createNewMaterial();
-        }
-
-        private void exit_Click(object sender, RoutedEventArgs e)
-        {
-            Application.Current.Shutdown();
-        }
-
-        private void editMaterial_Click(object sender, RoutedEventArgs e)
-        {
-            material = new RayMaterial();
-            String fileName = this.handleOpenDialog(Directory.GetCurrentDirectory(), "Material files (*.fx)|*.fx", "Open material file");
-            if (!fileName.Equals(""))
-            {
-                material.FilePath = System.IO.Path.GetFullPath(fileName);
-                material.FetchMaterial();
-                InitializeValues();
-                enablePanel();
-                this.Title = APP_NAME + " | Editing " + this.GetFileName(fileName);
             }
         }
 
