@@ -75,7 +75,7 @@ namespace RMT
 		}
 		
 		//returns the position and length of a section of array (arr) between elements (element1) and (element2)
-		private int[] getDistanceBetween(string[] arr, string element1, string element2)  
+		public static int[] getDistanceBetween(string[] arr, string element1, string element2)  
 		{
 			int i,j;
 			int[] Length = {0,0};
