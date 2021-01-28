@@ -14,7 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using Microsoft.Win32;
+using Microsoft.Win32; 
 using RMT.Model;
 using Path = System.IO.Path;
 namespace RMT
@@ -27,21 +27,20 @@ namespace RMT
 		private const String APP_NAME = "Ray-mmd Material Tool v2.0";
 		private enum MAP_MODES : int {LINEAR_COLOR =0, SRGB = 1, LINEAR_SRGB = 2 };
 
-	private EMM project;
+		private EMM project;
 	
 		private RayMaterial material;
 
-		public bool initializationEnded;
+		public bool initializationEnded = false;
 		//Directory where the materials are created by default... TODO
 		private String applicationBaseCreationPath = Directory.GetCurrentDirectory();
 		private string imageFilters = "All Graphics Types|*.bmp;*.jpg;*.jpeg;*.png;*.tif;*.tiff"+ "BMP(*.bmp)|*.bmp|GIF(*.gif)|*.gif|JPG(*.jpg)|*.jpg;*.jpeg|PNG(*.png)|*.png|TIFF(*.tif)|*.tif;*.tiff|";
 
 		//Handling ColorPicker changes with variables, since the event triggers the ColorChanged even when you're dragging your cursor
-		private Color albedoSelectedColor;
+		private String albedoSelectedColor = null;
 
 		public MainWindow()
 		{
-			initializationEnded = false;
 			material = new RayMaterial();
 			InitializeComponent();
 			InitializeValues();
@@ -65,7 +64,6 @@ namespace RMT
 						MessageBox.Show("File type not recognised.\nMake sure the file extension\nis correct."	);
 						break;
 				}
-				
 			}
 		}
 
@@ -91,9 +89,7 @@ namespace RMT
 		 */
 		private string assignLoopNum(double value1, double value2)
 		{
-			value1 = Math.Round(value1, 2);
-			value2 = Math.Round(value2, 2);
-			return "float2(" + value1 + "," + value2 + ")";
+			return "float2(" + Math.Round(value1, 2) + "," + Math.Round(value2, 2) + ")";
 		}
 
 		/*
@@ -225,9 +221,10 @@ namespace RMT
 		}
 
 
-		private String GetRGBColor(int selectedIndex, Color color)
+		private String UpdateRGBColor(int selectedIndex, String colorHexValue)
 		{
 			String colorString = "";
+			Color color = (Color)ColorConverter.ConvertFromString(colorHexValue);
 
 			switch (selectedIndex)
 			{
@@ -321,25 +318,49 @@ namespace RMT
 					albedoLinearColor.Visibility = Visibility.Hidden;
 					albedoRGB.Visibility = Visibility.Visible;
 					albedo.Visibility = Visibility.Hidden;
+
 					if (this.albedoSelectedColor != null)
 					{
-						this.material.Albedo = this.GetRGBColor(this.albedoMode.SelectedIndex, this.albedoSelectedColor);
+						this.material.Albedo = this.UpdateRGBColor(this.albedoMode.SelectedIndex, this.albedoSelectedColor);
+					} else
+                    {
+						byte [] rgbValues = this.fetchRGBFromString(this.material.Albedo);
+						Color color = Color.FromRgb(rgbValues[0],rgbValues[1],rgbValues[2]);
+						albedoRGB.SelectedColor = color;
 					}
 					break;
 				case (int)MAP_MODES.LINEAR_SRGB:
 					albedoLinearColor.Visibility = Visibility.Hidden;
 					albedoRGB.Visibility = Visibility.Visible;
 					albedo.Visibility = Visibility.Hidden;
+
 					if (this.albedoSelectedColor != null)
 					{
-						this.material.Albedo = this.GetRGBColor(this.albedoMode.SelectedIndex, this.albedoSelectedColor);
+						this.material.Albedo = this.UpdateRGBColor(this.albedoMode.SelectedIndex, this.albedoSelectedColor);
+					}
+					else
+					{
+						byte[] rgbValues = this.fetchRGBFromString(this.material.Albedo);
+						Color color = Color.FromRgb(rgbValues[0], rgbValues[1], rgbValues[2]);
+						albedoRGB.SelectedColor = color;
 					}
 					break;
 			}
 			handleChanges();
 		}
+		/*
+		 * Function that converts a String of type float2(x,y,z) into an array of rgb like: byte[0] = x, byte[1] = y, byte[2] = z
+		 */
+		private byte[] fetchRGBFromString(string str)
+        {
+			str = str.Remove(0, str.LastIndexOf("(")+1);
+			int end = str.IndexOf(")");
+			string commaRGBValues = str.Substring(0, end );
+			String [] rgbValues = commaRGBValues.Split(',');
+			return  new byte []{ Convert.ToByte(Int32.Parse(rgbValues[0])), Convert.ToByte(Int32.Parse(rgbValues[1])), Convert.ToByte(Int32.Parse(rgbValues[2])) } ;
+        }
 
-		private void albedo_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        private void albedo_PreviewTextInput(object sender, TextCompositionEventArgs e)
 		{
 			bool approvedDecimalPoint = false;
 			if (e.Text == ".")
@@ -357,10 +378,10 @@ namespace RMT
 
 		private void albedoRGB_Closed(object sender, RoutedEventArgs e)
 		{
-			if ((albedoRGB.SelectedColor.HasValue) && (albedoRGB.SelectedColor != this.albedoSelectedColor))
-			{
-				this.albedoSelectedColor = albedoRGB.SelectedColor.Value;
-				this.material.Albedo = this.GetRGBColor(this.albedoMode.SelectedIndex, this.albedoSelectedColor);
+			if ((albedoRGB.SelectedColor.HasValue) && (!albedoRGB.SelectedColor.ToString().Equals(this.albedoSelectedColor)))
+			{				
+				this.albedoSelectedColor = albedoRGB.SelectedColor.Value.ToString();
+				this.material.Albedo = this.UpdateRGBColor(this.albedoMode.SelectedIndex, this.albedoSelectedColor);
 				handleChanges();
 			}
 		}
