@@ -220,6 +220,17 @@ namespace RMT
 			return filePath.Substring(filePath.LastIndexOf("\\")+1);
 		}
 
+		/*
+		 * Resets the value of a loopNum type paramater and also sets its sliders to default (1.00f)
+		 */
+		private void resetLoopNum(TextBox loopNum, String materialLoopNum, Slider loopX, Slider loopY)
+        {
+			loopNum.Text = assignLoopNum(1.00f, 1.00f);
+			materialLoopNum = loopNum.Text;
+			loopX.Value = 1.00f;
+			loopY.Value = 1.00f;
+			handleChanges();
+		}
 
 		private String UpdateRGBColor(int selectedIndex, String colorHexValue)
 		{
@@ -455,11 +466,7 @@ namespace RMT
 
 		private void albedoLoopNumReset_Click(object sender, RoutedEventArgs e)
 		{
-			this.albedoLoopNum.Text = assignLoopNum(1.00f, 1.00f);
-			this.material.AlbedoLoopNum = this.albedoLoopNum.Text;
-			this.albedoLoopNumX.Value = 1.0f;
-			this.albedoLoopNumY.Value = 1.0f;
-			handleChanges();
+			this.resetLoopNum(this.albedoLoopNum, this.material.AlbedoLoopNum, this.albedoLoopNumX, this.albedoLoopNumY);
 		}
 		/*END ALBEDO*/
 	}
