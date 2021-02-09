@@ -457,6 +457,8 @@ namespace RMT
 		{
 			this.albedoLoopNum.Text = assignLoopNum(1.00f, 1.00f);
 			this.material.AlbedoLoopNum = this.albedoLoopNum.Text;
+			this.albedoLoopNumX.Value = 1.0f;
+			this.albedoLoopNumY.Value = 1.0f;
 			handleChanges();
 		}
 		/*END ALBEDO*/
