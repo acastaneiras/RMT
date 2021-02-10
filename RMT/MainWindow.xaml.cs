@@ -26,7 +26,7 @@ namespace RMT
 	{
 		private const String APP_NAME = "Ray-mmd Material Tool v2.0";
 		private enum MAP_MODES : int {LINEAR_COLOR =0, SRGB = 1, LINEAR_SRGB = 2 };
-
+		private const String FILE_NOT_RECOGNIZED_MESSAGE = "File type not recognised.\nMake sure the file extension\nis correct.";
 		private EMM project;
 	
 		private RayMaterial material;
@@ -61,7 +61,7 @@ namespace RMT
 						openProject(args[1]);
 						break;
 					default :
-						MessageBox.Show("File type not recognised.\nMake sure the file extension\nis correct."	);
+						MessageBox.Show(FILE_NOT_RECOGNIZED_MESSAGE);
 						break;
 				}
 			}
@@ -171,7 +171,11 @@ namespace RMT
 				}
 			}
 		}
-	
+		/*
+		 * Opens a material.fx file
+		 * TODO: 
+		 *		Check for errors
+		 */
 		private void openMaterial(string fileName) 
 		{
 			material = new RayMaterial();
@@ -468,6 +472,23 @@ namespace RMT
 		{
 			this.resetLoopNum(this.albedoLoopNum, this.material.AlbedoLoopNum, this.albedoLoopNumX, this.albedoLoopNumY);
 		}
-		/*END ALBEDO*/
-	}
+
+        private void MaterialFileDrop(object sender, DragEventArgs e)
+        {
+			if (e.Data.GetDataPresent(DataFormats.FileDrop))
+			{
+				string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
+				//Checking for proper extension file
+				if (Path.GetExtension(files[0]).Equals(".fx"))
+                {
+					//Only reading the first file, we don't care about multiple files
+					openMaterial(files[0]);
+                } else
+                {
+					MessageBox.Show(FILE_NOT_RECOGNIZED_MESSAGE);
+                }
+			}
+		}
+        /*END ALBEDO*/
+    }
 }

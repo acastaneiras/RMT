@@ -14,7 +14,7 @@
 			<ColumnDefinition Width="13*"/>
 			<ColumnDefinition Width="362*"/>
 		</Grid.ColumnDefinitions>
-		<DockPanel HorizontalAlignment="Stretch"  LastChildFill="False" VerticalAlignment="Stretch"  Grid.ColumnSpan="3">
+		<DockPanel HorizontalAlignment="Stretch" Drop="MaterialFileDrop" AllowDrop="True"  LastChildFill="False" VerticalAlignment="Stretch"  Grid.ColumnSpan="3">
 			<DockPanel.Resources>
 				<Style TargetType="Slider" x:Key="style">
 					<Setter Property="Minimum" Value="-24" />
