@@ -227,13 +227,12 @@ namespace RMT
 		/*
 		 * Resets the value of a loopNum type paramater and also sets its sliders to default (1.00f)
 		 */
-		private void resetLoopNum(TextBox loopNum, String materialLoopNum, Slider loopX, Slider loopY)
+		private String resetLoopNum(TextBox loopNum, Slider loopX, Slider loopY)
         {
 			loopNum.Text = assignLoopNum(1.00f, 1.00f);
-			materialLoopNum = loopNum.Text;
 			loopX.Value = 1.00f;
 			loopY.Value = 1.00f;
-			handleChanges();
+			return loopNum.Text;
 		}
 
 		private String UpdateRGBColor(int selectedIndex, String colorHexValue)
@@ -364,15 +363,20 @@ namespace RMT
 			handleChanges();
 		}
 		/*
-		 * Function that converts a String of type float2(x,y,z) into an array of rgb like: byte[0] = x, byte[1] = y, byte[2] = z
+		 * Function that converts a String of type floatX(x,y,z) into an array of rgb like: byte[0] = x, byte[1] = y, byte[2] = z
+		 * Returns a default color when there's no floatX value. (when we change from linear value to rgb)
 		 */
 		private byte[] fetchRGBFromString(string str)
         {
-			str = str.Remove(0, str.LastIndexOf("(")+1);
-			int end = str.IndexOf(")");
-			string commaRGBValues = str.Substring(0, end );
-			String [] rgbValues = commaRGBValues.Split(',');
-			return  new byte []{ Convert.ToByte(Int32.Parse(rgbValues[0])), Convert.ToByte(Int32.Parse(rgbValues[1])), Convert.ToByte(Int32.Parse(rgbValues[2])) } ;
+			if (str.Contains("float"))
+            {
+				str = str.Remove(0, str.LastIndexOf("(")+1);
+				int end = str.IndexOf(")");
+				string commaRGBValues = str.Substring(0, end );
+				String [] rgbValues = commaRGBValues.Split(',');
+				return  new byte []{ Convert.ToByte(Int32.Parse(rgbValues[0])), Convert.ToByte(Int32.Parse(rgbValues[1])), Convert.ToByte(Int32.Parse(rgbValues[2])) } ;
+            }
+			return new byte[] { 255, 255, 255};
         }
 
         private void albedo_PreviewTextInput(object sender, TextCompositionEventArgs e)
@@ -394,7 +398,7 @@ namespace RMT
 		private void albedoRGB_Closed(object sender, RoutedEventArgs e)
 		{
 			if ((albedoRGB.SelectedColor.HasValue) && (!albedoRGB.SelectedColor.ToString().Equals(this.albedoSelectedColor)))
-			{				
+			{
 				this.albedoSelectedColor = albedoRGB.SelectedColor.Value.ToString();
 				this.material.Albedo = this.UpdateRGBColor(this.albedoMode.SelectedIndex, this.albedoSelectedColor);
 				handleChanges();
@@ -470,7 +474,8 @@ namespace RMT
 
 		private void albedoLoopNumReset_Click(object sender, RoutedEventArgs e)
 		{
-			this.resetLoopNum(this.albedoLoopNum, this.material.AlbedoLoopNum, this.albedoLoopNumX, this.albedoLoopNumY);
+			this.material.AlbedoLoopNum = resetLoopNum(this.albedoLoopNum, this.albedoLoopNumX, this.albedoLoopNumY);
+			handleChanges();
 		}
 
         private void MaterialFileDrop(object sender, DragEventArgs e)

@@ -78,9 +78,8 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Model\RayMaterial.cs"/>
-	  <Compile Include="Model\EMM.cs"/>
-    <Compile Include="Test.cs" />
+    <Compile Include="Model\RayMaterial.cs" />
+    <Compile Include="Model\EMM.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
