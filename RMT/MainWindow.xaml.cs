@@ -16,6 +16,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Microsoft.Win32; 
 using RMT.Model;
+using RMT.View;
 using Path = System.IO.Path;
 namespace RMT
 {
@@ -252,6 +253,41 @@ namespace RMT
 			return colorString;
 		}
 
+		/*
+		 * Function that converts a String of type floatX(x,y,z) into an array of rgb like: byte[0] = x, byte[1] = y, byte[2] = z
+		 * Returns a default color when there's no floatX value. (when we change from linear value to rgb)
+		 */
+		private byte[] fetchRGBFromString(string str)
+		{
+			if (str.Contains("float"))
+			{
+				str = str.Remove(0, str.LastIndexOf("(") + 1);
+				int end = str.IndexOf(")");
+				string commaRGBValues = str.Substring(0, end);
+				String[] rgbValues = commaRGBValues.Split(',');
+				return new byte[] { Convert.ToByte(Int32.Parse(rgbValues[0])), Convert.ToByte(Int32.Parse(rgbValues[1])), Convert.ToByte(Int32.Parse(rgbValues[2])) };
+			}
+			return new byte[] { 255, 255, 255 };
+		}
+
+		private void MaterialFileDrop(object sender, DragEventArgs e)
+		{
+			if (e.Data.GetDataPresent(DataFormats.FileDrop))
+			{
+				string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
+				//Checking for proper extension file
+				if (Path.GetExtension(files[0]).Equals(".fx"))
+				{
+					//Only reading the first file, we don't care about multiple files
+					openMaterial(files[0]);
+				}
+				else
+				{
+					MessageBox.Show(FILE_NOT_RECOGNIZED_MESSAGE);
+				}
+			}
+		}
+
 		//UI Events
 
 		private void newMaterial_Click(object sender, RoutedEventArgs e)
@@ -325,7 +361,9 @@ namespace RMT
 					albedoRGB.Visibility = Visibility.Hidden;
 					albedo.Visibility = Visibility.Visible;
 					if (this.albedo.Text.Contains("float"))
+                    {
 						this.albedo.Text = "1.0";
+                    }
 					this.material.Albedo = this.albedo.Text;
 					break;
 				case (int) MAP_MODES.SRGB:
@@ -351,9 +389,7 @@ namespace RMT
 					if (this.albedoSelectedColor != null)
 					{
 						this.material.Albedo = this.UpdateRGBColor(this.albedoMode.SelectedIndex, this.albedoSelectedColor);
-					}
-					else
-					{
+					} else {
 						byte[] rgbValues = this.fetchRGBFromString(this.material.Albedo);
 						Color color = Color.FromRgb(rgbValues[0], rgbValues[1], rgbValues[2]);
 						albedoRGB.SelectedColor = color;
@@ -362,22 +398,6 @@ namespace RMT
 			}
 			handleChanges();
 		}
-		/*
-		 * Function that converts a String of type floatX(x,y,z) into an array of rgb like: byte[0] = x, byte[1] = y, byte[2] = z
-		 * Returns a default color when there's no floatX value. (when we change from linear value to rgb)
-		 */
-		private byte[] fetchRGBFromString(string str)
-        {
-			if (str.Contains("float"))
-            {
-				str = str.Remove(0, str.LastIndexOf("(")+1);
-				int end = str.IndexOf(")");
-				string commaRGBValues = str.Substring(0, end );
-				String [] rgbValues = commaRGBValues.Split(',');
-				return  new byte []{ Convert.ToByte(Int32.Parse(rgbValues[0])), Convert.ToByte(Int32.Parse(rgbValues[1])), Convert.ToByte(Int32.Parse(rgbValues[2])) } ;
-            }
-			return new byte[] { 255, 255, 255};
-        }
 
         private void albedo_PreviewTextInput(object sender, TextCompositionEventArgs e)
 		{
@@ -385,7 +405,9 @@ namespace RMT
 			if (e.Text == ".")
 			{
 				if (!((TextBox)sender).Text.Contains("."))
+                {
 					approvedDecimalPoint = true;
+                }
 			}
 
 			if (!(char.IsDigit(e.Text, e.Text.Length - 1) || approvedDecimalPoint))
@@ -478,21 +500,11 @@ namespace RMT
 			handleChanges();
 		}
 
-        private void MaterialFileDrop(object sender, DragEventArgs e)
+        private void albedoMapFromHelp(object sender, RoutedEventArgs e)
         {
-			if (e.Data.GetDataPresent(DataFormats.FileDrop))
-			{
-				string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
-				//Checking for proper extension file
-				if (Path.GetExtension(files[0]).Equals(".fx"))
-                {
-					//Only reading the first file, we don't care about multiple files
-					openMaterial(files[0]);
-                } else
-                {
-					MessageBox.Show(FILE_NOT_RECOGNIZED_MESSAGE);
-                }
-			}
+			Help dialog = new Help("albedo");
+			dialog.Owner = this;
+			dialog.Show();
 		}
         /*END ALBEDO*/
     }

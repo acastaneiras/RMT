@@ -1,0 +1,46 @@
+body {
+    font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji;
+}
+
+code {
+    padding: .2em .4em;
+    margin: 0;
+    font-size: 85%;
+    background-color: #f3f4f4;
+    border-radius: 6px;
+    font-family: SFMono-Regular, Consolas, Liberation Mono, Menlo, monospace;
+}
+
+a {
+    color: #4f5fac;
+    font-weight: bolder;
+    text-decoration: none;
+}
+
+#page-sections {
+    margin-left: 0;
+    padding: 1rem;
+    border: 1px solid #aaaaaa;
+    border-radius: 1em;
+    background: #e1e1e1;
+}
+#page-sections > ul {
+    margin: 8px 8px 8px 16px;
+    list-style: none;
+}
+
+#jump-back {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    width: 8em;
+    text-align: center;
+    border: 1px solid #aaaaaa;
+    border-top-left-radius: 20px;
+    background: #e1e1e1;
+}
+
+#jump-back > a {
+    text-decoration: none;
+    color: black;
+}

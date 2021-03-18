@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <link rel="stylesheet" href="styles/style.css">
+      <title>Albedo</title>
+   </head>
+   <body>
+      <div id="main">
+         <p>
+            <strong>Albedo</strong> is also called <code>base color</code>, defines the overall color of the material,
+            thus uses all 3 color channels, the albedo maps are <a href='https://en.wikipedia.org/wiki/Unit_vector'
+               target="_blank" rel='nofollow'>normalized value</a> in the <a href='https://en.wikipedia.org/wiki/SRGB'
+               target="_blank" rel='nofollow'>sRGB</a> color-space and clamped between <code>0.0</code> and
+            <code>1.0</code>
+            <i class="fas fa-user"></i> <!-- uses solid style -->
+         </p>
+         <div id="page-sections">
+            <ul>
+                <li><a href="#ALBEDO_MAP_FROM">ALBEDO_MAP_FROM</a></li>
+                <li><a href="#ALBEDO_MAP_UV_FLIP">ALBEDO_MAP_UV_FLIP</a></li>
+                <li><a href="#ALBEDO_MAP_APPLY_SCALE">ALBEDO_MAP_APPLY_SCALE</a></li>
+                <li><a href="#ALBEDO_MAP_APPLY_DIFFUSE">ALBEDO_MAP_APPLY_DIFFUSE</a></li>
+                <li><a href="#ALBEDO_MAP_APPLY_MORPH_COLOR">ALBEDO_MAP_APPLY_MORPH_COLOR</a></li>
+                <li><a href="#albedoMapLoopNum">albedoMapLoopNum</a></li>
+             </ul>
+         </div>
+      </div>
+      <div class="contents">
+         <ul>
+            <li>
+               <h5>
+                  <a id="ALBEDO_MAP_FROM" class="anchor" href="#albedo_map_from" aria-hidden="true">
+                     <svg
+                        class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16"
+                        aria-hidden="true">
+                        <path fill-rule="evenodd"
+                           d="M7.775 3.275a.75.75 0 001.06 1.06l1.25-1.25a2 2 0 112.83 2.83l-2.5 2.5a2 2 0 01-2.83 0 .75.75 0 00-1.06 1.06 3.5 3.5 0 004.95 0l2.5-2.5a3.5 3.5 0 00-4.95-4.95l-1.25 1.25zm-4.69 9.64a2 2 0 010-2.83l2.5-2.5a2 2 0 012.83 0 .75.75 0 001.06-1.06 3.5 3.5 0 00-4.95 0l-2.5 2.5a3.5 3.5 0 004.95 4.95l1.25-1.25a.75.75 0 00-1.06-1.06l-1.25 1.25a2 2 0 01-2.83 0z">
+                        </path>
+                     </svg>
+                  </a>
+                  ALBEDO_MAP_FROM
+               </h5>
+               <p>You can use a <code>linear-color</code> and <code>sRGB-texture</code> to change the colors in your
+                  model by set the following <code>code</code> to the <code>ALBEDO_MAP_FROM</code>.
+               </p>
+               <p><code>0</code> . Parameter fetch from <code>linear-color</code> from the
+                  <code>const float3 albedo = 1.0</code>.<br>
+                  <code>1</code> . You can use a <code>srgb-image</code> (bmp, png, jpg, tga, dds) by enter a relative
+                  and absolutely path to the <code>ALBEDO_MAP_FILE</code>.<br>
+                  <code>2</code> . You can use a <code>animation srgb-image</code> (gif, apng) by enter a relative and
+                  absolutely path to the <code>ALBEDO_MAP_FILE</code>.<br>
+                  <code>3</code> . Parameter fetch from <code>Texture</code> from the <code>pmx</code>.<br>
+                  <code>4</code> . Parameter fetch from <code>Sphere map</code> from the <code>pmx</code>.<br>
+                  <code>5</code> . Parameter fetch from <code>Toon map</code> from the <code>pmx</code>.<br>
+                  <code>6</code> . Parameter fetch from <code>avi</code> or <code>screen</code> from the
+                  <code>DummyScreen.x</code> inside <code>extension</code> folder.<br>
+                  <code>7</code> . Parameter fetch from <code>Ambient Color</code> from the <code>pmx</code>.<br>
+                  <code>8</code> . Parameter fetch from <code>Specular Color</code> from the <code>pmx</code>.<br>
+                  <code>9</code> . Parameter fetch from <code>Specular Power</code> from the <code>pmx</code>. //
+                  <code>Only for smoothness</code>
+               </p>
+
+            </li>
+            <li>
+               <h5>
+                  <a id="ALBEDO_MAP_UV_FLIP" class="anchor" href="#albedo_map_uv_flip"
+                     aria-hidden="true">
+                     <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1"
+                        width="16" height="16" aria-hidden="true">
+                        <path fill-rule="evenodd"
+                           d="M7.775 3.275a.75.75 0 001.06 1.06l1.25-1.25a2 2 0 112.83 2.83l-2.5 2.5a2 2 0 01-2.83 0 .75.75 0 00-1.06 1.06 3.5 3.5 0 004.95 0l2.5-2.5a3.5 3.5 0 00-4.95-4.95l-1.25 1.25zm-4.69 9.64a2 2 0 010-2.83l2.5-2.5a2 2 0 012.83 0 .75.75 0 001.06-1.06 3.5 3.5 0 00-4.95 0l-2.5 2.5a3.5 3.5 0 004.95 4.95l1.25-1.25a.75.75 0 00-1.06-1.06l-1.25 1.25a2 2 0 01-2.83 0z">
+                        </path>
+                     </svg>
+                  </a>
+                  ALBEDO_MAP_UV_FLIP
+               </h5>
+               <p>You can flip your texture for the <code>X</code> and <code>Y</code> axis mirror by set
+                  <code>code</code> to the <code>ALBEDO_MAP_UV_FLIP</code>
+               </p>
+               <p><code>0</code> . None<br>
+                  <code>1</code> . Flip axis <code>X</code><br>
+                  <code>2</code> . Flip axis <code>Y</code><br>
+                  <code>3</code> . Flip axis <code>X</code> and <code>Y</code>
+               </p>
+            </li>
+            <li>
+               <h5>
+                  <a id="ALBEDO_MAP_APPLY_SCALE" class="anchor" href="#albedo_map_apply_scale"
+                     aria-hidden="true">
+                     <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1"
+                        width="16" height="16" aria-hidden="true">
+                        <path fill-rule="evenodd"
+                           d="M7.775 3.275a.75.75 0 001.06 1.06l1.25-1.25a2 2 0 112.83 2.83l-2.5 2.5a2 2 0 01-2.83 0 .75.75 0 00-1.06 1.06 3.5 3.5 0 004.95 0l2.5-2.5a3.5 3.5 0 00-4.95-4.95l-1.25 1.25zm-4.69 9.64a2 2 0 010-2.83l2.5-2.5a2 2 0 012.83 0 .75.75 0 001.06-1.06 3.5 3.5 0 00-4.95 0l-2.5 2.5a3.5 3.5 0 004.95 4.95l1.25-1.25a.75.75 0 00-1.06-1.06l-1.25 1.25a2 2 0 01-2.83 0z">
+                        </path>
+                     </svg>
+                  </a>
+                  ALBEDO_MAP_APPLY_SCALE
+               </h5>
+               <p>You can apply the color from <code>albedo</code> to change the colors in your texture by set
+                  <code>code</code> to the <code>ALBEDO_MAP_APPLY_SCALE</code>
+               </p>
+               <p><code>0</code> . None<br>
+                  <code>1</code> . map values * albedo<br>
+                  <code>2</code> . map values ^ albedo (The <code>^</code> is exponential operations of <code>X</code>
+                  and <code>Y</code>)
+               </p>
+            </li>
+            <li>
+               <h5>
+                  <a id="ALBEDO_MAP_APPLY_DIFFUSE" class="anchor" href="#albedo_map_apply_diffuse"
+                     aria-hidden="true">
+                     <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1"
+                        width="16" height="16" aria-hidden="true">
+                        <path fill-rule="evenodd"
+                           d="M7.775 3.275a.75.75 0 001.06 1.06l1.25-1.25a2 2 0 112.83 2.83l-2.5 2.5a2 2 0 01-2.83 0 .75.75 0 00-1.06 1.06 3.5 3.5 0 004.95 0l2.5-2.5a3.5 3.5 0 00-4.95-4.95l-1.25 1.25zm-4.69 9.64a2 2 0 010-2.83l2.5-2.5a2 2 0 012.83 0 .75.75 0 001.06-1.06 3.5 3.5 0 00-4.95 0l-2.5 2.5a3.5 3.5 0 004.95 4.95l1.25-1.25a.75.75 0 00-1.06-1.06l-1.25 1.25a2 2 0 01-2.83 0z">
+                        </path>
+                     </svg>
+                  </a>
+                  ALBEDO_MAP_APPLY_DIFFUSE
+               </h5>
+               <p>Texture colors to multiply with <code>diffuse</code> from the <code>PMX</code>.</p>
+            </li>
+            <li>
+               <h5>
+                  <a id="ALBEDO_MAP_APPLY_MORPH_COLOR" class="anchor"
+                     href="#albedo_map_apply_morph_color" aria-hidden="true">
+                     <svg class="octicon octicon-link"
+                        viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true">
+                        <path fill-rule="evenodd"
+                           d="M7.775 3.275a.75.75 0 001.06 1.06l1.25-1.25a2 2 0 112.83 2.83l-2.5 2.5a2 2 0 01-2.83 0 .75.75 0 00-1.06 1.06 3.5 3.5 0 004.95 0l2.5-2.5a3.5 3.5 0 00-4.95-4.95l-1.25 1.25zm-4.69 9.64a2 2 0 010-2.83l2.5-2.5a2 2 0 012.83 0 .75.75 0 001.06-1.06 3.5 3.5 0 00-4.95 0l-2.5 2.5a3.5 3.5 0 004.95 4.95l1.25-1.25a.75.75 0 00-1.06-1.06l-1.25 1.25a2 2 0 01-2.83 0z">
+                        </path>
+                     </svg>
+                  </a>
+                  ALBEDO_MAP_APPLY_MORPH_COLOR
+               </h5>
+               <p>Texture colors to multiply with color from the (<code>R+</code>/<code>G+</code>/<code>B+</code>)
+                  morph controller. see <code>PointLight.pmx</code> for more information
+               </p>
+            </li>
+            <li>
+               <h5>
+                  <a id="albedoMapLoopNum" class="anchor" href="#albedo_map_file" aria-hidden="true">
+                     <svg
+                        class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16"
+                        aria-hidden="true">
+                        <path fill-rule="evenodd"
+                           d="M7.775 3.275a.75.75 0 001.06 1.06l1.25-1.25a2 2 0 112.83 2.83l-2.5 2.5a2 2 0 01-2.83 0 .75.75 0 00-1.06 1.06 3.5 3.5 0 004.95 0l2.5-2.5a3.5 3.5 0 00-4.95-4.95l-1.25 1.25zm-4.69 9.64a2 2 0 010-2.83l2.5-2.5a2 2 0 012.83 0 .75.75 0 001.06-1.06 3.5 3.5 0 00-4.95 0l-2.5 2.5a3.5 3.5 0 004.95 4.95l1.25-1.25a.75.75 0 00-1.06-1.06l-1.25 1.25a2 2 0 01-2.83 0z">
+                        </path>
+                     </svg>
+                  </a>
+                  ALBEDO_MAP_FILE
+               </h5>
+               <p>If <code>ALBEDO_MAP_FROM</code> is <code>1</code> or <code>2</code>, you will need to enter the path
+                  to the texture resource.
+               </p>
+               <h5>
+                  <a id="user-content-for-example-" class="anchor" href="#for-example-" aria-hidden="true">
+                     <svg
+                        class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16"
+                        aria-hidden="true">
+                        <path fill-rule="evenodd"
+                           d="M7.775 3.275a.75.75 0 001.06 1.06l1.25-1.25a2 2 0 112.83 2.83l-2.5 2.5a2 2 0 01-2.83 0 .75.75 0 00-1.06 1.06 3.5 3.5 0 004.95 0l2.5-2.5a3.5 3.5 0 00-4.95-4.95l-1.25 1.25zm-4.69 9.64a2 2 0 010-2.83l2.5-2.5a2 2 0 012.83 0 .75.75 0 001.06-1.06 3.5 3.5 0 00-4.95 0l-2.5 2.5a3.5 3.5 0 004.95 4.95l1.25-1.25a.75.75 0 00-1.06-1.06l-1.25 1.25a2 2 0 01-2.83 0z">
+                        </path>
+                     </svg>
+                  </a>
+                  For example :
+               </h5>
+               <h6>
+                  <a id="user-content-1-if-the-xxxpng-and-materialfx-is-inside-same-folder" class="anchor"
+                     href="#user-content-1-if-the-xxxpng-and-materialfx-is-inside-same-folder" aria-hidden="true">
+                     <svg
+                        class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16"
+                        aria-hidden="true">
+                        <path fill-rule="evenodd"
+                           d="M7.775 3.275a.75.75 0 001.06 1.06l1.25-1.25a2 2 0 112.83 2.83l-2.5 2.5a2 2 0 01-2.83 0 .75.75 0 00-1.06 1.06 3.5 3.5 0 004.95 0l2.5-2.5a3.5 3.5 0 00-4.95-4.95l-1.25 1.25zm-4.69 9.64a2 2 0 010-2.83l2.5-2.5a2 2 0 012.83 0 .75.75 0 001.06-1.06 3.5 3.5 0 00-4.95 0l-2.5 2.5a3.5 3.5 0 004.95 4.95l1.25-1.25a.75.75 0 00-1.06-1.06l-1.25 1.25a2 2 0 01-2.83 0z">
+                        </path>
+                     </svg>
+                  </a>
+                  1. If the xxx.png and material.fx is inside same folder
+               </h6>
+               <ul>
+                  <li><code>You can set the xxx.png to the ALBEDO_MAP_FILE like : #define ALBEDO_MAP_FILE "xxx.png"</code>
+                  </li>
+               </ul>
+               <h6>
+                  <a id="user-content-2-if-the-xxxpng-is-inside-parent-path-of-the-materialfx" class="anchor"
+                     href="#2-if-the-xxxpng-is-inside-parent-path-of-the-materialfx" aria-hidden="true">
+                     <svg
+                        class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16"
+                        aria-hidden="true">
+                        <path fill-rule="evenodd"
+                           d="M7.775 3.275a.75.75 0 001.06 1.06l1.25-1.25a2 2 0 112.83 2.83l-2.5 2.5a2 2 0 01-2.83 0 .75.75 0 00-1.06 1.06 3.5 3.5 0 004.95 0l2.5-2.5a3.5 3.5 0 00-4.95-4.95l-1.25 1.25zm-4.69 9.64a2 2 0 010-2.83l2.5-2.5a2 2 0 012.83 0 .75.75 0 001.06-1.06 3.5 3.5 0 00-4.95 0l-2.5 2.5a3.5 3.5 0 004.95 4.95l1.25-1.25a.75.75 0 00-1.06-1.06l-1.25 1.25a2 2 0 01-2.83 0z">
+                        </path>
+                     </svg>
+                  </a>
+                  2. If the xxx.png is inside parent path of the material.fx
+               </h6>
+               <ul>
+                  <li><code>You can set the xxx.png to the ALBEDO_MAP_FILE like : #define ALBEDO_MAP_FILE "../xxx.png"</code>
+                  </li>
+               </ul>
+               <h6>
+                  <a id="user-content-3-if-the-xxxpng-is-inside-other-path-from-parent-path-of-the-materialfx"
+                     class="anchor" href="#3-if-the-xxxpng-is-inside-other-path-from-parent-path-of-the-materialfx"
+                     aria-hidden="true">
+                     <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1"
+                        width="16" height="16" aria-hidden="true">
+                        <path fill-rule="evenodd"
+                           d="M7.775 3.275a.75.75 0 001.06 1.06l1.25-1.25a2 2 0 112.83 2.83l-2.5 2.5a2 2 0 01-2.83 0 .75.75 0 00-1.06 1.06 3.5 3.5 0 004.95 0l2.5-2.5a3.5 3.5 0 00-4.95-4.95l-1.25 1.25zm-4.69 9.64a2 2 0 010-2.83l2.5-2.5a2 2 0 012.83 0 .75.75 0 001.06-1.06 3.5 3.5 0 00-4.95 0l-2.5 2.5a3.5 3.5 0 004.95 4.95l1.25-1.25a.75.75 0 00-1.06-1.06l-1.25 1.25a2 2 0 01-2.83 0z">
+                        </path>
+                     </svg>
+                  </a>
+                  3. If the xxx.png is inside other path from parent path of the material.fx
+               </h6>
+               <ul>
+                  <li><code>You can set the xxx.png to the ALBEDO_MAP_FILE like : #define ALBEDO_MAP_FILE "../other path/xxx.png"</code>
+                  </li>
+               </ul>
+               <h6>
+                  <a id="user-content-4-if-the-xxxpng-is-inside-your-desktop-or-other-disk" class="anchor"
+                     href="#4-if-the-xxxpng-is-inside-your-desktop-or-other-disk" aria-hidden="true">
+                     <svg
+                        class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16"
+                        aria-hidden="true">
+                        <path fill-rule="evenodd"
+                           d="M7.775 3.275a.75.75 0 001.06 1.06l1.25-1.25a2 2 0 112.83 2.83l-2.5 2.5a2 2 0 01-2.83 0 .75.75 0 00-1.06 1.06 3.5 3.5 0 004.95 0l2.5-2.5a3.5 3.5 0 00-4.95-4.95l-1.25 1.25zm-4.69 9.64a2 2 0 010-2.83l2.5-2.5a2 2 0 012.83 0 .75.75 0 001.06-1.06 3.5 3.5 0 00-4.95 0l-2.5 2.5a3.5 3.5 0 004.95 4.95l1.25-1.25a.75.75 0 00-1.06-1.06l-1.25 1.25a2 2 0 01-2.83 0z">
+                        </path>
+                     </svg>
+                  </a>
+                  4. If the xxx.png is inside your desktop or other disk
+               </h6>
+               <ul>
+                  <li><code>You can set the xxx.png to the ALBEDO_MAP_FILE like : #define ALBEDO_MAP_FILE "C:/Users/User Name/Desktop/xxx.png"</code>
+                  </li>
+               </ul>
+               <h5>
+                  <a id="user-content-tips" class="anchor" href="#tips" aria-hidden="true">
+                     <svg
+                        class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16"
+                        aria-hidden="true">
+                        <path fill-rule="evenodd"
+                           d="M7.775 3.275a.75.75 0 001.06 1.06l1.25-1.25a2 2 0 112.83 2.83l-2.5 2.5a2 2 0 01-2.83 0 .75.75 0 00-1.06 1.06 3.5 3.5 0 004.95 0l2.5-2.5a3.5 3.5 0 00-4.95-4.95l-1.25 1.25zm-4.69 9.64a2 2 0 010-2.83l2.5-2.5a2 2 0 012.83 0 .75.75 0 001.06-1.06 3.5 3.5 0 00-4.95 0l-2.5 2.5a3.5 3.5 0 004.95 4.95l1.25-1.25a.75.75 0 00-1.06-1.06l-1.25 1.25a2 2 0 01-2.83 0z">
+                        </path>
+                     </svg>
+                  </a>
+                  Tips:
+               </h5>
+               <ul>
+                  <li>Using <code>../</code> instead of parent folder</li>
+                  <li>Change all <code>\</code> to <code>/</code>.</li>
+               </ul>
+            </li>
+            <li>
+               <h5>
+                  <a id="user-content-const-float3-albedo--10" class="anchor" href="#const-float3-albedo--10"
+                     aria-hidden="true">
+                     <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1"
+                        width="16" height="16" aria-hidden="true">
+                        <path fill-rule="evenodd"
+                           d="M7.775 3.275a.75.75 0 001.06 1.06l1.25-1.25a2 2 0 112.83 2.83l-2.5 2.5a2 2 0 01-2.83 0 .75.75 0 00-1.06 1.06 3.5 3.5 0 004.95 0l2.5-2.5a3.5 3.5 0 00-4.95-4.95l-1.25 1.25zm-4.69 9.64a2 2 0 010-2.83l2.5-2.5a2 2 0 012.83 0 .75.75 0 001.06-1.06 3.5 3.5 0 00-4.95 0l-2.5 2.5a3.5 3.5 0 004.95 4.95l1.25-1.25a.75.75 0 00-1.06-1.06l-1.25 1.25a2 2 0 01-2.83 0z">
+                        </path>
+                     </svg>
+                  </a>
+                  const float3 albedo = 1.0;
+               </h5>
+               <p>If <code>ALBEDO_MAP_FROM</code> is <code>0</code> or <code>ALBEDO_MAP_APPLY_SCALE</code> is
+                  <code>1</code>, you need to set color to the <code>const float3 albedo = 1.0;</code>.
+               </p>
+               <h5>
+                  <a id="user-content-for-example" class="anchor" href="#for-example" aria-hidden="true">
+                     <svg
+                        class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16"
+                        aria-hidden="true">
+                        <path fill-rule="evenodd"
+                           d="M7.775 3.275a.75.75 0 001.06 1.06l1.25-1.25a2 2 0 112.83 2.83l-2.5 2.5a2 2 0 01-2.83 0 .75.75 0 00-1.06 1.06 3.5 3.5 0 004.95 0l2.5-2.5a3.5 3.5 0 00-4.95-4.95l-1.25 1.25zm-4.69 9.64a2 2 0 010-2.83l2.5-2.5a2 2 0 012.83 0 .75.75 0 001.06-1.06 3.5 3.5 0 00-4.95 0l-2.5 2.5a3.5 3.5 0 004.95 4.95l1.25-1.25a.75.75 0 00-1.06-1.06l-1.25 1.25a2 2 0 01-2.83 0z">
+                        </path>
+                     </svg>
+                  </a>
+                  For example:
+               </h5>
+               <h6>
+                  <a id="user-content-1-if-the-red-is-normalized-value-it-can-be-set-to-albedo-like" class="anchor"
+                     href="#1-if-the-red-is-normalized-value-it-can-be-set-to-albedo-like" aria-hidden="true">
+                     <svg
+                        class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16"
+                        aria-hidden="true">
+                        <path fill-rule="evenodd"
+                           d="M7.775 3.275a.75.75 0 001.06 1.06l1.25-1.25a2 2 0 112.83 2.83l-2.5 2.5a2 2 0 01-2.83 0 .75.75 0 00-1.06 1.06 3.5 3.5 0 004.95 0l2.5-2.5a3.5 3.5 0 00-4.95-4.95l-1.25 1.25zm-4.69 9.64a2 2 0 010-2.83l2.5-2.5a2 2 0 012.83 0 .75.75 0 001.06-1.06 3.5 3.5 0 00-4.95 0l-2.5 2.5a3.5 3.5 0 004.95 4.95l1.25-1.25a.75.75 0 00-1.06-1.06l-1.25 1.25a2 2 0 01-2.83 0z">
+                        </path>
+                     </svg>
+                  </a>
+                  1. If the red is <a href="https://en.wikipedia.org/wiki/Unit_vector"
+                     rel="nofollow">normalized value</a>, it can be set to albedo like:
+               </h6>
+               <ul>
+                  <li><code>const float3 albedo = float3(1.0, 0.0, 0.0);</code></li>
+               </ul>
+               <h6>
+                  <a id="user-content-2-if-the-red-is-unnormalized-value-it-can-be-set-to-albedo-like" class="anchor"
+                     href="#2-if-the-red-is-unnormalized-value-it-can-be-set-to-albedo-like" aria-hidden="true">
+                     <svg
+                        class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16"
+                        aria-hidden="true">
+                        <path fill-rule="evenodd"
+                           d="M7.775 3.275a.75.75 0 001.06 1.06l1.25-1.25a2 2 0 112.83 2.83l-2.5 2.5a2 2 0 01-2.83 0 .75.75 0 00-1.06 1.06 3.5 3.5 0 004.95 0l2.5-2.5a3.5 3.5 0 00-4.95-4.95l-1.25 1.25zm-4.69 9.64a2 2 0 010-2.83l2.5-2.5a2 2 0 012.83 0 .75.75 0 001.06-1.06 3.5 3.5 0 00-4.95 0l-2.5 2.5a3.5 3.5 0 004.95 4.95l1.25-1.25a.75.75 0 00-1.06-1.06l-1.25 1.25a2 2 0 01-2.83 0z">
+                        </path>
+                     </svg>
+                  </a>
+                  2. If the red is <a href="https://en.wikipedia.org/wiki/Unit_vector"
+                     rel="nofollow">unnormalized value</a>, it can be set to albedo like:
+               </h6>
+               <ul>
+                  <li><code>const float3 albedo = float3(255, 0.0, 0.0) / 255.0;</code></li>
+               </ul>
+               <h6>
+                  <a id="user-content-3-if-the-color-is-fetched-from-your-monitor-you-need-to-convert-the-color-from-srgb-to-linear-color-space-by-color--gamma"
+                     class="anchor"
+                     href="#3-if-the-color-is-fetched-from-your-monitor-you-need-to-convert-the-color-from-srgb-to-linear-color-space-by-color--gamma"
+                     aria-hidden="true">
+                     <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1"
+                        width="16" height="16" aria-hidden="true">
+                        <path fill-rule="evenodd"
+                           d="M7.775 3.275a.75.75 0 001.06 1.06l1.25-1.25a2 2 0 112.83 2.83l-2.5 2.5a2 2 0 01-2.83 0 .75.75 0 00-1.06 1.06 3.5 3.5 0 004.95 0l2.5-2.5a3.5 3.5 0 00-4.95-4.95l-1.25 1.25zm-4.69 9.64a2 2 0 010-2.83l2.5-2.5a2 2 0 012.83 0 .75.75 0 001.06-1.06 3.5 3.5 0 00-4.95 0l-2.5 2.5a3.5 3.5 0 004.95 4.95l1.25-1.25a.75.75 0 00-1.06-1.06l-1.25 1.25a2 2 0 01-2.83 0z">
+                        </path>
+                     </svg>
+                  </a>
+                  3. If the color is fetched from your monitor, you need to convert the color from <a
+                     href="https://en.wikipedia.org/wiki/SRGB" rel="nofollow">sRGB</a> to <a
+                     href="https://en.wikipedia.org/wiki/SRGB" rel="nofollow">linear color-space</a> by
+                  <code>color ^ gamma</code>
+               </h6>
+               <ul>
+                  <li>
+                     Convert the <code>srgb color-space</code> from normalized value to
+                     <code>linear color-space</code> like:
+                     <ul>
+                        <li><code>const float3 albedo = pow(float3(r, g, b), 2.2);</code></li>
+                     </ul>
+                  </li>
+                  <li>
+                     Convert the <code>srgb color-space</code> from unnormalized value to
+                     <code>linear color-space</code> like:
+                     <ul>
+                        <li><code>const float3 albedo = pow(float3(r, g, b) / 255.0, 2.2);</code></li>
+                     </ul>
+                  </li>
+               </ul>
+            </li>
+            <li>
+               <h4>
+                  <a id="user-content-albedomaploopnum" class="anchor" href="#albedomaploopnum"
+                     aria-hidden="true">
+                     <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1"
+                        width="16" height="16" aria-hidden="true">
+                        <path fill-rule="evenodd"
+                           d="M7.775 3.275a.75.75 0 001.06 1.06l1.25-1.25a2 2 0 112.83 2.83l-2.5 2.5a2 2 0 01-2.83 0 .75.75 0 00-1.06 1.06 3.5 3.5 0 004.95 0l2.5-2.5a3.5 3.5 0 00-4.95-4.95l-1.25 1.25zm-4.69 9.64a2 2 0 010-2.83l2.5-2.5a2 2 0 012.83 0 .75.75 0 001.06-1.06 3.5 3.5 0 00-4.95 0l-2.5 2.5a3.5 3.5 0 004.95 4.95l1.25-1.25a.75.75 0 00-1.06-1.06l-1.25 1.25a2 2 0 01-2.83 0z">
+                        </path>
+                     </svg>
+                  </a>
+                  albedoMapLoopNum
+               </h4>
+               <p>You can tile your texture for the <code>X</code> and <code>Y</code> axis separately by change
+                  <code>albedoMapLoopNum = float2(x, y)</code>
+               </p>
+               <h5>
+                  <a id="user-content-for-example-1" class="anchor" href="#for-example-1" aria-hidden="true">
+                     <svg
+                        class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16"
+                        aria-hidden="true">
+                        <path fill-rule="evenodd"
+                           d="M7.775 3.275a.75.75 0 001.06 1.06l1.25-1.25a2 2 0 112.83 2.83l-2.5 2.5a2 2 0 01-2.83 0 .75.75 0 00-1.06 1.06 3.5 3.5 0 004.95 0l2.5-2.5a3.5 3.5 0 00-4.95-4.95l-1.25 1.25zm-4.69 9.64a2 2 0 010-2.83l2.5-2.5a2 2 0 012.83 0 .75.75 0 001.06-1.06 3.5 3.5 0 00-4.95 0l-2.5 2.5a3.5 3.5 0 004.95 4.95l1.25-1.25a.75.75 0 00-1.06-1.06l-1.25 1.25a2 2 0 01-2.83 0z">
+                        </path>
+                     </svg>
+                  </a>
+                  For example:
+               </h5>
+               <h6>
+                  <a id="user-content-1-if-x-and-y-are-the-same-numbers" class="anchor"
+                     href="#1-if-x-and-y-are-the-same-numbers" aria-hidden="true">
+                     <svg class="octicon octicon-link"
+                        viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true">
+                        <path fill-rule="evenodd"
+                           d="M7.775 3.275a.75.75 0 001.06 1.06l1.25-1.25a2 2 0 112.83 2.83l-2.5 2.5a2 2 0 01-2.83 0 .75.75 0 00-1.06 1.06 3.5 3.5 0 004.95 0l2.5-2.5a3.5 3.5 0 00-4.95-4.95l-1.25 1.25zm-4.69 9.64a2 2 0 010-2.83l2.5-2.5a2 2 0 012.83 0 .75.75 0 001.06-1.06 3.5 3.5 0 00-4.95 0l-2.5 2.5a3.5 3.5 0 004.95 4.95l1.25-1.25a.75.75 0 00-1.06-1.06l-1.25 1.25a2 2 0 01-2.83 0z">
+                        </path>
+                     </svg>
+                  </a>
+                  1. If <code>X</code> and <code>Y</code> are the same numbers:
+               </h6>
+               <ul>
+                  <li>
+                     <code>const flaot albedoMapLoopNum = 2;</code><br>
+                     OR
+                  </li>
+                  <li><code>const flaot2 albedoMapLoopNum = 2;</code></li>
+               </ul>
+               <h6>
+                  <a id="user-content-2-otherwise-2-is-x-axis-3-is-y-axis" class="anchor"
+                     href="#2-otherwise-2-is-x-axis-3-is-y-axis" aria-hidden="true">
+                     <svg class="octicon octicon-link"
+                        viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true">
+                        <path fill-rule="evenodd"
+                           d="M7.775 3.275a.75.75 0 001.06 1.06l1.25-1.25a2 2 0 112.83 2.83l-2.5 2.5a2 2 0 01-2.83 0 .75.75 0 00-1.06 1.06 3.5 3.5 0 004.95 0l2.5-2.5a3.5 3.5 0 00-4.95-4.95l-1.25 1.25zm-4.69 9.64a2 2 0 010-2.83l2.5-2.5a2 2 0 012.83 0 .75.75 0 001.06-1.06 3.5 3.5 0 00-4.95 0l-2.5 2.5a3.5 3.5 0 004.95 4.95l1.25-1.25a.75.75 0 00-1.06-1.06l-1.25 1.25a2 2 0 01-2.83 0z">
+                        </path>
+                     </svg>
+                  </a>
+                  2. Otherwise (2 is <code>X</code>-axis, 3 is <code>Y</code>-axis):
+               </h6>
+               <ul>
+                  <li><code>const flaot2 albedoMapLoopNum = float2(2, 3);</code></li>
+               </ul>
+            </li>
+         </ul>
+      </div>
+      <div id="jump-back"><a href="#main" class="rmt-button">Go Back</a></div>
+   </body>
+</html>
