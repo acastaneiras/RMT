@@ -18,14 +18,12 @@ a {
 }
 
 #page-sections {
-    margin-left: 0;
-    padding: 1rem;
+    padding: 0;
     border: 1px solid #aaaaaa;
     border-radius: 1em;
     background: #e1e1e1;
 }
 #page-sections > ul {
-    margin: 8px 8px 8px 16px;
     list-style: none;
 }
 
