@@ -220,6 +220,26 @@ namespace RMT
 			return "";
 		}
 
+		//TODO: Allow negative numbers.
+		//I tried to do it with a cool regex for like 2h and it worked everywhere except in here and I'm going insane so fuck this shit honestly not today
+		private void handleTextInput(ref object sender, ref TextCompositionEventArgs e)
+		{
+
+			bool approvedDecimalPoint = false;
+			if (e.Text == ".")
+			{
+				if (!((TextBox)sender).Text.Contains("."))
+				{
+					approvedDecimalPoint = true;
+				}
+			}
+
+			if (!(char.IsDigit(e.Text, e.Text.Length - 1) || approvedDecimalPoint))
+			{
+				e.Handled = true;
+			}
+		}
+
 		private String GetFileName(String filePath)
 		{
 			return filePath.Substring(filePath.LastIndexOf("\\")+1);
@@ -354,65 +374,38 @@ namespace RMT
 
 		private void albedoMode_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
-			switch (this.albedoMode.SelectedIndex)
-			{
-				case (int) MAP_MODES.LINEAR_COLOR:
-					albedoLinearColor.Visibility = Visibility.Visible;
-					albedoRGB.Visibility = Visibility.Hidden;
-					albedo.Visibility = Visibility.Visible;
-					if (this.albedo.Text.Contains("float"))
-                    {
-						this.albedo.Text = "1.0";
-                    }
-					this.material.Albedo = this.albedo.Text;
-					break;
-				case (int) MAP_MODES.SRGB:
-					albedoLinearColor.Visibility = Visibility.Hidden;
-					albedoRGB.Visibility = Visibility.Visible;
-					albedo.Visibility = Visibility.Hidden;
+			if (this.albedoMode.SelectedIndex == (int)MAP_MODES.LINEAR_COLOR)
+            {
+				albedoLinearColor.Visibility = Visibility.Visible;
+				albedoRGB.Visibility = Visibility.Hidden;
+				albedo.Visibility = Visibility.Visible;
+				if (this.albedo.Text.Contains("float"))
+				{
+					this.albedo.Text = "1.0";
+				}
+				this.material.Albedo = this.albedo.Text;
+			} else {
+				albedoLinearColor.Visibility = Visibility.Hidden;
+				albedoRGB.Visibility = Visibility.Visible;
+				albedo.Visibility = Visibility.Hidden;
 
-					if (this.albedoSelectedColor != null)
-					{
-						this.material.Albedo = this.UpdateRGBColor(this.albedoMode.SelectedIndex, this.albedoSelectedColor);
-					} else
-                    {
-						byte [] rgbValues = this.fetchRGBFromString(this.material.Albedo);
-						Color color = Color.FromRgb(rgbValues[0],rgbValues[1],rgbValues[2]);
-						albedoRGB.SelectedColor = color;
-					}
-					break;
-				case (int)MAP_MODES.LINEAR_SRGB:
-					albedoLinearColor.Visibility = Visibility.Hidden;
-					albedoRGB.Visibility = Visibility.Visible;
-					albedo.Visibility = Visibility.Hidden;
-
-					if (this.albedoSelectedColor != null)
-					{
-						this.material.Albedo = this.UpdateRGBColor(this.albedoMode.SelectedIndex, this.albedoSelectedColor);
-					} else {
-						byte[] rgbValues = this.fetchRGBFromString(this.material.Albedo);
-						Color color = Color.FromRgb(rgbValues[0], rgbValues[1], rgbValues[2]);
-						albedoRGB.SelectedColor = color;
-					}
-					break;
+				if (this.albedoSelectedColor != null)
+				{
+					this.material.Albedo = this.UpdateRGBColor(this.albedoMode.SelectedIndex, this.albedoSelectedColor);
+				}
+				else
+				{
+					byte[] rgbValues = this.fetchRGBFromString(this.material.Albedo);
+					Color color = Color.FromRgb(rgbValues[0], rgbValues[1], rgbValues[2]);
+					albedoRGB.SelectedColor = color;
+				}
 			}
 			handleChanges();
 		}
 
         private void albedo_PreviewTextInput(object sender, TextCompositionEventArgs e)
 		{
-			bool approvedDecimalPoint = false;
-			if (e.Text == ".")
-			{
-				if (!((TextBox)sender).Text.Contains("."))
-                {
-					approvedDecimalPoint = true;
-                }
-			}
-
-			if (!(char.IsDigit(e.Text, e.Text.Length - 1) || approvedDecimalPoint))
-				e.Handled = true;
-
+			handleTextInput(ref sender, ref e);
 			this.material.Albedo = this.albedo.Text;
 			handleChanges();
 		}

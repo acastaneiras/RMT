@@ -39,7 +39,8 @@
                             <ColumnDefinition Width="*"></ColumnDefinition>
                             <ColumnDefinition Width="*"></ColumnDefinition>
                         </Grid.ColumnDefinitions>
-                        <Border Grid.Column="1" Grid.RowSpan="4" BorderBrush="#cfcfcf" BorderThickness="1,0,0,0" Background="{x:Null}" />
+                        <Border Grid.Column="1" Grid.RowSpan="2" BorderBrush="#cfcfcf" BorderThickness="1,0,0,0" Background="{x:Null}" >
+                        </Border>
                         <Grid Grid.Column="0">
                             <Label Style="{StaticResource labelStyle}" Content="ALBEDO MAP FROM" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="121"/>
                             <ComboBox x:Name="albedoMapFrom" SelectionChanged="albedoMapFrom_SelectionChanged" HorizontalAlignment="Left" Margin="188,10,0,0" VerticalAlignment="Top" Width="35">

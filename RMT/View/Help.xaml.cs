@@ -55,8 +55,7 @@ namespace RMT.View
                     };
 
                     Process.Start(startInfo);
-                }
-                catch (Exception ex)
+                } catch (Exception)
                 {
 
                 }
