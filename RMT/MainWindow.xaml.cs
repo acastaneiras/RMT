@@ -14,7 +14,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using Microsoft.Win32; 
+using Microsoft.Win32;
+using REghZyFramework.Themes;
 using RMT.Model;
 using RMT.View;
 using Path = System.IO.Path;
@@ -25,7 +26,6 @@ namespace RMT
 	/// </summary>
 	public partial class MainWindow : Window
 	{
-		//TODO: Implement multiple themes like Light/Dark: https://github.com/AngryCarrot789/WPFDarkTheme
 		private const String APP_NAME = "Ray-mmd Material Tool v2.0";
 		private enum MAP_MODES : int {LINEAR_COLOR =0, SRGB = 1, LINEAR_SRGB = 2 };
 		private const String FILE_NOT_RECOGNIZED_MESSAGE = "File type not recognised.\nMake sure the file extension\nis correct.";
@@ -43,6 +43,7 @@ namespace RMT
 
 		public MainWindow()
 		{
+			RecoverThemeFromUserSettings();
 			material = new RayMaterial();
 			InitializeComponent();
 			InitializeValues();
@@ -69,6 +70,39 @@ namespace RMT
 			}
 		}
 
+		/*
+		 *  Restores theme setting from the user and changes the theme accordingly 
+		 */
+		private void RecoverThemeFromUserSettings()
+        {
+			uint themeUID = Properties.Settings.Default.Theme;
+			switch (themeUID)
+			{
+				case 0:
+					ThemesController.SetTheme(ThemesController.ThemeTypes.ColourfulLight);
+					break;
+				case 1:
+					ThemesController.SetTheme(ThemesController.ThemeTypes.ColourfulDark);
+					break;
+			}
+			
+		}
+		private void ChangeTheme(object sender, RoutedEventArgs e)
+		{
+            int themeUID = int.Parse(((MenuItem)sender).Uid);
+			Properties.Settings.Default.Theme = (uint)themeUID;
+			Properties.Settings.Default.Save();
+			switch (themeUID)
+			{
+				case 0: 
+					ThemesController.SetTheme(ThemesController.ThemeTypes.ColourfulLight);
+					break;
+				case 1: 
+					ThemesController.SetTheme(ThemesController.ThemeTypes.ColourfulDark);
+					break;
+			}
+			e.Handled = true;
+		}
 		private void InitializeValues()
 		{
 			this.albedoMapFrom.SelectedIndex =this.material.AlbedoMapFrom;
@@ -221,8 +255,7 @@ namespace RMT
 			openFileDialog.Title = title;
 			openFileDialog.AddExtension = true;
 			openFileDialog.RestoreDirectory = true;
-
-			bool? result = openFileDialog.ShowDialog();
+			bool? result = openFileDialog.ShowDialog(this);
 			if (result == true)
 			{
 				//Get the path of specified file
