@@ -25,6 +25,7 @@ namespace RMT
 	/// </summary>
 	public partial class MainWindow : Window
 	{
+		//TODO: Implement multiple themes like Light/Dark: https://github.com/AngryCarrot789/WPFDarkTheme
 		private const String APP_NAME = "Ray-mmd Material Tool v2.0";
 		private enum MAP_MODES : int {LINEAR_COLOR =0, SRGB = 1, LINEAR_SRGB = 2 };
 		private const String FILE_NOT_RECOGNIZED_MESSAGE = "File type not recognised.\nMake sure the file extension\nis correct.";
@@ -33,12 +34,12 @@ namespace RMT
 		private RayMaterial material;
 
 		public bool initializationEnded = false;
-		//Directory where the materials are created by default... TODO
-		private String applicationBaseCreationPath = Directory.GetCurrentDirectory();
+		private String mapFilesPath = Directory.GetCurrentDirectory();
 		private string imageFilters = "All Graphics Types|*.bmp;*.jpg;*.jpeg;*.png;*.tif;*.tiff"+ "BMP(*.bmp)|*.bmp|GIF(*.gif)|*.gif|JPG(*.jpg)|*.jpg;*.jpeg|PNG(*.png)|*.png|TIFF(*.tif)|*.tif;*.tiff|";
 
 		//Handling ColorPicker changes with variables, since the event triggers the ColorChanged even when you're dragging your cursor
 		private String albedoSelectedColor = null;
+		private String albedoSubSelectedColor = null;
 
 		public MainWindow()
 		{
@@ -80,8 +81,18 @@ namespace RMT
 			this.albedoLoopNumX.Value= handleLoopNums(this.material.AlbedoLoopNum)[0];
 			this.albedoLoopNumY.Value= handleLoopNums(this.material.AlbedoLoopNum)[1];
 			this.albedoLoopNum.Text = assignLoopNum(this.albedoLoopNumX.Value, this.albedoLoopNumY.Value);
-			
 			ChangeMapScaleMode(this.material.Albedo, this.albedoMode);
+
+			this.albedoSubEnable.SelectedIndex = this.material.AlbedoSubEnable;
+			this.albedoSubMapFrom.SelectedIndex = this.material.AlbedoSubMapFrom;
+			this.albedoSubMapUVFlip.SelectedIndex = this.material.AlbedoSubMapUVFlip;
+			this.albedoSubMapApplyScale.SelectedIndex = this.material.AlbedoSubMapApplyScale;
+			this.albedoSubMapFile.Content = this.material.AlbedoSubMapFile;
+			this.albedoSub.Text = this.material.AlbedoSub;
+			this.albedoSubLoopNumX.Value = handleLoopNums(this.material.AlbedoSubLoopNum)[0];
+			this.albedoSubLoopNumY.Value = handleLoopNums(this.material.AlbedoSubLoopNum)[1];
+			this.albedoSubLoopNum.Text = assignLoopNum(this.albedoSubLoopNumX.Value, this.albedoSubLoopNumY.Value);
+			ChangeMapScaleMode(this.material.AlbedoSub, this.albedoSubMode);
 
 		}
 
@@ -201,11 +212,11 @@ namespace RMT
 			}
 		}
 
-		private String handleOpenDialog(String initialDirectory = "c:\\", String filter = "Material files (*.fx)|*.fx", String title = "Select map file")
+		private String handleOpenDialog(String filter = "Material files (*.fx)|*.fx", String title = "Select map file")
 		{
 			OpenFileDialog openFileDialog = new OpenFileDialog();
 
-			openFileDialog.InitialDirectory = initialDirectory;
+			openFileDialog.InitialDirectory = mapFilesPath;
 			openFileDialog.Filter = filter;
 			openFileDialog.Title = title;
 			openFileDialog.AddExtension = true;
@@ -317,12 +328,12 @@ namespace RMT
 	
 		private void editMaterial_Click(object sender, RoutedEventArgs e)
 		{
-			openMaterial(this.handleOpenDialog(Directory.GetCurrentDirectory(), "Material files (*.fx)|*.fx", "Open material file"));
+			openMaterial(this.handleOpenDialog("Material files (*.fx)|*.fx", "Open material file"));
 		}
 	
 		private void loadProject_Click(object sender, RoutedEventArgs e)
 		{
-			openProject(this.handleOpenDialog(Directory.GetCurrentDirectory(), "MME project files (*.emm)|*.emm", "Open project file"));
+			openProject(this.handleOpenDialog("MME project files (*.emm)|*.emm", "Open project file"));
 		}
 	
 		private void exit_Click(object sender, RoutedEventArgs e)
@@ -363,7 +374,7 @@ namespace RMT
 
 		private void albedoMapFile_Click(object sender, RoutedEventArgs e)
 		{
-			String mapFile = handleOpenDialog("c:\\", imageFilters);
+			String mapFile = handleOpenDialog(imageFilters);
 			if (!mapFile.Equals(""))
 			{
 				this.material.AlbedoMapFile = Util.GetRelativePath(this.material.FilePath, mapFile);
@@ -499,6 +510,163 @@ namespace RMT
 			dialog.Owner = this;
 			dialog.Show();
 		}
-        /*END ALBEDO*/
-    }
+		/*END ALBEDO*/
+
+		/*ALBEDO SUB*/
+		private void albedoSubEnable_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		{
+			this.material.AlbedoSubEnable = albedoSubEnable.SelectedIndex;
+			handleChanges();
+		}
+
+        private void albedoSubMapFrom_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+			this.material.AlbedoSubMapFrom = albedoSubMapFrom.SelectedIndex;
+			handleChanges();
+		}
+
+        private void albedoSubMapUVFlip_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+			this.material.AlbedoSubMapUVFlip = albedoSubMapUVFlip.SelectedIndex;
+			handleChanges();
+		}
+
+        private void albedoSubMapApplyScale_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+			this.material.AlbedoSubMapApplyScale = albedoSubMapApplyScale.SelectedIndex;
+			handleChanges();
+		}
+
+        private void albedoSubMapFileButton_Click(object sender, RoutedEventArgs e)
+        {
+			String mapFile = handleOpenDialog(imageFilters);
+			if (!mapFile.Equals(""))
+			{
+				this.material.AlbedoSubMapFile = Util.GetRelativePath(this.material.FilePath, mapFile);
+				this.albedoSubMapFile.Content = this.material.AlbedoSubMapFile;
+				handleChanges();
+			}
+		}
+
+        private void albedoSubLinearColor_DragCompleted(object sender, System.Windows.Controls.Primitives.DragCompletedEventArgs e)
+        {
+			this.material.AlbedoSub = albedoSub.Text;
+			handleChanges();
+		}
+
+        private void albedoSubMode_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+			if (this.albedoSubMode.SelectedIndex == (int)MAP_MODES.LINEAR_COLOR)
+			{
+				albedoSubLinearColor.Visibility = Visibility.Visible;
+				albedoSubRGB.Visibility = Visibility.Hidden;
+				albedoSub.Visibility = Visibility.Visible;
+				if (this.albedoSub.Text.Contains("float"))
+				{
+					this.albedoSub.Text = "1.0";
+				}
+				this.material.AlbedoSub = this.albedoSub.Text;
+			} else {
+				albedoSubLinearColor.Visibility = Visibility.Hidden;
+				albedoSubRGB.Visibility = Visibility.Visible;
+				albedoSub.Visibility = Visibility.Hidden;
+
+				if (this.albedoSubSelectedColor != null)
+				{
+					this.material.AlbedoSub = this.UpdateRGBColor(this.albedoSubMode.SelectedIndex, this.albedoSubSelectedColor);
+				}
+				else
+				{
+					byte[] rgbValues = this.fetchRGBFromString(this.material.AlbedoSub);
+					Color color = Color.FromRgb(rgbValues[0], rgbValues[1], rgbValues[2]);
+					albedoSubRGB.SelectedColor = color;
+				}
+			}
+			handleChanges();
+		}
+
+        private void albedoSub_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+			handleTextInput(ref sender, ref e);
+			this.material.AlbedoSub = this.albedoSub.Text;
+			handleChanges();
+		}
+
+        private void albedoSubRGB_Closed(object sender, RoutedEventArgs e)
+        {
+			if ((albedoSubRGB.SelectedColor.HasValue) && (!albedoSubRGB.SelectedColor.ToString().Equals(this.albedoSubSelectedColor)))
+			{
+				this.albedoSubSelectedColor = albedoSubRGB.SelectedColor.Value.ToString();
+				this.material.AlbedoSub = this.UpdateRGBColor(this.albedoSubMode.SelectedIndex, this.albedoSubSelectedColor);
+				handleChanges();
+			}
+		}
+
+		private void albedoSubLoopNumLock_Checked(object sender, RoutedEventArgs e)
+        {
+			if (albedoSubLoopNumY.IsEnabled)
+			{
+				albedoSubLoopNumY.IsEnabled = false;
+			}
+			this.albedoSubLoopNumY.Value = this.albedoSubLoopNumX.Value;
+			this.albedoSubLoopNum.Text = assignLoopNum(this.albedoSubLoopNumX.Value, this.albedoSubLoopNumY.Value);
+			this.material.AlbedoSubLoopNum = this.albedoSubLoopNum.Text;
+			handleChanges();
+		}
+
+        private void albedoSubLoopNumLock_Unchecked(object sender, RoutedEventArgs e)
+        {
+			if (!albedoSubLoopNumY.IsEnabled)
+			{
+				albedoSubLoopNumY.IsEnabled = true;
+			}
+			this.albedoSubLoopNumY.Value = this.albedoSubLoopNumX.Value;
+			this.material.AlbedoSubLoopNum = this.albedoSubLoopNum.Text;
+			handleChanges();
+		}
+
+        private void albedoSubLoopNumX_DragCompleted(object sender, System.Windows.Controls.Primitives.DragCompletedEventArgs e)
+        {
+			if (albedoSubLoopNumLock.IsChecked == true)
+			{
+				this.albedoSubLoopNumY.Value = this.albedoSubLoopNumX.Value;
+			}
+			this.albedoSubLoopNum.Text = assignLoopNum(this.albedoSubLoopNumX.Value, this.albedoSubLoopNumY.Value);
+			this.material.AlbedoSubLoopNum = this.albedoSubLoopNum.Text;
+			handleChanges();
+		}
+
+        private void albedoSubLoopNumY_DragCompleted(object sender, System.Windows.Controls.Primitives.DragCompletedEventArgs e)
+        {
+			if (albedoSubLoopNumLock.IsChecked == false)
+			{
+				this.albedoSubLoopNum.Text = assignLoopNum(this.albedoSubLoopNumX.Value, this.albedoSubLoopNumY.Value);
+				this.material.AlbedoSubLoopNum = this.albedoSubLoopNum.Text;
+			}
+			handleChanges();
+		}
+
+		private void albedoSubLoopNumX_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+		{
+			if (albedoSubLoopNumLock.IsChecked == true)
+			{
+				this.albedoSubLoopNumY.Value = this.albedoSubLoopNumX.Value;
+			}
+			this.albedoSubLoopNum.Text = assignLoopNum(this.albedoSubLoopNumX.Value, this.albedoSubLoopNumY.Value);
+		}
+
+		private void albedoSubLoopNumY_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+		{
+			if (albedoSubLoopNumLock.IsChecked == false)
+			{
+				this.albedoSubLoopNum.Text = assignLoopNum(this.albedoSubLoopNumX.Value, this.albedoSubLoopNumY.Value);
+			}
+		}
+
+		private void albedoSubLoopNumReset_Click(object sender, RoutedEventArgs e)
+		{
+			this.material.AlbedoSubLoopNum = resetLoopNum(this.albedoSubLoopNum, this.albedoSubLoopNumX, this.albedoSubLoopNumY);
+			handleChanges();
+		}
+	}
 }

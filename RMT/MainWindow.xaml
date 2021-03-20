@@ -4,11 +4,16 @@
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
-	x:Class="RMT.MainWindow"
+    x:Class="RMT.MainWindow"
 	mc:Ignorable="d"
     ResizeMode="CanMinimize"
 	Title="Ray-mmd Material Tool v2.0" Height="450" Width="616"
     WindowStyle="ThreeDBorderWindow">
+    <Window.Resources>
+        <Style TargetType="{x:Type Label}" x:Key="labelStyle">
+            <Setter Property="FontSize" Value="10"/>
+        </Style>
+    </Window.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
@@ -81,7 +86,7 @@
                             </ComboBox>
                             <Label Style="{StaticResource labelStyle}" Content="ALBEDO MAP FILE" HorizontalAlignment="Left" Margin="10,165,0,0" VerticalAlignment="Top" Width="113"/>
                             <Button x:Name="albedoMapFileButton" Content="..." Click="albedoMapFile_Click" HorizontalAlignment="Left" Margin="188,165,0,0" VerticalAlignment="Top" Width="35"/>
-                            <Label Style="{StaticResource labelStyle}" x:Name="albedoMapFile" FlowDirection="RightToLeft" HorizontalContentAlignment="Right" Content="albedo.png" HorizontalAlignment="Left" Margin="105,162,0,0" VerticalAlignment="Top" Width="94"/>
+                            <Label Style="{StaticResource labelStyle}" x:Name="albedoMapFile" FlowDirection="RightToLeft" HorizontalContentAlignment="Right" Content="albedo.png" HorizontalAlignment="Left" Margin="105,164,0,0" VerticalAlignment="Top" Width="77"/>
                             <Label Style="{StaticResource labelStyle}" Content="ALBEDO" HorizontalAlignment="Left" Margin="10,210,0,0" VerticalAlignment="Top" Width="57"/>
                             <ComboBox x:Name="albedoMode" SelectionChanged="albedoMode_SelectionChanged" HorizontalAlignment="Left" Margin="136,210,0,0" VerticalAlignment="Top" Width="127">
                                 <ComboBoxItem Content="Linear Color"  HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"/>
@@ -97,10 +102,63 @@
                             <Slider Style="{StaticResource style}" Thumb.DragCompleted="albedoLoopNumX_DragCompleted" Name="albedoLoopNumX" ValueChanged="albedoLoopNumX_ValueChanged"  HorizontalAlignment="Left" TickFrequency="0.05" IsSnapToTickEnabled="True" Margin="18,294,0,0" VerticalAlignment="Top" Width="196"/>
                             <Slider Style="{StaticResource style}" Thumb.DragCompleted="albedoLoopNumY_DragCompleted" Name="albedoLoopNumY" ValueChanged="albedoLoopNumY_ValueChanged" HorizontalAlignment="Left" TickFrequency="0.05" IsSnapToTickEnabled="True" Margin="18,317,0,0" VerticalAlignment="Top" Width="196"/>
                             <Button Name="albedoLoopNumReset" Click="albedoLoopNumReset_Click" Content="Reset" HorizontalAlignment="Left" Margin="219,297,0,0" VerticalAlignment="Top" Width="46"/>
-
+                            <Button  Content="?" HorizontalAlignment="Left" Click="albedoMapFromHelp" Margin="266,338,0,0" VerticalAlignment="Top" Width="26" Height="22"/>
                         </Grid>
                         <Grid Grid.Column="1">
-                            <Button  Content="Help" HorizontalAlignment="Left" Click="albedoMapFromHelp" Margin="206,331,0,0" VerticalAlignment="Top" Width="70" Height="22"/>
+                            <Label Style="{StaticResource labelStyle}" Content="ALBEDO SUB ENABLE" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="145"/>
+                            <ComboBox x:Name="albedoSubEnable" SelectionChanged="albedoSubEnable_SelectionChanged" HorizontalAlignment="Left" Margin="207,10,0,0" VerticalAlignment="Top" Width="35">
+                                <ComboBoxItem Content="0" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" />
+                                <ComboBoxItem Content="1" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"  />
+                                <ComboBoxItem Content="2" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"  />
+                                <ComboBoxItem Content="3" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"  />
+                                <ComboBoxItem Content="4" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"  />
+                                <ComboBoxItem Content="5" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"  />
+                            </ComboBox>
+                            <Label Style="{StaticResource labelStyle}" Content="ALBEDO SUB MAP FROM" HorizontalAlignment="Left" Margin="10,41,0,0" VerticalAlignment="Top" Width="145"/>
+                            <ComboBox x:Name="albedoSubMapFrom" SelectionChanged="albedoSubMapFrom_SelectionChanged" HorizontalAlignment="Left" Margin="207,41,0,0" VerticalAlignment="Top" Width="35">
+                                <ComboBoxItem Content="0" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" />
+                                <ComboBoxItem Content="1" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"  />
+                                <ComboBoxItem Content="2" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"  />
+                                <ComboBoxItem Content="3" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"  />
+                                <ComboBoxItem Content="4" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"  />
+                                <ComboBoxItem Content="5" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"  />
+                                <ComboBoxItem Content="6" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"  />
+                                <ComboBoxItem Content="7" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"  />
+                                <ComboBoxItem Content="8" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"  />
+                                <ComboBoxItem Content="9" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"  />
+                            </ComboBox>
+                            <Label Style="{StaticResource labelStyle}" Content="ALBEDO SUB MAP UV FLIP" HorizontalAlignment="Left" Margin="10,72,0,0" VerticalAlignment="Top" Width="145"/>
+                            <ComboBox x:Name="albedoSubMapUVFlip" SelectionChanged="albedoSubMapUVFlip_SelectionChanged" HorizontalAlignment="Left" Margin="207,73,0,0" VerticalAlignment="Top" Width="35">
+                                <ComboBoxItem Content="0" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" />
+                                <ComboBoxItem Content="1" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"  />
+                                <ComboBoxItem Content="2" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"  />
+                                <ComboBoxItem Content="3" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"  />
+                            </ComboBox>
+                            <Label Style="{StaticResource labelStyle}" Content="ALBEDO SUB MAP APPLY SCALE" HorizontalAlignment="Left" Margin="10,103,0,0" VerticalAlignment="Top" Width="151"/>
+                            <ComboBox x:Name="albedoSubMapApplyScale" SelectionChanged="albedoSubMapApplyScale_SelectionChanged" HorizontalAlignment="Left" Margin="207,104,0,0" VerticalAlignment="Top" Width="35">
+                                <ComboBoxItem Content="0" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" />
+                                <ComboBoxItem Content="1" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"  />
+                                <ComboBoxItem Content="2" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"  />
+                            </ComboBox>
+                            <Label Style="{StaticResource labelStyle}" Content="ALBEDO SUB MAP FILE" HorizontalAlignment="Left" Margin="10,134,0,0" VerticalAlignment="Top" Width="113"/>
+                            <Button x:Name="albedoSubMapFileButton" Content="..." Click="albedoSubMapFileButton_Click" HorizontalAlignment="Left" Margin="207,135,0,0" VerticalAlignment="Top" Width="35"/>
+                            <Label Style="{StaticResource labelStyle}" x:Name="albedoSubMapFile" FlowDirection="RightToLeft" HorizontalContentAlignment="Right" Content="albedo_sub.png" HorizontalAlignment="Left" Margin="123,134,0,0" VerticalAlignment="Top" Width="71"/>
+                            <Label Style="{StaticResource labelStyle}" Content="ALBEDO SUB" HorizontalAlignment="Left" Margin="10,165,0,0" VerticalAlignment="Top" Width="72"/>
+                            <ComboBox x:Name="albedoSubMode" SelectionChanged="albedoSubMode_SelectionChanged" Margin="168,165,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="126">
+                                <ComboBoxItem Content="Linear Color"  HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"/>
+                                <ComboBoxItem Content="sRGB"  HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"/>
+                                <ComboBoxItem Content="Linear sRGB"  HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"/>
+                            </ComboBox>
+                            <TextBox x:Name="albedoSub" FontSize="10" HorizontalAlignment="Left" PreviewTextInput="albedoSub_PreviewTextInput" TextAlignment="Center" VerticalContentAlignment="Center" IsEnabled="True" Height="23" Margin="92,165,0,0" TextWrapping="Wrap" Text="{Binding Value, ElementName=albedoSubLinearColor, Mode=TwoWay, StringFormat=N2, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="70"/>
+                            <Slider Style="{StaticResource style}" Thumb.DragCompleted="albedoSubLinearColor_DragCompleted" Visibility="Hidden" x:Name="albedoSubLinearColor" TickFrequency="0.05" IsSnapToTickEnabled="True" HorizontalAlignment="Left" Margin="14,193,0,0" VerticalAlignment="Top" Width="196"/>
+                            <xctk:ColorPicker Visibility="Hidden" UsingAlphaChannel="False"  Closed="albedoSubRGB_Closed" Name="albedoSubRGB" HorizontalAlignment="Left" Margin="95,165,0,0" VerticalAlignment="Top" Width="71" Height="23"/>
+                            <Label Style="{StaticResource labelStyle}" Content="ALBEDO SUB LOOP NUM" HorizontalAlignment="Left" Margin="10,210,0,0" VerticalAlignment="Top" Width="122"/>
+                            <TextBox  Name="albedoSubLoopNum" IsEnabled="False" FontSize="10" HorizontalAlignment="Left" Height="23" Margin="135,210,0,0" TextWrapping="Wrap" Text="" TextAlignment="Center" VerticalContentAlignment="Center" VerticalAlignment="Top" Width="98"/>
+                            <CheckBox Name="albedoSubLoopNumLock" Checked="albedoSubLoopNumLock_Checked" Unchecked="albedoSubLoopNumLock_Unchecked" Content="Lock" HorizontalAlignment="Left" Margin="239,214,0,0" VerticalAlignment="Top" Width="46" RenderTransformOrigin="-0.167,0.644"/>
+                            <Slider Style="{StaticResource style}" Thumb.DragCompleted="albedoSubLoopNumX_DragCompleted" Name="albedoSubLoopNumX" ValueChanged="albedoSubLoopNumX_ValueChanged"  HorizontalAlignment="Left" TickFrequency="0.05" IsSnapToTickEnabled="True" Margin="14,241,0,0" VerticalAlignment="Top" Width="219"/>
+                            <Slider Style="{StaticResource style}" Thumb.DragCompleted="albedoSubLoopNumY_DragCompleted" Name="albedoSubLoopNumY" ValueChanged="albedoSubLoopNumY_ValueChanged" HorizontalAlignment="Left" TickFrequency="0.05" IsSnapToTickEnabled="True" Margin="14,264,0,0" VerticalAlignment="Top" Width="219"/>
+                            <Button Name="albedoSubLoopNumReset" Click="albedoSubLoopNumReset_Click" Content="Reset" HorizontalAlignment="Left" Margin="239,244,0,0" VerticalAlignment="Top" Width="46"/>
+
                         </Grid>
                     </Grid>
                 </TabItem>
