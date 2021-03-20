@@ -10,7 +10,12 @@
 	Title="Ray-mmd Material Tool v2.0" Height="450" Width="616"
     WindowStyle="ThreeDBorderWindow">
     <Window.Resources>
-        <Style TargetType="{x:Type Label}" x:Key="labelStyle">
+        <Style TargetType="Slider" x:Key="style">
+            <Setter Property="Minimum" Value="-24" />
+            <Setter Property="Maximum" Value="24" />
+            <Setter Property="Orientation" Value="Horizontal" />
+        </Style>
+        <Style TargetType="Label" x:Key="labelStyle">
             <Setter Property="FontSize" Value="10"/>
         </Style>
     </Window.Resources>
@@ -19,16 +24,6 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <DockPanel Grid.Column="0" HorizontalAlignment="Stretch" Drop="MaterialFileDrop" AllowDrop="True"  VerticalAlignment="Stretch" >
-            <DockPanel.Resources>
-                <Style TargetType="Slider" x:Key="style">
-                    <Setter Property="Minimum" Value="-24" />
-                    <Setter Property="Maximum" Value="24" />
-                    <Setter Property="Orientation" Value="Horizontal" />
-                </Style>
-                <Style TargetType="Label" x:Key="labelStyle">
-                    <Setter Property="FontSize" Value="10"/>
-                </Style>
-            </DockPanel.Resources>
             <Menu DockPanel.Dock="Top">
                 <MenuItem Header="_File">
                     <MenuItem x:Name="newMaterial" Header="New Material" HorizontalAlignment="Left" Click="newMaterial_Click"/>
