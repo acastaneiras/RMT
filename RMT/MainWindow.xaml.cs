@@ -105,6 +105,7 @@ namespace RMT
 		}
 		private void InitializeValues()
 		{
+			//ALBEDO
 			this.albedoMapFrom.SelectedIndex =this.material.AlbedoMapFrom;
 			this.albedoMapUVFlip.SelectedIndex = this.material.AlbedoMapUVFlip;
 			this.albedoMapApplyScale.SelectedIndex = this.material.AlbedoMapApplyScale;
@@ -116,7 +117,7 @@ namespace RMT
 			this.albedoLoopNumY.Value= handleLoopNums(this.material.AlbedoLoopNum)[1];
 			this.albedoLoopNum.Text = assignLoopNum(this.albedoLoopNumX.Value, this.albedoLoopNumY.Value);
 			ChangeMapScaleMode(this.material.Albedo, this.albedoMode);
-
+			//ALBEDO SUB
 			this.albedoSubEnable.SelectedIndex = this.material.AlbedoSubEnable;
 			this.albedoSubMapFrom.SelectedIndex = this.material.AlbedoSubMapFrom;
 			this.albedoSubMapUVFlip.SelectedIndex = this.material.AlbedoSubMapUVFlip;
@@ -127,6 +128,15 @@ namespace RMT
 			this.albedoSubLoopNumY.Value = handleLoopNums(this.material.AlbedoSubLoopNum)[1];
 			this.albedoSubLoopNum.Text = assignLoopNum(this.albedoSubLoopNumX.Value, this.albedoSubLoopNumY.Value);
 			ChangeMapScaleMode(this.material.AlbedoSub, this.albedoSubMode);
+			//ALPHA
+			this.alphaMapFrom.SelectedIndex = this.material.AlphaMapFrom;
+			this.alphaMapUVFlip.SelectedIndex = this.material.AlphaMapUVFlip;
+			this.alphaMapSwizzle.SelectedIndex = this.material.AlphaMapSwizzle;
+			this.alphaMapFile.Content = this.material.AlphaMapFile;
+			this.alpha.Text = this.material.Alpha.ToString();
+			this.alphaLoopNumX.Value = handleLoopNums(this.material.AlphaLoopNum)[0];
+			this.alphaLoopNumY.Value = handleLoopNums(this.material.AlphaLoopNum)[1];
+			this.alphaLoopNum.Text = assignLoopNum(this.alphaLoopNumX.Value, this.alphaLoopNumY.Value);
 
 		}
 
@@ -450,8 +460,16 @@ namespace RMT
         private void albedo_PreviewTextInput(object sender, TextCompositionEventArgs e)
 		{
 			handleTextInput(ref sender, ref e);
-			this.material.Albedo = this.albedo.Text;
-			handleChanges();
+		}
+
+
+		private void albedo_KeyUp(object sender, KeyEventArgs e)
+		{
+			if (this.material.Albedo != this.albedo.Text)
+			{
+				this.material.Albedo = this.albedo.Text;
+				handleChanges();
+			}
 		}
 
 		private void albedoRGB_Closed(object sender, RoutedEventArgs e)
@@ -621,11 +639,18 @@ namespace RMT
         private void albedoSub_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
 			handleTextInput(ref sender, ref e);
-			this.material.AlbedoSub = this.albedoSub.Text;
-			handleChanges();
 		}
 
-        private void albedoSubRGB_Closed(object sender, RoutedEventArgs e)
+		private void albedoSub_KeyUp(object sender, KeyEventArgs e)
+		{
+			if (this.material.AlbedoSub != this.albedoSub.Text)
+			{
+				this.material.AlbedoSub = this.albedoSub.Text;
+				handleChanges();
+			}
+		}
+
+		private void albedoSubRGB_Closed(object sender, RoutedEventArgs e)
         {
 			if ((albedoSubRGB.SelectedColor.HasValue) && (!albedoSubRGB.SelectedColor.ToString().Equals(this.albedoSubSelectedColor)))
 			{
@@ -701,5 +726,123 @@ namespace RMT
 			this.material.AlbedoSubLoopNum = resetLoopNum(this.albedoSubLoopNum, this.albedoSubLoopNumX, this.albedoSubLoopNumY);
 			handleChanges();
 		}
-	}
+
+		/* END ALBEDO SUB */
+		/* ALPHA */
+        private void alphaMapFrom_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+			this.material.AlphaMapFrom = alphaMapFrom.SelectedIndex;
+			handleChanges();
+		}
+
+        private void alphaMapUVFlip_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+			this.material.AlphaMapUVFlip = alphaMapUVFlip.SelectedIndex;
+			handleChanges();
+		}
+
+        private void alphaMapSwizzle_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+			this.material.AlphaMapSwizzle = alphaMapSwizzle.SelectedIndex;
+			handleChanges();
+		}
+
+        private void alphaMapFileButton_Click(object sender, RoutedEventArgs e)
+        {
+			String mapFile = handleOpenDialog(imageFilters);
+			if (!mapFile.Equals(""))
+			{
+				this.material.AlphaMapFile = Util.GetRelativePath(this.material.FilePath, mapFile);
+				this.alphaMapFile.Content = this.material.AlphaMapFile;
+				handleChanges();
+			}
+		}
+
+		private void alphaLinearColor_DragCompleted(object sender, System.Windows.Controls.Primitives.DragCompletedEventArgs e)
+		{
+			this.material.Alpha = float.Parse(this.alpha.Text);
+			handleChanges();
+		}
+
+		private void alpha_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+			handleTextInput(ref sender, ref e);
+		}
+
+        private void alphaLoopNumLock_Checked(object sender, RoutedEventArgs e)
+        {
+			if (alphaLoopNumY.IsEnabled)
+			{
+				alphaLoopNumY.IsEnabled = false;
+			}
+			this.alphaLoopNumY.Value = this.alphaLoopNumX.Value;
+			this.alphaLoopNum.Text = assignLoopNum(this.alphaLoopNumX.Value, this.alphaLoopNumY.Value);
+			this.material.AlphaLoopNum = this.alphaLoopNum.Text;
+			handleChanges();
+		}
+
+        private void alphaLoopNumLock_Unchecked(object sender, RoutedEventArgs e)
+        {
+			if (!alphaLoopNumY.IsEnabled)
+			{
+				alphaLoopNumY.IsEnabled = true;
+			}
+			this.alphaLoopNumY.Value = this.alphaLoopNumX.Value;
+			this.material.AlphaLoopNum = this.alphaLoopNum.Text;
+			handleChanges();
+		}
+
+        private void alphaLoopNumX_DragCompleted(object sender, System.Windows.Controls.Primitives.DragCompletedEventArgs e)
+        {
+			if (alphaLoopNumLock.IsChecked == true)
+			{
+				this.alphaLoopNumY.Value = this.alphaLoopNumX.Value;
+			}
+			this.alphaLoopNum.Text = assignLoopNum(this.alphaLoopNumX.Value, this.alphaLoopNumY.Value);
+			this.material.AlphaLoopNum = this.alphaLoopNum.Text;
+			handleChanges();
+		}
+
+        private void alphaLoopNumY_DragCompleted(object sender, System.Windows.Controls.Primitives.DragCompletedEventArgs e)
+        {
+			if (alphaLoopNumLock.IsChecked == false)
+			{
+				this.alphaLoopNum.Text = assignLoopNum(this.alphaLoopNumX.Value, this.alphaLoopNumY.Value);
+				this.material.AlphaLoopNum = this.alphaLoopNum.Text;
+			}
+			handleChanges();
+		}
+
+        private void alphaLoopNumX_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+			if (alphaLoopNumLock.IsChecked == true)
+			{
+				this.alphaLoopNumY.Value = this.alphaLoopNumX.Value;
+			}
+			this.alphaLoopNum.Text = assignLoopNum(this.alphaLoopNumX.Value, this.alphaLoopNumY.Value);
+		}
+
+        private void alphaLoopNumY_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+			if (alphaLoopNumLock.IsChecked == false)
+			{
+				this.alphaLoopNum.Text = assignLoopNum(this.alphaLoopNumX.Value, this.alphaLoopNumY.Value);
+			}
+		}
+
+        private void alphaLoopNumReset_Click(object sender, RoutedEventArgs e)
+        {
+			this.material.AlphaLoopNum = resetLoopNum(this.alphaLoopNum, this.alphaLoopNumX, this.alphaLoopNumY);
+			handleChanges();
+		}
+
+        private void alpha_KeyUp(object sender, KeyEventArgs e)
+        {
+			if (this.material.Alpha != float.Parse(this.alpha.Text))
+            {
+				this.material.Alpha = float.Parse(this.alpha.Text);
+				handleChanges();
+			}
+		}
+    }
 }
