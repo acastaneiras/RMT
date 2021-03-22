@@ -137,7 +137,24 @@ namespace RMT
 			this.alphaLoopNumX.Value = handleLoopNums(this.material.AlphaLoopNum)[0];
 			this.alphaLoopNumY.Value = handleLoopNums(this.material.AlphaLoopNum)[1];
 			this.alphaLoopNum.Text = assignLoopNum(this.alphaLoopNumX.Value, this.alphaLoopNumY.Value);
-
+			//NORMAL
+			this.normalMapFrom.SelectedIndex = this.material.NormalMapFrom;
+			this.normalMapType.SelectedIndex = this.material.NormalMapType;
+			this.normalMapUVFlip.SelectedIndex = this.material.NormalMapUVFlip;
+			this.normalMapFile.Content = this.material.NormalMapFile;
+			this.normal.Text = this.material.Normal.ToString();
+			this.normalLoopNumX.Value = handleLoopNums(this.material.NormalLoopNum)[0];
+			this.normalLoopNumY.Value = handleLoopNums(this.material.NormalLoopNum)[1];
+			this.normalLoopNum.Text = assignLoopNum(this.normalLoopNumX.Value, this.normalLoopNumY.Value);
+			//NORMAL SUB
+			this.normalSubMapFrom.SelectedIndex = this.material.NormalSubMapFrom;
+			this.normalSubMapType.SelectedIndex = this.material.NormalSubMapType;
+			this.normalSubMapUVFlip.SelectedIndex = this.material.NormalSubMapUVFlip;
+			this.normalSubMapFile.Content = this.material.NormalSubMapFile;
+			this.normalSub.Text = this.material.NormalSub.ToString();
+			this.normalSubLoopNumX.Value = handleLoopNums(this.material.NormalSubLoopNum)[0];
+			this.normalSubLoopNumY.Value = handleLoopNums(this.material.NormalSubLoopNum)[1];
+			this.normalSubLoopNum.Text = assignLoopNum(this.normalSubLoopNumX.Value, this.normalSubLoopNumY.Value);
 		}
 
 		/*
@@ -844,5 +861,244 @@ namespace RMT
 				handleChanges();
 			}
 		}
-    }
+		/*END ALPHA*/
+		/*NORMAL*/
+
+		private void normalMapFrom_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		{
+			this.material.NormalMapFrom = normalMapFrom.SelectedIndex;
+			handleChanges();
+		}
+
+		private void normalMapUVFlip_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		{
+			this.material.NormalMapUVFlip = normalMapUVFlip.SelectedIndex;
+			handleChanges();
+		}
+
+		private void normalMapType_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		{
+			this.material.NormalMapType = normalMapType.SelectedIndex;
+			handleChanges();
+		}
+
+
+		private void normalMapFile_Click(object sender, RoutedEventArgs e)
+		{
+			String mapFile = handleOpenDialog(imageFilters);
+			if (!mapFile.Equals(""))
+			{
+				this.material.NormalMapFile = Util.GetRelativePath(this.material.FilePath, mapFile);
+				this.normalMapFile.Content = this.material.NormalMapFile;
+				handleChanges();
+			}
+		}
+
+		private void normal_PreviewTextInput(object sender, TextCompositionEventArgs e)
+		{
+			handleTextInput(ref sender, ref e);
+		}
+
+
+		private void normal_KeyUp(object sender, KeyEventArgs e)
+		{
+			if (this.material.Normal != float.Parse(this.normal.Text))
+			{
+				this.material.Normal = float.Parse(this.normal.Text);
+				handleChanges();
+			}
+		}
+
+		private void normalLoopNumLock_Checked(object sender, RoutedEventArgs e)
+		{
+			if (normalLoopNumY.IsEnabled)
+			{
+				normalLoopNumY.IsEnabled = false;
+			}
+			this.normalLoopNumY.Value = this.normalLoopNumX.Value;
+			this.normalLoopNum.Text = assignLoopNum(this.normalLoopNumX.Value, this.normalLoopNumY.Value);
+			this.material.NormalLoopNum = this.normalLoopNum.Text;
+			handleChanges();
+		}
+
+		private void normalLoopNumLock_Unchecked(object sender, RoutedEventArgs e)
+		{
+			if (!normalLoopNumY.IsEnabled)
+			{
+				normalLoopNumY.IsEnabled = true;
+			}
+			this.normalLoopNumY.Value = this.normalLoopNumX.Value;
+			this.material.NormalLoopNum = this.normalLoopNum.Text;
+			handleChanges();
+		}
+
+		private void normalLoopNumX_DragCompleted(object sender, System.Windows.Controls.Primitives.DragCompletedEventArgs e)
+		{
+			if (normalLoopNumLock.IsChecked == true)
+			{
+				this.normalLoopNumY.Value = this.normalLoopNumX.Value;
+			}
+			this.normalLoopNum.Text = assignLoopNum(this.normalLoopNumX.Value, this.normalLoopNumY.Value);
+			this.material.NormalLoopNum = this.normalLoopNum.Text;
+			handleChanges();
+		}
+
+		private void normalLoopNumY_DragCompleted(object sender, System.Windows.Controls.Primitives.DragCompletedEventArgs e)
+		{
+			if (normalLoopNumLock.IsChecked == false)
+			{
+				this.normalLoopNum.Text = assignLoopNum(this.normalLoopNumX.Value, this.normalLoopNumY.Value);
+				this.material.NormalLoopNum = this.normalLoopNum.Text;
+			}
+			handleChanges();
+		}
+
+		private void normalLinearColor_DragCompleted(object sender, System.Windows.Controls.Primitives.DragCompletedEventArgs e)
+		{
+			this.material.Normal = float.Parse(normal.Text);
+			handleChanges();
+		}
+
+		private void normalLoopNumX_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+		{
+			if (normalLoopNumLock.IsChecked == true)
+			{
+				this.normalLoopNumY.Value = this.normalLoopNumX.Value;
+			}
+			this.normalLoopNum.Text = assignLoopNum(this.normalLoopNumX.Value, this.normalLoopNumY.Value);
+		}
+
+		private void normalLoopNumY_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+		{
+			if (normalLoopNumLock.IsChecked == false)
+			{
+				this.normalLoopNum.Text = assignLoopNum(this.normalLoopNumX.Value, this.normalLoopNumY.Value);
+			}
+		}
+
+		private void normalLoopNumReset_Click(object sender, RoutedEventArgs e)
+		{
+			this.material.NormalLoopNum = resetLoopNum(this.normalLoopNum, this.normalLoopNumX, this.normalLoopNumY);
+			handleChanges();
+		}
+		/*END NORMAL*/
+		/*NORMAL SUB*/
+		private void normalSubMapFrom_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		{
+			this.material.NormalSubMapFrom = normalSubMapFrom.SelectedIndex;
+			handleChanges();
+		}
+
+		private void normalSubMapUVFlip_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		{
+			this.material.NormalSubMapUVFlip = normalSubMapUVFlip.SelectedIndex;
+			handleChanges();
+		}
+
+		private void normalSubMapType_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		{
+			this.material.NormalSubMapType = normalSubMapType.SelectedIndex;
+			handleChanges();
+		}
+
+
+		private void normalSubMapFile_Click(object sender, RoutedEventArgs e)
+		{
+			String mapFile = handleOpenDialog(imageFilters);
+			if (!mapFile.Equals(""))
+			{
+				this.material.NormalSubMapFile = Util.GetRelativePath(this.material.FilePath, mapFile);
+				this.normalSubMapFile.Content = this.material.NormalSubMapFile;
+				handleChanges();
+			}
+		}
+
+		private void normalSub_PreviewTextInput(object sender, TextCompositionEventArgs e)
+		{
+			handleTextInput(ref sender, ref e);
+		}
+
+
+		private void normalSub_KeyUp(object sender, KeyEventArgs e)
+		{
+			if (this.material.NormalSub != float.Parse(this.normalSub.Text))
+			{
+				this.material.NormalSub = float.Parse(this.normalSub.Text);
+				handleChanges();
+			}
+		}
+
+		private void normalSubLoopNumLock_Checked(object sender, RoutedEventArgs e)
+		{
+			if (normalSubLoopNumY.IsEnabled)
+			{
+				normalSubLoopNumY.IsEnabled = false;
+			}
+			this.normalSubLoopNumY.Value = this.normalSubLoopNumX.Value;
+			this.normalSubLoopNum.Text = assignLoopNum(this.normalSubLoopNumX.Value, this.normalSubLoopNumY.Value);
+			this.material.NormalSubLoopNum = this.normalSubLoopNum.Text;
+			handleChanges();
+		}
+
+		private void normalSubLoopNumLock_Unchecked(object sender, RoutedEventArgs e)
+		{
+			if (!normalSubLoopNumY.IsEnabled)
+			{
+				normalSubLoopNumY.IsEnabled = true;
+			}
+			this.normalSubLoopNumY.Value = this.normalSubLoopNumX.Value;
+			this.material.NormalSubLoopNum = this.normalSubLoopNum.Text;
+			handleChanges();
+		}
+
+		private void normalSubLoopNumX_DragCompleted(object sender, System.Windows.Controls.Primitives.DragCompletedEventArgs e)
+		{
+			if (normalSubLoopNumLock.IsChecked == true)
+			{
+				this.normalSubLoopNumY.Value = this.normalSubLoopNumX.Value;
+			}
+			this.normalSubLoopNum.Text = assignLoopNum(this.normalSubLoopNumX.Value, this.normalSubLoopNumY.Value);
+			this.material.NormalSubLoopNum = this.normalSubLoopNum.Text;
+			handleChanges();
+		}
+
+		private void normalSubLoopNumY_DragCompleted(object sender, System.Windows.Controls.Primitives.DragCompletedEventArgs e)
+		{
+			if (normalSubLoopNumLock.IsChecked == false)
+			{
+				this.normalSubLoopNum.Text = assignLoopNum(this.normalSubLoopNumX.Value, this.normalSubLoopNumY.Value);
+				this.material.NormalSubLoopNum = this.normalSubLoopNum.Text;
+			}
+			handleChanges();
+		}
+
+		private void normalSubLinearColor_DragCompleted(object sender, System.Windows.Controls.Primitives.DragCompletedEventArgs e)
+		{
+			this.material.NormalSub = float.Parse(normalSub.Text);
+			handleChanges();
+		}
+
+		private void normalSubLoopNumX_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+		{
+			if (normalSubLoopNumLock.IsChecked == true)
+			{
+				this.normalSubLoopNumY.Value = this.normalSubLoopNumX.Value;
+			}
+			this.normalSubLoopNum.Text = assignLoopNum(this.normalSubLoopNumX.Value, this.normalSubLoopNumY.Value);
+		}
+
+		private void normalSubLoopNumY_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+		{
+			if (normalSubLoopNumLock.IsChecked == false)
+			{
+				this.normalSubLoopNum.Text = assignLoopNum(this.normalSubLoopNumX.Value, this.normalSubLoopNumY.Value);
+			}
+		}
+
+		private void normalSubLoopNumReset_Click(object sender, RoutedEventArgs e)
+		{
+			this.material.NormalSubLoopNum = resetLoopNum(this.normalSubLoopNum, this.normalSubLoopNumX, this.normalSubLoopNumY);
+			handleChanges();
+		}
+	}
 }

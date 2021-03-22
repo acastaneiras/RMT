@@ -7,10 +7,10 @@
     x:Class="RMT.MainWindow"
 	mc:Ignorable="d"
     Style="{DynamicResource CustomWindowStyle}"
-    ResizeMode="CanMinimize"
+    ResizeMode="NoResize"
     BorderBrush="#ff6b61"
 	Title="Ray-mmd Material Tool v2.0" Height="476.667" Width="616"
-    WindowStyle="ThreeDBorderWindow">
+    WindowStyle="None">
     <Window.Resources>
         <DropShadowBitmapEffect x:Key="NormalShadow" ShadowDepth="2" Softness="0.2" Opacity="0.64"/>
     </Window.Resources>
@@ -98,11 +98,11 @@
                             <xctk:ColorPicker Visibility="Hidden" UsingAlphaChannel="False"  Closed="albedoRGB_Closed" Name="albedoRGB" HorizontalAlignment="Left" Margin="60,211,0,0" VerticalAlignment="Top" Width="71"/>
                             <Label FontSize="10" Content="ALBEDO LOOP NUM" HorizontalAlignment="Left" Margin="10,263,0,0" VerticalAlignment="Top" Width="121"/>
                             <TextBox  Name="albedoLoopNum" IsEnabled="False" FontSize="10" HorizontalAlignment="Left" Height="23" Margin="115,263,0,0" TextWrapping="Wrap" Text="" TextAlignment="Center" VerticalContentAlignment="Center" VerticalAlignment="Top" Width="99"/>
-                            <CheckBox Name="albedoLoopNumLock" Checked="albedoLoopNumLock_Checked" Unchecked="albedoLoopNumLock_Unchecked" Content="Lock" HorizontalAlignment="Left" Margin="219,267,0,0" VerticalAlignment="Top" Width="46" RenderTransformOrigin="-0.167,0.644"/>
+                            <CheckBox Name="albedoLoopNumLock" Checked="albedoLoopNumLock_Checked" Unchecked="albedoLoopNumLock_Unchecked" Content="&#xf023;" FontFamily="{StaticResource FontAwesome}" HorizontalAlignment="Left" Margin="219,267,0,0" VerticalAlignment="Top" Width="36" RenderTransformOrigin="-0.167,0.644"/>
                             <Slider  Orientation="Horizontal" Minimum="-24" Maximum="24" Thumb.DragCompleted="albedoLoopNumX_DragCompleted" Name="albedoLoopNumX" ValueChanged="albedoLoopNumX_ValueChanged"  HorizontalAlignment="Left" TickFrequency="0.05" IsSnapToTickEnabled="True" Margin="18,294,0,0" VerticalAlignment="Top" Width="196"/>
                             <Slider  Orientation="Horizontal" Minimum="-24" Maximum="24" Thumb.DragCompleted="albedoLoopNumY_DragCompleted" Name="albedoLoopNumY" ValueChanged="albedoLoopNumY_ValueChanged" HorizontalAlignment="Left" TickFrequency="0.05" IsSnapToTickEnabled="True" Margin="18,317,0,0" VerticalAlignment="Top" Width="196"/>
-                            <Button Name="albedoLoopNumReset" Click="albedoLoopNumReset_Click" Content="Reset" HorizontalAlignment="Left" Margin="219,297,0,0" VerticalAlignment="Top" Width="46"/>
-                            <Button  Content="?" HorizontalAlignment="Left" Click="albedoMapFromHelp" Margin="266,338,0,0" VerticalAlignment="Top" Width="26" Height="22"/>
+                            <Button Name="albedoLoopNumReset" Click="albedoLoopNumReset_Click" Content="&#xf0e2;" FontFamily="{StaticResource FontAwesome}" HorizontalAlignment="Left" Margin="219,297,0,0" VerticalAlignment="Top" Width="28" Height="28"/>
+                            <Button Content="&#xf129;" FontFamily="{StaticResource FontAwesome}" HorizontalAlignment="Left" Click="albedoMapFromHelp" Margin="266,338,0,0" VerticalAlignment="Top" Width="26" Height="22"/>
                             <Label FontSize="10" Content="ALBEDO MAP UV FLIP" HorizontalAlignment="Left" Margin="10,41,0,0" VerticalAlignment="Top" Width="121"/>
                         </Grid>
                         <Border Grid.Column="1" Grid.RowSpan="2" BorderThickness="2,0,0,0" Background="{x:Null}"/>
@@ -156,10 +156,10 @@
                             <xctk:ColorPicker Visibility="Hidden" UsingAlphaChannel="False"  Closed="albedoSubRGB_Closed" Name="albedoSubRGB" HorizontalAlignment="Left" Margin="95,165,0,0" VerticalAlignment="Top" Width="71" Height="23"/>
                             <Label FontSize="10" Content="ALBEDO SUB LOOP NUM" HorizontalAlignment="Left" Margin="10,217,0,0" VerticalAlignment="Top" Width="122"/>
                             <TextBox  Name="albedoSubLoopNum" IsEnabled="False" FontSize="10" HorizontalAlignment="Left" Height="23" Margin="135,217,0,0" TextWrapping="Wrap" Text="" TextAlignment="Center" VerticalContentAlignment="Center" VerticalAlignment="Top" Width="98"/>
-                            <CheckBox Name="albedoSubLoopNumLock" Checked="albedoSubLoopNumLock_Checked" Unchecked="albedoSubLoopNumLock_Unchecked" Content="Lock" HorizontalAlignment="Left" Margin="239,221,0,0" VerticalAlignment="Top" Width="46" RenderTransformOrigin="-0.167,0.644"/>
+                            <CheckBox Name="albedoSubLoopNumLock" Checked="albedoSubLoopNumLock_Checked" Unchecked="albedoSubLoopNumLock_Unchecked" Content="&#xf023;" FontFamily="{StaticResource FontAwesome}" HorizontalAlignment="Left" Margin="239,221,0,0" VerticalAlignment="Top" Width="46" RenderTransformOrigin="-0.167,0.644"/>
                             <Slider  Orientation="Horizontal" Minimum="-24" Maximum="24" Thumb.DragCompleted="albedoSubLoopNumX_DragCompleted" Name="albedoSubLoopNumX" ValueChanged="albedoSubLoopNumX_ValueChanged"  HorizontalAlignment="Left" TickFrequency="0.05" IsSnapToTickEnabled="True" Margin="14,248,0,0" VerticalAlignment="Top" Width="219"/>
                             <Slider  Orientation="Horizontal" Minimum="-24" Maximum="24" Thumb.DragCompleted="albedoSubLoopNumY_DragCompleted" Name="albedoSubLoopNumY" ValueChanged="albedoSubLoopNumY_ValueChanged" HorizontalAlignment="Left" TickFrequency="0.05" IsSnapToTickEnabled="True" Margin="14,271,0,0" VerticalAlignment="Top" Width="219"/>
-                            <Button Name="albedoSubLoopNumReset" Click="albedoSubLoopNumReset_Click" Content="Reset" HorizontalAlignment="Left" Margin="239,251,0,0" VerticalAlignment="Top" Width="46"/>
+                            <Button Name="albedoSubLoopNumReset" Click="albedoSubLoopNumReset_Click" Content="&#xf0e2;" FontFamily="{StaticResource FontAwesome}" HorizontalAlignment="Left" Margin="239,251,0,0" VerticalAlignment="Top" Width="28" Height="28"/>
 
                         </Grid>
                     </Grid>
@@ -209,15 +209,111 @@
                             <Slider Orientation="Horizontal" Minimum="-24" Maximum="24" Thumb.DragCompleted="alphaLinearColor_DragCompleted" Visibility="Visible" x:Name="alphaLinearColor" TickFrequency="0.05" IsSnapToTickEnabled="True" HorizontalAlignment="Left" Margin="95,160,0,0" VerticalAlignment="Top" Width="204"/>
                             <Label FontSize="10" Content="ALPHA LOOP NUM" HorizontalAlignment="Left" Margin="93,191,0,0" VerticalAlignment="Top" Width="122"/>
                             <TextBox  Name="alphaLoopNum" IsEnabled="False" FontSize="10" HorizontalAlignment="Left" Height="23" Margin="192,191,0,0" TextWrapping="Wrap" Text="" TextAlignment="Center" VerticalContentAlignment="Center" VerticalAlignment="Top" Width="102"/>
-                            <CheckBox Name="alphaLoopNumLock" Checked="alphaLoopNumLock_Checked" Unchecked="alphaLoopNumLock_Unchecked" Content="Lock" HorizontalAlignment="Left" Margin="312,191,0,0" VerticalAlignment="Top" Width="48" RenderTransformOrigin="-0.167,0.644"/>
+                            <CheckBox Name="alphaLoopNumLock" Checked="alphaLoopNumLock_Checked" Unchecked="alphaLoopNumLock_Unchecked" Content="&#xf023;" FontFamily="{StaticResource FontAwesome}" HorizontalAlignment="Left" Margin="312,191,0,0" VerticalAlignment="Top" Width="36" RenderTransformOrigin="-0.167,0.644"/>
                             <Slider  Orientation="Horizontal" Minimum="-24" Maximum="24" Thumb.DragCompleted="alphaLoopNumX_DragCompleted" Name="alphaLoopNumX" ValueChanged="alphaLoopNumX_ValueChanged"  HorizontalAlignment="Left" TickFrequency="0.05" IsSnapToTickEnabled="True" Margin="81,221,0,0" VerticalAlignment="Top" Width="226"/>
                             <Slider  Orientation="Horizontal" Minimum="-24" Maximum="24" Thumb.DragCompleted="alphaLoopNumY_DragCompleted" Name="alphaLoopNumY" ValueChanged="alphaLoopNumY_ValueChanged" HorizontalAlignment="Left" TickFrequency="0.05" IsSnapToTickEnabled="True" Margin="81,244,0,0" VerticalAlignment="Top" Width="226"/>
-                            <Button Name="alphaLoopNumReset" Click="alphaLoopNumReset_Click" Content="Reset" HorizontalAlignment="Left" Margin="312,229,0,0" VerticalAlignment="Top" Width="48"/>
+                            <Button Name="alphaLoopNumReset" Click="alphaLoopNumReset_Click" Content="&#xf0e2;" FontFamily="{StaticResource FontAwesome}" HorizontalAlignment="Left" Margin="312,229,0,0" VerticalAlignment="Top" Width="28" Height="28"/>
                         </Grid>
                     </Grid>
                 </TabItem>
                 <TabItem Header="Normal">
-                    <Grid/>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="71*"></ColumnDefinition>
+                            <ColumnDefinition Width="233*"/>
+                            <ColumnDefinition Width="304*"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+
+                        <Grid Grid.Column="0" Grid.ColumnSpan="2">
+                            <Label FontSize="10" Content="NORMAL MAP FROM" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="121"/>
+                            <ComboBox x:Name="normalMapFrom" SelectionChanged="normalMapFrom_SelectionChanged" HorizontalAlignment="Left" Margin="188,10,0,0" VerticalAlignment="Top" Width="35">
+                                <ComboBoxItem Content="0" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" />
+                                <ComboBoxItem Content="1" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"  />
+                                <ComboBoxItem Content="2" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"  />
+                                <ComboBoxItem Content="3" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"  />
+                                <ComboBoxItem Content="4" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"  />
+                                <ComboBoxItem Content="5" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"  />
+                                <ComboBoxItem Content="6" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"  />
+                                <ComboBoxItem Content="7" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"  />
+                                <ComboBoxItem Content="8" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"  />
+                                <ComboBoxItem Content="9" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"  />
+                            </ComboBox>
+                            <Label FontSize="10" Content="NORMAL MAP TYPE" HorizontalAlignment="Left" Margin="10,41,0,0" VerticalAlignment="Top" Width="162"/>
+                            <ComboBox x:Name="normalMapType" SelectionChanged="normalMapType_SelectionChanged" HorizontalAlignment="Left" Margin="188,42,0,0" VerticalAlignment="Top" Width="35">
+                                <ComboBoxItem Content="0" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" />
+                                <ComboBoxItem Content="1" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"  />
+                                <ComboBoxItem Content="2" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"  />
+                                <ComboBoxItem Content="3" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"  />
+                                <ComboBoxItem Content="4" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"  />
+                            </ComboBox>
+                            <Label FontSize="10" Content="NORMAL MAP UV FLIP" HorizontalAlignment="Left" Margin="10,71,0,0" VerticalAlignment="Top" Width="121"/>
+                            <ComboBox x:Name="normalMapUVFlip" SelectionChanged="normalMapUVFlip_SelectionChanged" HorizontalAlignment="Left" Margin="188,71,0,0" VerticalAlignment="Top" Width="35">
+                                <ComboBoxItem Content="0" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" />
+                                <ComboBoxItem Content="1" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"  />
+                                <ComboBoxItem Content="2" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"  />
+                                <ComboBoxItem Content="3" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"  />
+                            </ComboBox>
+                            <Label FontSize="10" Content="NORMAL MAP FILE" HorizontalAlignment="Left" Margin="10,103,0,0" VerticalAlignment="Top" Width="113"/>
+                            <Button x:Name="normalMapFileButton" Content="..." Click="normalMapFile_Click" HorizontalAlignment="Left" Margin="188,103,0,0" VerticalAlignment="Top" Width="35"/>
+                            <Label FontSize="10" x:Name="normalMapFile" FlowDirection="RightToLeft" HorizontalContentAlignment="Right" Content="normal.png" HorizontalAlignment="Left" Margin="105,102,0,0" VerticalAlignment="Top" Width="77"/>
+                            <Label FontSize="10" Content="NORMAL" HorizontalAlignment="Left" Margin="10,148,0,0" VerticalAlignment="Top" Width="57"/>
+                            <Slider  Orientation="Horizontal" Minimum="-24" Maximum="24" Thumb.DragCompleted="normalLinearColor_DragCompleted" Visibility="Visible" x:Name="normalLinearColor" TickFrequency="0.05" IsSnapToTickEnabled="True" HorizontalAlignment="Left" Margin="18,178,0,0" VerticalAlignment="Top" Width="196"/>
+                            <TextBox x:Name="normal" FontSize="10" HorizontalAlignment="Left" PreviewTextInput="normal_PreviewTextInput" KeyUp="normal_KeyUp" TextAlignment="Center" VerticalContentAlignment="Center" IsEnabled="True" Height="23" Margin="67,148,0,0" TextWrapping="Wrap" Text="{Binding ElementName=normalLinearColor, Mode=TwoWay, Path=Value, StringFormat=N2,UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="71"/>
+                            <Label FontSize="10" Content="NORMAL LOOP NUM" HorizontalAlignment="Left" Margin="10,205,0,0" VerticalAlignment="Top" Width="121"/>
+                            <TextBox  Name="normalLoopNum" IsEnabled="False" FontSize="10" HorizontalAlignment="Left" Height="23" Margin="115,205,0,0" TextWrapping="Wrap" Text="" TextAlignment="Center" VerticalContentAlignment="Center" VerticalAlignment="Top" Width="99"/>
+                            <CheckBox Name="normalLoopNumLock" Checked="normalLoopNumLock_Checked" Unchecked="normalLoopNumLock_Unchecked" Content="&#xf023;" FontFamily="{StaticResource FontAwesome}" HorizontalAlignment="Left" Margin="219,209,0,0" VerticalAlignment="Top" Width="35" RenderTransformOrigin="-0.167,0.644"/>
+                            <Slider  Orientation="Horizontal" Minimum="-24" Maximum="24" Thumb.DragCompleted="normalLoopNumX_DragCompleted" Name="normalLoopNumX" ValueChanged="normalLoopNumX_ValueChanged"  HorizontalAlignment="Left" TickFrequency="0.05" IsSnapToTickEnabled="True" Margin="18,236,0,0" VerticalAlignment="Top" Width="196"/>
+                            <Slider  Orientation="Horizontal" Minimum="-24" Maximum="24" Thumb.DragCompleted="normalLoopNumY_DragCompleted" Name="normalLoopNumY" ValueChanged="normalLoopNumY_ValueChanged" HorizontalAlignment="Left" TickFrequency="0.05" IsSnapToTickEnabled="True" Margin="18,259,0,0" VerticalAlignment="Top" Width="196"/>
+                            <Button Name="normalLoopNumReset" Click="normalLoopNumReset_Click" Content="&#xf0e2;" FontFamily="{StaticResource FontAwesome}" HorizontalAlignment="Left" Margin="219,243,0,0" VerticalAlignment="Top" Width="28" Height="28"/>
+                            <Button  HorizontalAlignment="Left" Content="&#xf129;" FontFamily="{StaticResource FontAwesome}" Margin="266,338,0,0" VerticalAlignment="Top" Width="26" Height="22">
+                            </Button>
+                        </Grid>
+                        <Border Grid.Column="2" BorderThickness="2,0,0,0" Background="{x:Null}"/>
+                        <Grid Grid.Column="2">
+                            <Label FontSize="10" Content="NORMAL SUB MAP FROM" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="121"/>
+                            <ComboBox x:Name="normalSubMapFrom" SelectionChanged="normalSubMapFrom_SelectionChanged" HorizontalAlignment="Left" Margin="212,10,0,0" VerticalAlignment="Top" Width="35">
+                                <ComboBoxItem Content="0" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" />
+                                <ComboBoxItem Content="1" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"  />
+                                <ComboBoxItem Content="2" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"  />
+                                <ComboBoxItem Content="3" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"  />
+                                <ComboBoxItem Content="4" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"  />
+                                <ComboBoxItem Content="5" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"  />
+                                <ComboBoxItem Content="6" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"  />
+                                <ComboBoxItem Content="7" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"  />
+                                <ComboBoxItem Content="8" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"  />
+                                <ComboBoxItem Content="9" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"  />
+                            </ComboBox>
+                            <Label FontSize="10" Content="NORMAL SUB MAP TYPE" HorizontalAlignment="Left" Margin="10,41,0,0" VerticalAlignment="Top" Width="162"/>
+                            <ComboBox x:Name="normalSubMapType" SelectionChanged="normalSubMapType_SelectionChanged" HorizontalAlignment="Left" Margin="212,42,0,0" VerticalAlignment="Top" Width="35">
+                                <ComboBoxItem Content="0" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" />
+                                <ComboBoxItem Content="1" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"  />
+                                <ComboBoxItem Content="2" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"  />
+                                <ComboBoxItem Content="3" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"  />
+                                <ComboBoxItem Content="4" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"  />
+                            </ComboBox>
+                            <Label FontSize="10" Content="NORMAL SUB MAP UV FLIP" HorizontalAlignment="Left" Margin="10,71,0,0" VerticalAlignment="Top" Width="121"/>
+                            <ComboBox x:Name="normalSubMapUVFlip" SelectionChanged="normalSubMapUVFlip_SelectionChanged" HorizontalAlignment="Left" Margin="212,71,0,0" VerticalAlignment="Top" Width="35">
+                                <ComboBoxItem Content="0" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" />
+                                <ComboBoxItem Content="1" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"  />
+                                <ComboBoxItem Content="2" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"  />
+                                <ComboBoxItem Content="3" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"  />
+                            </ComboBox>
+                            <Label FontSize="10" Content="NORMAL SUB MAP FILE" HorizontalAlignment="Left" Margin="10,103,0,0" VerticalAlignment="Top" Width="120"/>
+                            <Button x:Name="normalSubMapFileButton" Content="..." Click="normalSubMapFile_Click" HorizontalAlignment="Left" Margin="212,103,0,0" VerticalAlignment="Top" Width="35"/>
+                            <Label FontSize="10" x:Name="normalSubMapFile" FlowDirection="RightToLeft" HorizontalContentAlignment="Right" Content="normalSub.png" HorizontalAlignment="Left" Margin="130,103,0,0" VerticalAlignment="Top" Width="77"/>
+                            <Label FontSize="10" Content="NORMAL SUB" HorizontalAlignment="Left" Margin="10,148,0,0" VerticalAlignment="Top" Width="75"/>
+                            <Slider  Orientation="Horizontal" Minimum="-24" Maximum="24" Thumb.DragCompleted="normalSubLinearColor_DragCompleted" Visibility="Visible" x:Name="normalSubLinearColor" TickFrequency="0.05" IsSnapToTickEnabled="True" HorizontalAlignment="Left" Margin="18,178,0,0" VerticalAlignment="Top" Width="196"/>
+                            <TextBox x:Name="normalSub" FontSize="10" HorizontalAlignment="Left" PreviewTextInput="normalSub_PreviewTextInput" KeyUp="normalSub_KeyUp" TextAlignment="Center" VerticalContentAlignment="Center" IsEnabled="True" Height="23" Margin="101,148,0,0" TextWrapping="Wrap" Text="{Binding ElementName=normalSubLinearColor, Mode=TwoWay, Path=Value, StringFormat=N2,UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="71"/>
+                            <Label FontSize="10" Content="NORMAL SUB LOOP NUM" HorizontalAlignment="Left" Margin="10,205,0,0" VerticalAlignment="Top" Width="126"/>
+                            <TextBox  Name="normalSubLoopNum" IsEnabled="False" FontSize="10" HorizontalAlignment="Left" Height="23" Margin="141,206,0,0" TextWrapping="Wrap" Text="" TextAlignment="Center" VerticalContentAlignment="Center" VerticalAlignment="Top" Width="99"/>
+                            <CheckBox Name="normalSubLoopNumLock" Checked="normalSubLoopNumLock_Checked" Unchecked="normalSubLoopNumLock_Unchecked" Content="&#xf023;" FontFamily="{StaticResource FontAwesome}" HorizontalAlignment="Left" Margin="245,210,0,0" VerticalAlignment="Top" Width="35" RenderTransformOrigin="-0.167,0.644"/>
+                            <Slider  Orientation="Horizontal" Minimum="-24" Maximum="24" Thumb.DragCompleted="normalSubLoopNumX_DragCompleted" Name="normalSubLoopNumX" ValueChanged="normalSubLoopNumX_ValueChanged"  HorizontalAlignment="Left" TickFrequency="0.05" IsSnapToTickEnabled="True" Margin="18,237,0,0" VerticalAlignment="Top" Width="222"/>
+                            <Slider  Orientation="Horizontal" Minimum="-24" Maximum="24" Thumb.DragCompleted="normalSubLoopNumY_DragCompleted" Name="normalSubLoopNumY" ValueChanged="normalSubLoopNumY_ValueChanged" HorizontalAlignment="Left" TickFrequency="0.05" IsSnapToTickEnabled="True" Margin="18,260,0,0" VerticalAlignment="Top" Width="222"/>
+                            <Button Name="normalSubLoopNumReset" Click="normalSubLoopNumReset_Click" Content="&#xf0e2;" FontFamily="{StaticResource FontAwesome}" HorizontalAlignment="Left" Margin="245,244,0,0" VerticalAlignment="Top" Width="28" Height="28"/>
+                            <Button  HorizontalAlignment="Left" Content="&#xf129;" FontFamily="{StaticResource FontAwesome}" Margin="266,338,0,0" VerticalAlignment="Top" Width="26" Height="22">
+                            </Button>
+                        </Grid>
+                    </Grid>
                 </TabItem>
                 <TabItem Header="Specular">
                     <Grid/>

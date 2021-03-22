@@ -5,6 +5,7 @@
              StartupUri="MainWindow.xaml">
     <Application.Resources>
         <ResourceDictionary>
+            <FontFamily x:Key="FontAwesome">/RMT;component/Fonts/FontAwesome.otf#Font Awesome 5 Free Solid</FontFamily>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/Themes/ColourfulDarkTheme.xaml"/>
             </ResourceDictionary.MergedDictionaries>
