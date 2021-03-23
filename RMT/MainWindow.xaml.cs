@@ -155,6 +155,17 @@ namespace RMT
 			this.normalSubLoopNumX.Value = handleLoopNums(this.material.NormalSubLoopNum)[0];
 			this.normalSubLoopNumY.Value = handleLoopNums(this.material.NormalSubLoopNum)[1];
 			this.normalSubLoopNum.Text = assignLoopNum(this.normalSubLoopNumX.Value, this.normalSubLoopNumY.Value);
+			//SMOOTHNESS
+			this.smoothnessMapFrom.SelectedIndex = this.material.SmoothnessMapFrom;
+			this.smoothnessMapType.SelectedIndex = this.material.SmoothnessMapType;
+			this.smoothnessMapUVFlip.SelectedIndex = this.material.SmoothnessMapUVFlip;
+			this.smoothnessMapSwizzle.SelectedIndex = this.material.SmoothnessMapSwizzle;
+			this.smoothnessMapApplyScale.SelectedIndex = this.material.SmoothnessMapApplyScale;
+			this.smoothnessMapFile.Content = this.material.SmoothnessMapFile;
+			this.smoothness.Text = this.material.Smoothness.ToString();
+			this.smoothnessLoopNumX.Value = handleLoopNums(this.material.SmoothnessLoopNum)[0];
+			this.smoothnessLoopNumY.Value = handleLoopNums(this.material.SmoothnessLoopNum)[1];
+			this.smoothnessLoopNum.Text = assignLoopNum(this.smoothnessLoopNumX.Value, this.smoothnessLoopNumY.Value);
 		}
 
 		/*
@@ -1098,6 +1109,137 @@ namespace RMT
 		private void normalSubLoopNumReset_Click(object sender, RoutedEventArgs e)
 		{
 			this.material.NormalSubLoopNum = resetLoopNum(this.normalSubLoopNum, this.normalSubLoopNumX, this.normalSubLoopNumY);
+			handleChanges();
+		}
+		/*END SUB NORMAL*/
+		/* SMOOTHNESS */
+
+		private void smoothnessMapFrom_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		{
+			this.material.SmoothnessMapFrom = smoothnessMapFrom.SelectedIndex;
+			handleChanges();
+		}
+
+		private void smoothnessMapUVFlip_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		{
+			this.material.SmoothnessMapUVFlip = smoothnessMapUVFlip.SelectedIndex;
+			handleChanges();
+		}
+
+		private void smoothnessMapType_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		{
+			this.material.SmoothnessMapType = smoothnessMapType.SelectedIndex;
+			handleChanges();
+		}
+
+		private void smoothnessMapSwizzle_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		{
+			this.material.SmoothnessMapSwizzle = smoothnessMapSwizzle.SelectedIndex;
+			handleChanges();
+		}
+
+		private void smoothnessMapApplyScale_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		{
+			this.material.SmoothnessMapApplyScale = smoothnessMapApplyScale.SelectedIndex;
+			handleChanges();
+		}
+
+		private void smoothnessMapFile_Click(object sender, RoutedEventArgs e)
+		{
+			String mapFile = handleOpenDialog(imageFilters);
+			if (!mapFile.Equals(""))
+			{
+				this.material.SmoothnessMapFile = Util.GetRelativePath(this.material.FilePath, mapFile);
+				this.smoothnessMapFile.Content = this.material.SmoothnessMapFile;
+				handleChanges();
+			}
+		}
+
+		private void smoothness_PreviewTextInput(object sender, TextCompositionEventArgs e)
+		{
+			handleTextInput(ref sender, ref e);
+		}
+
+
+		private void smoothness_KeyUp(object sender, KeyEventArgs e)
+		{
+			if (this.material.Smoothness != float.Parse(this.smoothness.Text))
+			{
+				this.material.Smoothness = float.Parse(this.smoothness.Text);
+				handleChanges();
+			}
+		}
+
+		private void smoothnessLoopNumLock_Checked(object sender, RoutedEventArgs e)
+		{
+			if (smoothnessLoopNumY.IsEnabled)
+			{
+				smoothnessLoopNumY.IsEnabled = false;
+			}
+			this.smoothnessLoopNumY.Value = this.smoothnessLoopNumX.Value;
+			this.smoothnessLoopNum.Text = assignLoopNum(this.smoothnessLoopNumX.Value, this.smoothnessLoopNumY.Value);
+			this.material.SmoothnessLoopNum = this.smoothnessLoopNum.Text;
+			handleChanges();
+		}
+
+		private void smoothnessLoopNumLock_Unchecked(object sender, RoutedEventArgs e)
+		{
+			if (!smoothnessLoopNumY.IsEnabled)
+			{
+				smoothnessLoopNumY.IsEnabled = true;
+			}
+			this.smoothnessLoopNumY.Value = this.smoothnessLoopNumX.Value;
+			this.material.SmoothnessLoopNum = this.smoothnessLoopNum.Text;
+			handleChanges();
+		}
+
+		private void smoothnessLoopNumX_DragCompleted(object sender, System.Windows.Controls.Primitives.DragCompletedEventArgs e)
+		{
+			if (smoothnessLoopNumLock.IsChecked == true)
+			{
+				this.smoothnessLoopNumY.Value = this.smoothnessLoopNumX.Value;
+			}
+			this.smoothnessLoopNum.Text = assignLoopNum(this.smoothnessLoopNumX.Value, this.smoothnessLoopNumY.Value);
+			this.material.SmoothnessLoopNum = this.smoothnessLoopNum.Text;
+			handleChanges();
+		}
+
+		private void smoothnessLoopNumY_DragCompleted(object sender, System.Windows.Controls.Primitives.DragCompletedEventArgs e)
+		{
+			if (smoothnessLoopNumLock.IsChecked == false)
+			{
+				this.smoothnessLoopNum.Text = assignLoopNum(this.smoothnessLoopNumX.Value, this.smoothnessLoopNumY.Value);
+				this.material.SmoothnessLoopNum = this.smoothnessLoopNum.Text;
+			}
+			handleChanges();
+		}
+
+		private void smoothnessLinearColor_DragCompleted(object sender, System.Windows.Controls.Primitives.DragCompletedEventArgs e)
+		{
+			this.material.Smoothness = float.Parse(smoothness.Text);
+			handleChanges();
+		}
+
+		private void smoothnessLoopNumX_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+		{
+			if (smoothnessLoopNumLock.IsChecked == true)
+			{
+				this.smoothnessLoopNumY.Value = this.smoothnessLoopNumX.Value;
+			}
+			this.smoothnessLoopNum.Text = assignLoopNum(this.smoothnessLoopNumX.Value, this.smoothnessLoopNumY.Value);
+		}
+
+		private void smoothnessLoopNumY_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+		{
+			if (smoothnessLoopNumLock.IsChecked == false)
+			{
+				this.smoothnessLoopNum.Text = assignLoopNum(this.smoothnessLoopNumX.Value, this.smoothnessLoopNumY.Value);
+			}
+		}
+
+		private void smoothnessLoopNumReset_Click(object sender, RoutedEventArgs e)
+		{
+			this.material.SmoothnessLoopNum = resetLoopNum(this.smoothnessLoopNum, this.smoothnessLoopNumX, this.smoothnessLoopNumY);
 			handleChanges();
 		}
 	}
