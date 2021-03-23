@@ -187,6 +187,16 @@ namespace RMT
 			this.occlusionLoopNumX.Value = handleLoopNums(this.material.OcclusionLoopNum)[0];
 			this.occlusionLoopNumY.Value = handleLoopNums(this.material.OcclusionLoopNum)[1];
 			this.occlusionLoopNum.Text = assignLoopNum(this.occlusionLoopNumX.Value, this.occlusionLoopNumY.Value);
+			//PARALLAX
+			this.parallaxMapFrom.SelectedIndex = this.material.ParallaxMapFrom;
+			this.parallaxMapType.SelectedIndex = this.material.ParallaxMapType;
+			this.parallaxMapUVFlip.SelectedIndex = this.material.ParallaxMapUVFlip;
+			this.parallaxMapSwizzle.SelectedIndex = this.material.ParallaxMapSwizzle;
+			this.parallaxMapFile.Content = this.material.ParallaxMapFile;
+			this.parallax.Text = this.material.Parallax.ToString();
+			this.parallaxLoopNumX.Value = handleLoopNums(this.material.ParallaxLoopNum)[0];
+			this.parallaxLoopNumY.Value = handleLoopNums(this.material.ParallaxLoopNum)[1];
+			this.parallaxLoopNum.Text = assignLoopNum(this.parallaxLoopNumX.Value, this.parallaxLoopNumY.Value);
 		}
 
 		/*
@@ -1514,6 +1524,130 @@ namespace RMT
 		private void occlusionLoopNumReset_Click(object sender, RoutedEventArgs e)
 		{
 			this.material.OcclusionLoopNum = resetLoopNum(this.occlusionLoopNum, this.occlusionLoopNumX, this.occlusionLoopNumY);
+			handleChanges();
+		}
+		/*END OCCLUSION*/
+		/*PARALLAX*/
+		private void parallaxMapFrom_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		{
+			this.material.ParallaxMapFrom = parallaxMapFrom.SelectedIndex;
+			handleChanges();
+		}
+
+		private void parallaxMapUVFlip_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		{
+			this.material.ParallaxMapUVFlip = parallaxMapUVFlip.SelectedIndex;
+			handleChanges();
+		}
+
+		private void parallaxMapType_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		{
+			this.material.ParallaxMapType = parallaxMapType.SelectedIndex;
+			handleChanges();
+		}
+
+		private void parallaxMapSwizzle_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		{
+			this.material.ParallaxMapSwizzle = parallaxMapSwizzle.SelectedIndex;
+			handleChanges();
+		}
+
+		private void parallaxMapFile_Click(object sender, RoutedEventArgs e)
+		{
+			String mapFile = handleOpenDialog(imageFilters);
+			if (!mapFile.Equals(""))
+			{
+				this.material.ParallaxMapFile = Util.GetRelativePath(this.material.FilePath, mapFile);
+				this.parallaxMapFile.Content = this.material.ParallaxMapFile;
+				handleChanges();
+			}
+		}
+
+		private void parallax_PreviewTextInput(object sender, TextCompositionEventArgs e)
+		{
+			handleTextInput(ref sender, ref e);
+		}
+
+
+		private void parallax_KeyUp(object sender, KeyEventArgs e)
+		{
+			if (this.material.Parallax != float.Parse(this.parallax.Text))
+			{
+				this.material.Parallax = float.Parse(this.parallax.Text);
+				handleChanges();
+			}
+		}
+
+		private void parallaxLoopNumLock_Checked(object sender, RoutedEventArgs e)
+		{
+			if (parallaxLoopNumY.IsEnabled)
+			{
+				parallaxLoopNumY.IsEnabled = false;
+			}
+			this.parallaxLoopNumY.Value = this.parallaxLoopNumX.Value;
+			this.parallaxLoopNum.Text = assignLoopNum(this.parallaxLoopNumX.Value, this.parallaxLoopNumY.Value);
+			this.material.ParallaxLoopNum = this.parallaxLoopNum.Text;
+			handleChanges();
+		}
+
+		private void parallaxLoopNumLock_Unchecked(object sender, RoutedEventArgs e)
+		{
+			if (!parallaxLoopNumY.IsEnabled)
+			{
+				parallaxLoopNumY.IsEnabled = true;
+			}
+			this.parallaxLoopNumY.Value = this.parallaxLoopNumX.Value;
+			this.material.ParallaxLoopNum = this.parallaxLoopNum.Text;
+			handleChanges();
+		}
+
+		private void parallaxLoopNumX_DragCompleted(object sender, System.Windows.Controls.Primitives.DragCompletedEventArgs e)
+		{
+			if (parallaxLoopNumLock.IsChecked == true)
+			{
+				this.parallaxLoopNumY.Value = this.parallaxLoopNumX.Value;
+			}
+			this.parallaxLoopNum.Text = assignLoopNum(this.parallaxLoopNumX.Value, this.parallaxLoopNumY.Value);
+			this.material.ParallaxLoopNum = this.parallaxLoopNum.Text;
+			handleChanges();
+		}
+
+		private void parallaxLoopNumY_DragCompleted(object sender, System.Windows.Controls.Primitives.DragCompletedEventArgs e)
+		{
+			if (parallaxLoopNumLock.IsChecked == false)
+			{
+				this.parallaxLoopNum.Text = assignLoopNum(this.parallaxLoopNumX.Value, this.parallaxLoopNumY.Value);
+				this.material.ParallaxLoopNum = this.parallaxLoopNum.Text;
+			}
+			handleChanges();
+		}
+
+		private void parallaxLinearColor_DragCompleted(object sender, System.Windows.Controls.Primitives.DragCompletedEventArgs e)
+		{
+			this.material.Parallax = float.Parse(parallax.Text);
+			handleChanges();
+		}
+
+		private void parallaxLoopNumX_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+		{
+			if (parallaxLoopNumLock.IsChecked == true)
+			{
+				this.parallaxLoopNumY.Value = this.parallaxLoopNumX.Value;
+			}
+			this.parallaxLoopNum.Text = assignLoopNum(this.parallaxLoopNumX.Value, this.parallaxLoopNumY.Value);
+		}
+
+		private void parallaxLoopNumY_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+		{
+			if (parallaxLoopNumLock.IsChecked == false)
+			{
+				this.parallaxLoopNum.Text = assignLoopNum(this.parallaxLoopNumX.Value, this.parallaxLoopNumY.Value);
+			}
+		}
+
+		private void parallaxLoopNumReset_Click(object sender, RoutedEventArgs e)
+		{
+			this.material.ParallaxLoopNum = resetLoopNum(this.parallaxLoopNum, this.parallaxLoopNumX, this.parallaxLoopNumY);
 			handleChanges();
 		}
 	}

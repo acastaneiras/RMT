@@ -315,7 +315,7 @@
                         </Grid>
                     </Grid>
                 </TabItem>
-                <TabItem Header="Metalness">
+                <TabItem Header="Smoothness">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"></ColumnDefinition>
@@ -512,7 +512,63 @@
                     </Grid>
                 </TabItem>
                 <TabItem Header="Parallax">
-                    <Grid/>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                            <ColumnDefinition Width="4*"></ColumnDefinition>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <Border Grid.Column="1" Grid.RowSpan="2" BorderThickness="2,0,0,0" Background="{x:Null}"/>
+                        <Border Grid.Column="2" Grid.RowSpan="2" BorderThickness="2,0,0,0" Background="{x:Null}"/>
+                        <Grid Grid.Column="1">
+                            <Label FontSize="10" Content="PARALLAX MAP FROM" HorizontalAlignment="Left" Margin="88,10,0,0" VerticalAlignment="Top" Width="150"/>
+                            <ComboBox x:Name="parallaxMapFrom" SelectionChanged="parallaxMapFrom_SelectionChanged" HorizontalAlignment="Left" Margin="290,10,0,0" VerticalAlignment="Top" Width="35">
+                                <ComboBoxItem Content="0" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" />
+                                <ComboBoxItem Content="1" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"  />
+                                <ComboBoxItem Content="2" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"  />
+                                <ComboBoxItem Content="3" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"  />
+                                <ComboBoxItem Content="4" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"  />
+                                <ComboBoxItem Content="5" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"  />
+                                <ComboBoxItem Content="6" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"  />
+                                <ComboBoxItem Content="7" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"  />
+                                <ComboBoxItem Content="8" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"  />
+                                <ComboBoxItem Content="9" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"  />
+                            </ComboBox>
+                            <Label FontSize="10" Content="PARALLAX MAP TYPE" HorizontalAlignment="Left" Margin="88,41,0,0" VerticalAlignment="Top" Width="162"/>
+                            <ComboBox x:Name="parallaxMapType" SelectionChanged="parallaxMapType_SelectionChanged" HorizontalAlignment="Left" Margin="290,42,0,0" VerticalAlignment="Top" Width="35">
+                                <ComboBoxItem Content="0" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" />
+                                <ComboBoxItem Content="1" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"  />
+                            </ComboBox>
+                            <Label FontSize="10" Content="PARALLAX MAP UV FLIP" HorizontalAlignment="Left" Margin="88,71,0,0" VerticalAlignment="Top" Width="143"/>
+                            <ComboBox x:Name="parallaxMapUVFlip" SelectionChanged="parallaxMapUVFlip_SelectionChanged" HorizontalAlignment="Left" Margin="290,71,0,0" VerticalAlignment="Top" Width="35">
+                                <ComboBoxItem Content="0" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" />
+                                <ComboBoxItem Content="1" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"  />
+                                <ComboBoxItem Content="2" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"  />
+                                <ComboBoxItem Content="3" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"  />
+                            </ComboBox>
+                            <Label FontSize="10" Content="PARALLAX MAP FILE" HorizontalAlignment="Left" Margin="88,132,0,0" VerticalAlignment="Top" Width="128"/>
+                            <Button x:Name="parallaxMapFileButton" Content="..." Click="parallaxMapFile_Click" HorizontalAlignment="Left" Margin="290,132,0,0" VerticalAlignment="Top" Width="35"/>
+                            <Label FontSize="10" x:Name="parallaxMapFile" FlowDirection="RightToLeft" HorizontalContentAlignment="Right" Content="parallax.png" HorizontalAlignment="Left" Margin="208,130,0,0" VerticalAlignment="Top" Width="77"/>
+                            <Label FontSize="10" Content="PARALLAX" HorizontalAlignment="Left" Margin="88,171,0,0" VerticalAlignment="Top" Width="77"/>
+                            <Slider  Orientation="Horizontal" Minimum="-24" Maximum="24" Thumb.DragCompleted="parallaxLinearColor_DragCompleted" Visibility="Visible" x:Name="parallaxLinearColor" TickFrequency="0.05" IsSnapToTickEnabled="True" HorizontalAlignment="Left" Margin="96,201,0,0" VerticalAlignment="Top" Width="189"/>
+                            <TextBox x:Name="parallax" FontSize="10" HorizontalAlignment="Left" PreviewTextInput="parallax_PreviewTextInput" KeyUp="parallax_KeyUp" TextAlignment="Center" VerticalContentAlignment="Center" IsEnabled="True" Height="23" Margin="170,173,0,0" TextWrapping="Wrap" Text="{Binding ElementName=parallaxLinearColor, Mode=TwoWay, Path=Value, StringFormat=N2,UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="71"/>
+                            <Label FontSize="10" Content="PARALLAX LOOP NUM" HorizontalAlignment="Left" Margin="88,228,0,0" VerticalAlignment="Top" Width="133"/>
+                            <TextBox  Name="parallaxLoopNum" IsEnabled="False" FontSize="10" HorizontalAlignment="Left" Height="23" Margin="226,228,0,0" TextWrapping="Wrap" Text="" TextAlignment="Center" VerticalContentAlignment="Center" VerticalAlignment="Top" Width="99"/>
+                            <CheckBox Name="parallaxLoopNumLock" Checked="parallaxLoopNumLock_Checked" Unchecked="parallaxLoopNumLock_Unchecked" Content="&#xf023;" FontFamily="{StaticResource FontAwesome}" HorizontalAlignment="Left" Margin="330,232,0,0" VerticalAlignment="Top" Width="35" RenderTransformOrigin="-0.167,0.644"/>
+                            <Slider  Orientation="Horizontal" Minimum="-24" Maximum="24" Thumb.DragCompleted="parallaxLoopNumX_DragCompleted" Name="parallaxLoopNumX" ValueChanged="parallaxLoopNumX_ValueChanged"  HorizontalAlignment="Left" TickFrequency="0.05" IsSnapToTickEnabled="True" Margin="96,259,0,0" VerticalAlignment="Top" Width="229"/>
+                            <Slider  Orientation="Horizontal" Minimum="-24" Maximum="24" Thumb.DragCompleted="parallaxLoopNumY_DragCompleted" Name="parallaxLoopNumY" ValueChanged="parallaxLoopNumY_ValueChanged" HorizontalAlignment="Left" TickFrequency="0.05" IsSnapToTickEnabled="True" Margin="96,282,0,0" VerticalAlignment="Top" Width="229"/>
+                            <Button Name="parallaxLoopNumReset" Click="parallaxLoopNumReset_Click" Content="&#xf0e2;" FontFamily="{StaticResource FontAwesome}" HorizontalAlignment="Left" Margin="330,263,0,0" VerticalAlignment="Top" Width="28" Height="28"/>
+                            <Button  HorizontalAlignment="Left" Content="&#xf129;" FontFamily="{StaticResource FontAwesome}" Margin="361,363,0,0" VerticalAlignment="Top" Width="26" Height="22">
+                            </Button>
+                            <Label FontSize="10" Content="PARALLAX MAP SWIZZLE" HorizontalAlignment="Left" Margin="88,101,0,0" VerticalAlignment="Top" Width="153"/>
+                            <ComboBox x:Name="parallaxMapSwizzle" SelectionChanged="parallaxMapSwizzle_SelectionChanged" HorizontalAlignment="Left" Margin="290,101,0,0" VerticalAlignment="Top" Width="35">
+                                <ComboBoxItem Content="0" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" />
+                                <ComboBoxItem Content="1" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"  />
+                                <ComboBoxItem Content="2" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"  />
+                                <ComboBoxItem Content="3" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"  />
+                            </ComboBox>
+                        </Grid>
+                    </Grid>
                 </TabItem>
                 <TabItem Header="Emissive">
                     <Grid/>
