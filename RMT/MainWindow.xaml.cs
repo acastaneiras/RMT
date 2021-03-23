@@ -176,6 +176,17 @@ namespace RMT
 			this.metalnessLoopNumX.Value = handleLoopNums(this.material.MetalnessLoopNum)[0];
 			this.metalnessLoopNumY.Value = handleLoopNums(this.material.MetalnessLoopNum)[1];
 			this.metalnessLoopNum.Text = assignLoopNum(this.metalnessLoopNumX.Value, this.metalnessLoopNumY.Value);
+			//OCCLUSION
+			this.occlusionMapFrom.SelectedIndex = this.material.OcclusionMapFrom;
+			this.occlusionMapType.SelectedIndex = this.material.OcclusionMapType;
+			this.occlusionMapUVFlip.SelectedIndex = this.material.OcclusionMapUVFlip;
+			this.occlusionMapSwizzle.SelectedIndex = this.material.OcclusionMapSwizzle;
+			this.occlusionMapApplyScale.SelectedIndex = this.material.OcclusionMapApplyScale;
+			this.occlusionMapFile.Content = this.material.OcclusionMapFile;
+			this.occlusion.Text = this.material.Occlusion.ToString();
+			this.occlusionLoopNumX.Value = handleLoopNums(this.material.OcclusionLoopNum)[0];
+			this.occlusionLoopNumY.Value = handleLoopNums(this.material.OcclusionLoopNum)[1];
+			this.occlusionLoopNum.Text = assignLoopNum(this.occlusionLoopNumX.Value, this.occlusionLoopNumY.Value);
 		}
 
 		/*
@@ -1373,6 +1384,136 @@ namespace RMT
 		private void metalnessLoopNumReset_Click(object sender, RoutedEventArgs e)
 		{
 			this.material.MetalnessLoopNum = resetLoopNum(this.metalnessLoopNum, this.metalnessLoopNumX, this.metalnessLoopNumY);
+			handleChanges();
+		}
+		/*END METALNESS*/
+		/*OCCLUSION*/
+		private void occlusionMapFrom_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		{
+			this.material.OcclusionMapFrom = occlusionMapFrom.SelectedIndex;
+			handleChanges();
+		}
+
+		private void occlusionMapUVFlip_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		{
+			this.material.OcclusionMapUVFlip = occlusionMapUVFlip.SelectedIndex;
+			handleChanges();
+		}
+
+		private void occlusionMapType_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		{
+			this.material.OcclusionMapType = occlusionMapType.SelectedIndex;
+			handleChanges();
+		}
+
+		private void occlusionMapSwizzle_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		{
+			this.material.OcclusionMapSwizzle = occlusionMapSwizzle.SelectedIndex;
+			handleChanges();
+		}
+
+		private void occlusionMapApplyScale_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		{
+			this.material.OcclusionMapApplyScale = occlusionMapApplyScale.SelectedIndex;
+			handleChanges();
+		}
+
+		private void occlusionMapFile_Click(object sender, RoutedEventArgs e)
+		{
+			String mapFile = handleOpenDialog(imageFilters);
+			if (!mapFile.Equals(""))
+			{
+				this.material.OcclusionMapFile = Util.GetRelativePath(this.material.FilePath, mapFile);
+				this.occlusionMapFile.Content = this.material.OcclusionMapFile;
+				handleChanges();
+			}
+		}
+
+		private void occlusion_PreviewTextInput(object sender, TextCompositionEventArgs e)
+		{
+			handleTextInput(ref sender, ref e);
+		}
+
+
+		private void occlusion_KeyUp(object sender, KeyEventArgs e)
+		{
+			if (this.material.Occlusion != float.Parse(this.occlusion.Text))
+			{
+				this.material.Occlusion = float.Parse(this.occlusion.Text);
+				handleChanges();
+			}
+		}
+
+		private void occlusionLoopNumLock_Checked(object sender, RoutedEventArgs e)
+		{
+			if (occlusionLoopNumY.IsEnabled)
+			{
+				occlusionLoopNumY.IsEnabled = false;
+			}
+			this.occlusionLoopNumY.Value = this.occlusionLoopNumX.Value;
+			this.occlusionLoopNum.Text = assignLoopNum(this.occlusionLoopNumX.Value, this.occlusionLoopNumY.Value);
+			this.material.OcclusionLoopNum = this.occlusionLoopNum.Text;
+			handleChanges();
+		}
+
+		private void occlusionLoopNumLock_Unchecked(object sender, RoutedEventArgs e)
+		{
+			if (!occlusionLoopNumY.IsEnabled)
+			{
+				occlusionLoopNumY.IsEnabled = true;
+			}
+			this.occlusionLoopNumY.Value = this.occlusionLoopNumX.Value;
+			this.material.OcclusionLoopNum = this.occlusionLoopNum.Text;
+			handleChanges();
+		}
+
+		private void occlusionLoopNumX_DragCompleted(object sender, System.Windows.Controls.Primitives.DragCompletedEventArgs e)
+		{
+			if (occlusionLoopNumLock.IsChecked == true)
+			{
+				this.occlusionLoopNumY.Value = this.occlusionLoopNumX.Value;
+			}
+			this.occlusionLoopNum.Text = assignLoopNum(this.occlusionLoopNumX.Value, this.occlusionLoopNumY.Value);
+			this.material.OcclusionLoopNum = this.occlusionLoopNum.Text;
+			handleChanges();
+		}
+
+		private void occlusionLoopNumY_DragCompleted(object sender, System.Windows.Controls.Primitives.DragCompletedEventArgs e)
+		{
+			if (occlusionLoopNumLock.IsChecked == false)
+			{
+				this.occlusionLoopNum.Text = assignLoopNum(this.occlusionLoopNumX.Value, this.occlusionLoopNumY.Value);
+				this.material.OcclusionLoopNum = this.occlusionLoopNum.Text;
+			}
+			handleChanges();
+		}
+
+		private void occlusionLinearColor_DragCompleted(object sender, System.Windows.Controls.Primitives.DragCompletedEventArgs e)
+		{
+			this.material.Occlusion = float.Parse(occlusion.Text);
+			handleChanges();
+		}
+
+		private void occlusionLoopNumX_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+		{
+			if (occlusionLoopNumLock.IsChecked == true)
+			{
+				this.occlusionLoopNumY.Value = this.occlusionLoopNumX.Value;
+			}
+			this.occlusionLoopNum.Text = assignLoopNum(this.occlusionLoopNumX.Value, this.occlusionLoopNumY.Value);
+		}
+
+		private void occlusionLoopNumY_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+		{
+			if (occlusionLoopNumLock.IsChecked == false)
+			{
+				this.occlusionLoopNum.Text = assignLoopNum(this.occlusionLoopNumX.Value, this.occlusionLoopNumY.Value);
+			}
+		}
+
+		private void occlusionLoopNumReset_Click(object sender, RoutedEventArgs e)
+		{
+			this.material.OcclusionLoopNum = resetLoopNum(this.occlusionLoopNum, this.occlusionLoopNumX, this.occlusionLoopNumY);
 			handleChanges();
 		}
 	}
