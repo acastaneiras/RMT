@@ -166,6 +166,16 @@ namespace RMT
 			this.smoothnessLoopNumX.Value = handleLoopNums(this.material.SmoothnessLoopNum)[0];
 			this.smoothnessLoopNumY.Value = handleLoopNums(this.material.SmoothnessLoopNum)[1];
 			this.smoothnessLoopNum.Text = assignLoopNum(this.smoothnessLoopNumX.Value, this.smoothnessLoopNumY.Value);
+			//METALNESS
+			this.metalnessMapFrom.SelectedIndex = this.material.MetalnessMapFrom;
+			this.metalnessMapUVFlip.SelectedIndex = this.material.MetalnessMapUVFlip;
+			this.metalnessMapSwizzle.SelectedIndex = this.material.MetalnessMapSwizzle;
+			this.metalnessMapApplyScale.SelectedIndex = this.material.MetalnessMapApplyScale;
+			this.metalnessMapFile.Content = this.material.MetalnessMapFile;
+			this.metalness.Text = this.material.Metalness.ToString();
+			this.metalnessLoopNumX.Value = handleLoopNums(this.material.MetalnessLoopNum)[0];
+			this.metalnessLoopNumY.Value = handleLoopNums(this.material.MetalnessLoopNum)[1];
+			this.metalnessLoopNum.Text = assignLoopNum(this.metalnessLoopNumX.Value, this.metalnessLoopNumY.Value);
 		}
 
 		/*
@@ -1113,7 +1123,6 @@ namespace RMT
 		}
 		/*END SUB NORMAL*/
 		/* SMOOTHNESS */
-
 		private void smoothnessMapFrom_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
 			this.material.SmoothnessMapFrom = smoothnessMapFrom.SelectedIndex;
@@ -1240,6 +1249,130 @@ namespace RMT
 		private void smoothnessLoopNumReset_Click(object sender, RoutedEventArgs e)
 		{
 			this.material.SmoothnessLoopNum = resetLoopNum(this.smoothnessLoopNum, this.smoothnessLoopNumX, this.smoothnessLoopNumY);
+			handleChanges();
+		}
+		/*END SMOOTHNESS*/
+		/*METALNESS*/
+		private void metalnessMapFrom_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		{
+			this.material.MetalnessMapFrom = metalnessMapFrom.SelectedIndex;
+			handleChanges();
+		}
+
+		private void metalnessMapUVFlip_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		{
+			this.material.MetalnessMapUVFlip = metalnessMapUVFlip.SelectedIndex;
+			handleChanges();
+		}
+
+		private void metalnessMapSwizzle_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		{
+			this.material.MetalnessMapSwizzle = metalnessMapSwizzle.SelectedIndex;
+			handleChanges();
+		}
+
+		private void metalnessMapApplyScale_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		{
+			this.material.MetalnessMapApplyScale = metalnessMapApplyScale.SelectedIndex;
+			handleChanges();
+		}
+
+		private void metalnessMapFile_Click(object sender, RoutedEventArgs e)
+		{
+			String mapFile = handleOpenDialog(imageFilters);
+			if (!mapFile.Equals(""))
+			{
+				this.material.MetalnessMapFile = Util.GetRelativePath(this.material.FilePath, mapFile);
+				this.metalnessMapFile.Content = this.material.MetalnessMapFile;
+				handleChanges();
+			}
+		}
+
+		private void metalness_PreviewTextInput(object sender, TextCompositionEventArgs e)
+		{
+			handleTextInput(ref sender, ref e);
+		}
+
+
+		private void metalness_KeyUp(object sender, KeyEventArgs e)
+		{
+			if (this.material.Metalness != float.Parse(this.metalness.Text))
+			{
+				this.material.Metalness = float.Parse(this.metalness.Text);
+				handleChanges();
+			}
+		}
+
+		private void metalnessLoopNumLock_Checked(object sender, RoutedEventArgs e)
+		{
+			if (metalnessLoopNumY.IsEnabled)
+			{
+				metalnessLoopNumY.IsEnabled = false;
+			}
+			this.metalnessLoopNumY.Value = this.metalnessLoopNumX.Value;
+			this.metalnessLoopNum.Text = assignLoopNum(this.metalnessLoopNumX.Value, this.metalnessLoopNumY.Value);
+			this.material.MetalnessLoopNum = this.metalnessLoopNum.Text;
+			handleChanges();
+		}
+
+		private void metalnessLoopNumLock_Unchecked(object sender, RoutedEventArgs e)
+		{
+			if (!metalnessLoopNumY.IsEnabled)
+			{
+				metalnessLoopNumY.IsEnabled = true;
+			}
+			this.metalnessLoopNumY.Value = this.metalnessLoopNumX.Value;
+			this.material.MetalnessLoopNum = this.metalnessLoopNum.Text;
+			handleChanges();
+		}
+
+		private void metalnessLoopNumX_DragCompleted(object sender, System.Windows.Controls.Primitives.DragCompletedEventArgs e)
+		{
+			if (metalnessLoopNumLock.IsChecked == true)
+			{
+				this.metalnessLoopNumY.Value = this.metalnessLoopNumX.Value;
+			}
+			this.metalnessLoopNum.Text = assignLoopNum(this.metalnessLoopNumX.Value, this.metalnessLoopNumY.Value);
+			this.material.MetalnessLoopNum = this.metalnessLoopNum.Text;
+			handleChanges();
+		}
+
+		private void metalnessLoopNumY_DragCompleted(object sender, System.Windows.Controls.Primitives.DragCompletedEventArgs e)
+		{
+			if (metalnessLoopNumLock.IsChecked == false)
+			{
+				this.metalnessLoopNum.Text = assignLoopNum(this.metalnessLoopNumX.Value, this.metalnessLoopNumY.Value);
+				this.material.MetalnessLoopNum = this.metalnessLoopNum.Text;
+			}
+			handleChanges();
+		}
+
+		private void metalnessLinearColor_DragCompleted(object sender, System.Windows.Controls.Primitives.DragCompletedEventArgs e)
+		{
+			this.material.Metalness = float.Parse(metalness.Text);
+			handleChanges();
+		}
+
+		private void metalnessLoopNumX_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+		{
+			if (metalnessLoopNumLock.IsChecked == true)
+			{
+				this.metalnessLoopNumY.Value = this.metalnessLoopNumX.Value;
+			}
+			this.metalnessLoopNum.Text = assignLoopNum(this.metalnessLoopNumX.Value, this.metalnessLoopNumY.Value);
+		}
+
+		private void metalnessLoopNumY_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+		{
+			if (metalnessLoopNumLock.IsChecked == false)
+			{
+				this.metalnessLoopNum.Text = assignLoopNum(this.metalnessLoopNumX.Value, this.metalnessLoopNumY.Value);
+			}
+		}
+
+		private void metalnessLoopNumReset_Click(object sender, RoutedEventArgs e)
+		{
+			this.material.MetalnessLoopNum = resetLoopNum(this.metalnessLoopNum, this.metalnessLoopNumX, this.metalnessLoopNumY);
 			handleChanges();
 		}
 	}
