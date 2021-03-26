@@ -38,8 +38,9 @@ namespace RMT
 		private string imageFilters = "All Graphics Types|*.bmp;*.jpg;*.jpeg;*.png;*.tif;*.tiff"+ "BMP(*.bmp)|*.bmp|GIF(*.gif)|*.gif|JPG(*.jpg)|*.jpg;*.jpeg|PNG(*.png)|*.png|TIFF(*.tif)|*.tif;*.tiff|";
 
 		//Handling ColorPicker changes with variables, since the event triggers the ColorChanged even when you're dragging your cursor
-		private String albedoSelectedColor = null;
-		private String albedoSubSelectedColor = null;
+		private String albedoSelectedColor =	null;
+		private String albedoSubSelectedColor =	null;
+		private String emissiveSelectedColor =	null;
 
 		public MainWindow()
 		{
@@ -197,6 +198,22 @@ namespace RMT
 			this.parallaxLoopNumX.Value = handleLoopNums(this.material.ParallaxLoopNum)[0];
 			this.parallaxLoopNumY.Value = handleLoopNums(this.material.ParallaxLoopNum)[1];
 			this.parallaxLoopNum.Text = assignLoopNum(this.parallaxLoopNumX.Value, this.parallaxLoopNumY.Value);
+			//EMISSIVE
+			this.emissiveEnable.SelectedIndex = this.material.EmissiveEnable;
+			this.emissiveMapFrom.SelectedIndex = this.material.EmissiveMapFrom;
+			this.emissiveMapUVFlip.SelectedIndex = this.material.EmissiveMapUVFlip;
+			this.emissiveMapApplyScale.SelectedIndex = this.material.EmissiveMapApplyScale;
+			this.emissiveMapFile.Content = this.material.EmissiveMapFile;
+			this.emissiveMapApplyMorphColor.SelectedIndex = this.material.EmissiveMapApplyMorphColor;
+			this.emissiveMapApplyMorphIntensity.SelectedIndex = this.material.EmissiveMapApplyMorphIntensity;
+			this.emissiveMapApplyBlink.SelectedIndex = this.material.EmissiveMapApplyBlink;
+			this.emissive.Text = this.material.Emissive;
+			this.emissiveMapBlink.Text = this.material.EmissiveBlink.ToString();
+			this.emissiveMapIntensity.Text = this.material.EmissiveIntensity.ToString();
+			this.emissiveLoopNumX.Value = handleLoopNums(this.material.EmissiveLoopNum)[0];
+			this.emissiveLoopNumY.Value = handleLoopNums(this.material.EmissiveLoopNum)[1];
+			this.emissiveLoopNum.Text = assignLoopNum(this.emissiveLoopNumX.Value, this.emissiveLoopNumY.Value);
+			ChangeMapScaleMode(this.material.Emissive, this.emissiveMode);
 		}
 
 		/*
@@ -1650,5 +1667,229 @@ namespace RMT
 			this.material.ParallaxLoopNum = resetLoopNum(this.parallaxLoopNum, this.parallaxLoopNumX, this.parallaxLoopNumY);
 			handleChanges();
 		}
-	}
+		/*END PARALLAX*/
+		/*EMISSIVE*/
+        private void emissiveMapApplyMorphColor_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+			this.material.EmissiveMapApplyMorphColor = this.emissiveMapApplyMorphColor.SelectedIndex;
+			handleChanges();
+		}
+
+        private void emissiveMapApplyMorphIntensity_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+			this.material.EmissiveMapApplyMorphIntensity = this.emissiveMapApplyMorphIntensity.SelectedIndex;
+			handleChanges();
+		}
+
+        private void emissiveMapApplyBlink_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+			this.material.EmissiveMapApplyBlink = this.emissiveMapApplyBlink.SelectedIndex;
+			handleChanges();
+		}
+
+        private void emissiveMapBlink_KeyUp(object sender, KeyEventArgs e)
+        {
+			if (this.material.EmissiveMapApplyBlink != float.Parse(this.emissiveMapApplyBlink.Text))
+			{
+				this.material.EmissiveMapApplyBlink = int.Parse(this.emissiveMapApplyBlink.Text);
+				handleChanges();
+			}
+		}
+
+        private void emissiveMapBlink_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+			handleTextInput(ref sender, ref e);
+		}
+
+		private void emissiveMapBlinkLinearColor_DragCompleted(object sender, System.Windows.Controls.Primitives.DragCompletedEventArgs e)
+        {
+			this.material.EmissiveBlink = float.Parse(emissiveMapBlink.Text);
+			handleChanges();
+		}
+
+		private void emissiveEnable_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		{
+			this.material.EmissiveEnable = emissiveEnable.SelectedIndex;
+			handleChanges();
+		}
+
+		private void emissiveMapFrom_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		{
+			this.material.EmissiveMapFrom = emissiveMapFrom.SelectedIndex;
+			handleChanges();
+		}
+
+		private void emissiveMapUVFlip_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		{
+			this.material.EmissiveMapUVFlip = emissiveMapUVFlip.SelectedIndex;
+			handleChanges();
+		}
+
+		private void emissiveMapApplyScale_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		{
+			this.material.EmissiveMapApplyScale = emissiveMapApplyScale.SelectedIndex;
+			handleChanges();
+		}
+
+		private void emissiveMapFileButton_Click(object sender, RoutedEventArgs e)
+		{
+			String mapFile = handleOpenDialog(imageFilters);
+			if (!mapFile.Equals(""))
+			{
+				this.material.EmissiveMapFile = Util.GetRelativePath(this.material.FilePath, mapFile);
+				this.emissiveMapFile.Content = this.material.EmissiveMapFile;
+				handleChanges();
+			}
+		}
+
+		private void emissiveLinearColor_DragCompleted(object sender, System.Windows.Controls.Primitives.DragCompletedEventArgs e)
+		{
+			this.material.Emissive = emissive.Text;
+			handleChanges();
+		}
+
+		private void emissiveMode_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		{
+			if (this.emissiveMode.SelectedIndex == (int)MAP_MODES.LINEAR_COLOR)
+			{
+				emissiveLinearColor.Visibility = Visibility.Visible;
+				emissiveRGB.Visibility = Visibility.Hidden;
+				emissive.Visibility = Visibility.Visible;
+				if (this.emissive.Text.Contains("float"))
+				{
+					this.emissive.Text = "1.0";
+				}
+				this.material.Emissive = this.emissive.Text;
+			}
+			else
+			{
+				emissiveLinearColor.Visibility = Visibility.Hidden;
+				emissiveRGB.Visibility = Visibility.Visible;
+				emissive.Visibility = Visibility.Hidden;
+
+				if (this.emissiveSelectedColor != null)
+				{
+					this.material.Emissive = this.UpdateRGBColor(this.emissiveMode.SelectedIndex, this.emissiveSelectedColor);
+				}
+				else
+				{
+					byte[] rgbValues = this.fetchRGBFromString(this.material.Emissive);
+					Color color = Color.FromRgb(rgbValues[0], rgbValues[1], rgbValues[2]);
+					emissiveRGB.SelectedColor = color;
+				}
+			}
+			handleChanges();
+		}
+
+		private void emissive_PreviewTextInput(object sender, TextCompositionEventArgs e)
+		{
+			handleTextInput(ref sender, ref e);
+		}
+
+		private void emissive_KeyUp(object sender, KeyEventArgs e)
+		{
+			if (this.material.Emissive != this.emissive.Text)
+			{
+				this.material.Emissive = this.emissive.Text;
+				handleChanges();
+			}
+		}
+
+		private void emissiveRGB_Closed(object sender, RoutedEventArgs e)
+		{
+			if ((emissiveRGB.SelectedColor.HasValue) && (!emissiveRGB.SelectedColor.ToString().Equals(this.emissiveSelectedColor)))
+			{
+				this.emissiveSelectedColor = emissiveRGB.SelectedColor.Value.ToString();
+				this.material.Emissive = this.UpdateRGBColor(this.emissiveMode.SelectedIndex, this.emissiveSelectedColor);
+				handleChanges();
+			}
+		}
+
+		private void emissiveLoopNumLock_Checked(object sender, RoutedEventArgs e)
+		{
+			if (emissiveLoopNumY.IsEnabled)
+			{
+				emissiveLoopNumY.IsEnabled = false;
+			}
+			this.emissiveLoopNumY.Value = this.emissiveLoopNumX.Value;
+			this.emissiveLoopNum.Text = assignLoopNum(this.emissiveLoopNumX.Value, this.emissiveLoopNumY.Value);
+			this.material.EmissiveLoopNum = this.emissiveLoopNum.Text;
+			handleChanges();
+		}
+
+		private void emissiveLoopNumLock_Unchecked(object sender, RoutedEventArgs e)
+		{
+			if (!emissiveLoopNumY.IsEnabled)
+			{
+				emissiveLoopNumY.IsEnabled = true;
+			}
+			this.emissiveLoopNumY.Value = this.emissiveLoopNumX.Value;
+			this.material.EmissiveLoopNum = this.emissiveLoopNum.Text;
+			handleChanges();
+		}
+
+		private void emissiveLoopNumX_DragCompleted(object sender, System.Windows.Controls.Primitives.DragCompletedEventArgs e)
+		{
+			if (emissiveLoopNumLock.IsChecked == true)
+			{
+				this.emissiveLoopNumY.Value = this.emissiveLoopNumX.Value;
+			}
+			this.emissiveLoopNum.Text = assignLoopNum(this.emissiveLoopNumX.Value, this.emissiveLoopNumY.Value);
+			this.material.EmissiveLoopNum = this.emissiveLoopNum.Text;
+			handleChanges();
+		}
+
+		private void emissiveLoopNumY_DragCompleted(object sender, System.Windows.Controls.Primitives.DragCompletedEventArgs e)
+		{
+			if (emissiveLoopNumLock.IsChecked == false)
+			{
+				this.emissiveLoopNum.Text = assignLoopNum(this.emissiveLoopNumX.Value, this.emissiveLoopNumY.Value);
+				this.material.EmissiveLoopNum = this.emissiveLoopNum.Text;
+			}
+			handleChanges();
+		}
+
+		private void emissiveLoopNumX_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+		{
+			if (emissiveLoopNumLock.IsChecked == true)
+			{
+				this.emissiveLoopNumY.Value = this.emissiveLoopNumX.Value;
+			}
+			this.emissiveLoopNum.Text = assignLoopNum(this.emissiveLoopNumX.Value, this.emissiveLoopNumY.Value);
+		}
+
+		private void emissiveLoopNumY_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+		{
+			if (emissiveLoopNumLock.IsChecked == false)
+			{
+				this.emissiveLoopNum.Text = assignLoopNum(this.emissiveLoopNumX.Value, this.emissiveLoopNumY.Value);
+			}
+		}
+
+		private void emissiveLoopNumReset_Click(object sender, RoutedEventArgs e)
+		{
+			this.material.EmissiveLoopNum = resetLoopNum(this.emissiveLoopNum, this.emissiveLoopNumX, this.emissiveLoopNumY);
+			handleChanges();
+		}
+
+        private void emissiveMapIntensity_KeyUp(object sender, KeyEventArgs e)
+        {
+			if (this.material.EmissiveIntensity != float.Parse(this.emissiveMapIntensity.Text))
+			{
+				this.material.EmissiveIntensity = float.Parse(this.emissiveMapIntensity.Text);
+				handleChanges();
+			}
+		}
+
+        private void emissiveMapIntensity_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+			handleTextInput(ref sender, ref e);
+		}
+
+        private void emissiveMapIntensityLinearColor_DragCompleted(object sender, System.Windows.Controls.Primitives.DragCompletedEventArgs e)
+        {
+			this.material.EmissiveIntensity = float.Parse(emissiveMapIntensity.Text);
+			handleChanges();
+		}
+    }
 }

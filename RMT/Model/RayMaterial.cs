@@ -102,7 +102,7 @@ namespace RMT.Model
         private int emissiveMapApplyMorphIntensity;
         private int emissiveMapApplyBlink;
         private String emissiveMapFile;
-        private float emissive;
+        private String emissive;
         private float emissiveBlink;
         private float emissiveIntensity;
         private String emissiveLoopNum;
@@ -207,7 +207,7 @@ namespace RMT.Model
         public int EmissiveMapApplyMorphIntensity { get => emissiveMapApplyMorphIntensity; set => emissiveMapApplyMorphIntensity = value; }
         public int EmissiveMapApplyBlink { get => emissiveMapApplyBlink; set => emissiveMapApplyBlink = value; }
         public string EmissiveMapFile { get => emissiveMapFile; set => emissiveMapFile = value; }
-        public float Emissive { get => emissive; set => emissive = value; }
+        public string Emissive { get => emissive; set => emissive = value; }
         public float EmissiveBlink { get => emissiveBlink; set => emissiveBlink = value; }
         public float EmissiveIntensity { get => emissiveIntensity; set => emissiveIntensity = value; }
         public string EmissiveLoopNum { get => emissiveLoopNum; set => emissiveLoopNum = value; }
@@ -230,7 +230,7 @@ namespace RMT.Model
         public string IncludeFxsub { get => includeFxsub; set => includeFxsub = value; }
         public string FilePath { get => filePath; set => filePath = value; }
 
-        public RayMaterial(int albedoMapFrom = 3, int albedoMapUVFlip = 0, int albedoMapApplyScale =0, int albedoMapApplyDiffuse = 1, int albedoMapApplyMorphColor = 0, string albedoMapFile="\"albedo.png\"", string albedo = "1.0", string albedoLoopNum = "float2(1,1)", int albedoSubEnable = 0, int albedoSubMapFrom = 0, int albedoSubMapUVFlip = 0, int albedoSubMapApplyScale = 0, string albedoSubMapFile = "\"albedo.png\"", string albedoSub = "1.0", string albedoSubLoopNum = "float2(1,1)", int alphaMapFrom = 3, int alphaMapUVFlip = 0, int alphaMapSwizzle =3, string alphaMapFile = "\"alpha.png\"", float alpha = 1.0f, string alphaLoopNum = "float2(1,1)", int normalMapFrom = 0, int normalMapType = 0, int normalMapUVFlip = 0, string normalMapFile = "\"normal.png\"", float normal = 1.0f, string normalLoopNum = "float2(1,1)", int normalSubMapFrom = 0, int normalSubMapType = 0, int normalSubMapUVFlip = 0, string normalSubMapFile = "\"normal.png\"", float normalSub = 1.0f, string normalSubLoopNum = "float2(1,1)", int smoothnessMapFrom = 9, int smoothnessMapType = 0, int smoothnessMapUVFlip = 0, int smoothnessMapSwizzle = 0, int smoothnessMapApplyScale = 0, string smoothnessMapFile = "\"smoothness.png\"", float smoothness = 0.0f, string smoothnessLoopNum = "float2(1,1)", int metalnessMapFrom = 0, int metalnessMapUVFlip = 0, int metalnessMapSwizzle = 0, int metalnessMapApplyScale = 0, string metalnessMapFile = "\"metalness.png\"", float metalness = 0.0f, string metalnessLoopNum = "float2(1,1)", int specularMapFrom = 0, int specularMapType = 0, int specularMapUVFlip = 0, int specularMapSwizzle = 0, int specularMapApplyScale = 0, string specularMapFile = "\"specular.png\"", float specular = 0.5f, string specularLoopNum = "float2(1,1)", int occlusionMapFrom = 0, int occlusionMapType = 0, int occlusionMapUVFlip = 0, int occlusionMapSwizzle = 0, int occlusionMapApplyScale = 0, string occlusionMapFile = "\"occlusion.png\"", float occlusion = 1.0f, string occlusionLoopNum = "float2(1,1)", int parallaxMapFrom = 0, int parallaxMapType = 0, int parallaxMapUVFlip = 0, int parallaxMapSwizzle = 0, string parallaxMapFile = "\"height.png\"", float parallax = 1.0f, string parallaxLoopNum = "float2(1,1)", int emissiveEnable = 0, int emissiveMapFrom = 0, int emissiveMapUVFlip = 0, int emissiveMapApplyScale = 0, int emissiveMapApplyMorphColor = 0, int emissiveMapApplyMorphIntensity = 0, int emissiveMapApplyBlink = 0, string emissiveMapFile = "\"emissive.png\"", float emissive = 1.0f, float emissiveBlink = 1.0f, float emissiveIntensity = 1.0f, string emissiveLoopNum = "float2(1,1)", int customEnable = 0, int customAMapFrom = 0, int customAMapUVFlip = 0, int customAMapColorFlip = 0, int customAMapSwizzle = 0, int customAMapApplyScale = 0, string customAMapFile = "\"custom.png\"", float customA = 0.0f, string customALoopNum = "float2(1,1)", int customBMapFrom = 0, int customBMapUVFlip = 0, int customBMapColorFlip = 0, int customBMapApplyScale = 0, string customBMapFile = "\"custom.png\"", string customB = "0.0", string customBLoopNum = "float2(1,1)", string includeFxsub = "\"../material_common_2.0.fxsub\"", string filePath = "")
+        public RayMaterial(int albedoMapFrom = 3, int albedoMapUVFlip = 0, int albedoMapApplyScale =0, int albedoMapApplyDiffuse = 1, int albedoMapApplyMorphColor = 0, string albedoMapFile="\"albedo.png\"", string albedo = "1.0", string albedoLoopNum = "float2(1,1)", int albedoSubEnable = 0, int albedoSubMapFrom = 0, int albedoSubMapUVFlip = 0, int albedoSubMapApplyScale = 0, string albedoSubMapFile = "\"albedo.png\"", string albedoSub = "1.0", string albedoSubLoopNum = "float2(1,1)", int alphaMapFrom = 3, int alphaMapUVFlip = 0, int alphaMapSwizzle =3, string alphaMapFile = "\"alpha.png\"", float alpha = 1.0f, string alphaLoopNum = "float2(1,1)", int normalMapFrom = 0, int normalMapType = 0, int normalMapUVFlip = 0, string normalMapFile = "\"normal.png\"", float normal = 1.0f, string normalLoopNum = "float2(1,1)", int normalSubMapFrom = 0, int normalSubMapType = 0, int normalSubMapUVFlip = 0, string normalSubMapFile = "\"normal.png\"", float normalSub = 1.0f, string normalSubLoopNum = "float2(1,1)", int smoothnessMapFrom = 9, int smoothnessMapType = 0, int smoothnessMapUVFlip = 0, int smoothnessMapSwizzle = 0, int smoothnessMapApplyScale = 0, string smoothnessMapFile = "\"smoothness.png\"", float smoothness = 0.0f, string smoothnessLoopNum = "float2(1,1)", int metalnessMapFrom = 0, int metalnessMapUVFlip = 0, int metalnessMapSwizzle = 0, int metalnessMapApplyScale = 0, string metalnessMapFile = "\"metalness.png\"", float metalness = 0.0f, string metalnessLoopNum = "float2(1,1)", int specularMapFrom = 0, int specularMapType = 0, int specularMapUVFlip = 0, int specularMapSwizzle = 0, int specularMapApplyScale = 0, string specularMapFile = "\"specular.png\"", float specular = 0.5f, string specularLoopNum = "float2(1,1)", int occlusionMapFrom = 0, int occlusionMapType = 0, int occlusionMapUVFlip = 0, int occlusionMapSwizzle = 0, int occlusionMapApplyScale = 0, string occlusionMapFile = "\"occlusion.png\"", float occlusion = 1.0f, string occlusionLoopNum = "float2(1,1)", int parallaxMapFrom = 0, int parallaxMapType = 0, int parallaxMapUVFlip = 0, int parallaxMapSwizzle = 0, string parallaxMapFile = "\"height.png\"", float parallax = 1.0f, string parallaxLoopNum = "float2(1,1)", int emissiveEnable = 0, int emissiveMapFrom = 0, int emissiveMapUVFlip = 0, int emissiveMapApplyScale = 0, int emissiveMapApplyMorphColor = 0, int emissiveMapApplyMorphIntensity = 0, int emissiveMapApplyBlink = 0, string emissiveMapFile = "\"emissive.png\"", string emissive = "1.0", float emissiveBlink = 1.0f, float emissiveIntensity = 1.0f, string emissiveLoopNum = "float2(1,1)", int customEnable = 0, int customAMapFrom = 0, int customAMapUVFlip = 0, int customAMapColorFlip = 0, int customAMapSwizzle = 0, int customAMapApplyScale = 0, string customAMapFile = "\"custom.png\"", float customA = 0.0f, string customALoopNum = "float2(1,1)", int customBMapFrom = 0, int customBMapUVFlip = 0, int customBMapColorFlip = 0, int customBMapApplyScale = 0, string customBMapFile = "\"custom.png\"", string customB = "0.0", string customBLoopNum = "float2(1,1)", string includeFxsub = "\"../material_common_2.0.fxsub\"", string filePath = "")
         {
             this.albedoMapFrom = albedoMapFrom;
             this.albedoMapUVFlip = albedoMapUVFlip;
@@ -679,8 +679,8 @@ namespace RMT.Model
                     this.EmissiveMapFile = !stringFetchedValue.Equals("") ? stringFetchedValue : this.EmissiveMapFile;
                     break;
                 case string a when a.Contains("emissive ="):
-                    floatFetechedValue = Util.FetchFloatNumber(line);
-                    this.Emissive = floatFetechedValue;
+                    stringFetchedValue = Util.FetchSubStringBetween(line, '=', true, 1);
+                    this.Emissive = !stringFetchedValue.Equals("") ? stringFetchedValue : this.Emissive;
                     break;
                 case string a when a.Contains("emissiveBlink"):
                     floatFetechedValue = Util.FetchFloatNumber(line);
@@ -876,7 +876,7 @@ namespace RMT.Model
                     "#define EMISSIVE_MAP_APPLY_BLINK " + this.EmissiveMapApplyBlink + "\r\n" +
                     "#define EMISSIVE_MAP_FILE " + this.EmissiveMapFile + "\r\n" +
                     "\r\n"+
-                    "const float3 emissive = " + this.Emissive.ToString("0.00") + ";\r\n" +
+                    "const float3 emissive = " + this.Emissive+ ";\r\n" +
                     "const float3 emissiveBlink = " + this.EmissiveBlink.ToString("0.00") + ";\r\n" +
                     "const float  emissiveIntensity = " + this.EmissiveIntensity.ToString("0.00") + ";\r\n" +
                     "const float2 emissiveMapLoopNum =" + this.EmissiveLoopNum + ";\r\n" +
