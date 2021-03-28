@@ -494,7 +494,7 @@
                                 <ComboBoxItem Content="sRGB"  HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"/>
                                 <ComboBoxItem Content="Linear sRGB"  HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"/>
                             </ComboBox>
-                            <xctk:ColorPicker Visibility="Visible" UsingAlphaChannel="False"  Closed="specularRGB_Closed" Name="specularRGB" HorizontalAlignment="Left" Margin="170,208,0,0" VerticalAlignment="Top" Width="71" Height="23"/>
+                            <xctk:ColorPicker Visibility="Hidden" UsingAlphaChannel="False"  Closed="specularRGB_Closed" Name="specularRGB" HorizontalAlignment="Left" Margin="170,208,0,0" VerticalAlignment="Top" Width="71" Height="23"/>
 
                             <Label FontSize="10" Content="SPECULAR LOOP NUM" HorizontalAlignment="Left" Margin="88,263,0,0" VerticalAlignment="Top" Width="133"/>
                             <TextBox  Name="specularLoopNum" IsEnabled="False" FontSize="10" HorizontalAlignment="Left" Height="23" Margin="226,263,0,0" TextWrapping="Wrap" Text="" TextAlignment="Center" VerticalContentAlignment="Center" VerticalAlignment="Top" Width="99"/>
@@ -738,7 +738,131 @@
                     </Grid>
                 </TabItem>
                 <TabItem Header="Custom">
-                    <Grid/>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <Border Grid.Column="1" Grid.RowSpan="2" BorderThickness="2,0,0,0" Background="{x:Null}"/>
+                        <Grid Grid.Column="0">
+                            <Label FontSize="10" Content="CUSTOM ENABLE" HorizontalAlignment="Left" Margin="33,13,0,0" VerticalAlignment="Top" Width="145"/>
+                            <ComboBox x:Name="customEnable" SelectionChanged="customEnable_SelectionChanged" HorizontalAlignment="Left" Margin="235,13,0,0" VerticalAlignment="Top" Width="35">
+                                <ComboBoxItem Content="0" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" />
+                                <ComboBoxItem Content="1" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"  />
+                                <ComboBoxItem Content="2" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"  />
+                                <ComboBoxItem Content="3" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"  />
+                                <ComboBoxItem Content="4" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"  />
+                                <ComboBoxItem Content="5" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"  />
+                                <ComboBoxItem Content="6" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"  />
+                                <ComboBoxItem Content="7" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"  />
+                                <ComboBoxItem Content="8" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"  />
+                                <ComboBoxItem Content="9" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"  />
+                            </ComboBox>
+                            <Label FontSize="10" Content="CUSTOM A MAP FROM" HorizontalAlignment="Left" Margin="33,43,0,0" VerticalAlignment="Top" Width="150"/>
+                            <ComboBox x:Name="customAMapFrom" SelectionChanged="customAMapFrom_SelectionChanged" HorizontalAlignment="Left" Margin="235,43,0,0" VerticalAlignment="Top" Width="35">
+                                <ComboBoxItem Content="0" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" />
+                                <ComboBoxItem Content="1" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"  />
+                                <ComboBoxItem Content="2" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"  />
+                                <ComboBoxItem Content="3" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"  />
+                                <ComboBoxItem Content="4" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"  />
+                                <ComboBoxItem Content="5" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"  />
+                                <ComboBoxItem Content="6" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"  />
+                                <ComboBoxItem Content="7" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"  />
+                                <ComboBoxItem Content="8" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"  />
+                                <ComboBoxItem Content="9" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"  />
+                            </ComboBox>
+                            <Label FontSize="10" Content="CUSTOM A MAP UV FLIP" HorizontalAlignment="Left" Margin="33,74,0,0" VerticalAlignment="Top" Width="143"/>
+                            <ComboBox x:Name="customAMapUVFlip" SelectionChanged="customAMapUVFlip_SelectionChanged" HorizontalAlignment="Left" Margin="235,74,0,0" VerticalAlignment="Top" Width="35">
+                                <ComboBoxItem Content="0" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" />
+                                <ComboBoxItem Content="1" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"  />
+                                <ComboBoxItem Content="2" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"  />
+                                <ComboBoxItem Content="3" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"  />
+                            </ComboBox>
+                            <Label FontSize="10" Content="CUSTOM A MAP COLOR FLIP" HorizontalAlignment="Left" Margin="33,104,0,0" VerticalAlignment="Top" Width="162"/>
+                            <ComboBox x:Name="customAMapColorFlip" SelectionChanged="customAMapColorFlip_SelectionChanged" HorizontalAlignment="Left" Margin="235,104,0,0" VerticalAlignment="Top" Width="35">
+                                <ComboBoxItem Content="0" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" />
+                                <ComboBoxItem Content="1" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"  />
+                            </ComboBox>
+                            <Label FontSize="10" Content="CUSTOM A MAP FILE" HorizontalAlignment="Left" Margin="33,194,0,0" VerticalAlignment="Top" Width="128"/>
+                            <Button x:Name="customAMapFileButton" Content="..." Click="customAMapFile_Click" HorizontalAlignment="Left" Margin="235,194,0,0" VerticalAlignment="Top" Width="35"/>
+                            <Label FontSize="10" x:Name="customAMapFile" FlowDirection="RightToLeft" HorizontalContentAlignment="Right" Content="customA.png" HorizontalAlignment="Left" Margin="153,193,0,0" VerticalAlignment="Top" Width="77"/>
+                            <Label FontSize="10" Content="CUSTOM A" HorizontalAlignment="Left" Margin="33,239,0,0" VerticalAlignment="Top" Width="77"/>
+                            <Slider  Orientation="Horizontal" Minimum="0" Maximum="1" Thumb.DragCompleted="customALinearColor_DragCompleted" Visibility="Visible" x:Name="customALinearColor" TickFrequency="0.05" IsSnapToTickEnabled="True" HorizontalAlignment="Left" Margin="41,269,0,0" VerticalAlignment="Top" Width="189"/>
+                            <TextBox x:Name="customA" FontSize="10" HorizontalAlignment="Left" PreviewTextInput="customA_PreviewTextInput" KeyUp="customA_KeyUp" TextAlignment="Center" VerticalContentAlignment="Center" IsEnabled="True" Height="23" Margin="115,241,0,0" TextWrapping="Wrap" Text="{Binding ElementName=customALinearColor, Mode=TwoWay, Path=Value, StringFormat=N2,UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="71"/>
+                            <Label FontSize="10" Content="CUSTOM A LOOP NUM" HorizontalAlignment="Left" Margin="33,296,0,0" VerticalAlignment="Top" Width="114"/>
+                            <TextBox  Name="customALoopNum" IsEnabled="False" FontSize="10" HorizontalAlignment="Left" Height="23" Margin="153,296,0,0" TextWrapping="Wrap" Text="" TextAlignment="Center" VerticalContentAlignment="Center" VerticalAlignment="Top" Width="90"/>
+                            <CheckBox Name="customALoopNumLock" Checked="customALoopNumLock_Checked" Unchecked="customALoopNumLock_Unchecked" Content="&#xf023;" FontFamily="{StaticResource FontAwesome}" HorizontalAlignment="Left" Margin="266,296,0,0" VerticalAlignment="Top" Width="35" RenderTransformOrigin="-0.167,0.644"/>
+                            <Slider  Orientation="Horizontal" Minimum="-24" Maximum="24" Thumb.DragCompleted="customALoopNumX_DragCompleted" Name="customALoopNumX" ValueChanged="customALoopNumX_ValueChanged"  HorizontalAlignment="Left" TickFrequency="0.05" IsSnapToTickEnabled="True" Margin="41,327,0,0" VerticalAlignment="Top" Width="202"/>
+                            <Slider  Orientation="Horizontal" Minimum="-24" Maximum="24" Thumb.DragCompleted="customALoopNumY_DragCompleted" Name="customALoopNumY" ValueChanged="customALoopNumY_ValueChanged" HorizontalAlignment="Left" TickFrequency="0.05" IsSnapToTickEnabled="True" Margin="41,350,0,0" VerticalAlignment="Top" Width="202"/>
+                            <Button Name="customALoopNumReset" Click="customALoopNumReset_Click" Content="&#xf0e2;" FontFamily="{StaticResource FontAwesome}" HorizontalAlignment="Left" Margin="266,321,0,0" VerticalAlignment="Top" Width="28" Height="28"/>
+                            <Label FontSize="10" Content="CUSTOM A MAP SWIZZLE" HorizontalAlignment="Left" Margin="33,134,0,0" VerticalAlignment="Top" Width="153"/>
+                            <ComboBox x:Name="customAMapSwizzle" SelectionChanged="customAMapSwizzle_SelectionChanged" HorizontalAlignment="Left" Margin="235,134,0,0" VerticalAlignment="Top" Width="35">
+                                <ComboBoxItem Content="0" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" />
+                                <ComboBoxItem Content="1" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"  />
+                                <ComboBoxItem Content="2" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"  />
+                                <ComboBoxItem Content="3" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"  />
+                            </ComboBox>
+                            <Label FontSize="10" Content="CUSTOM A MAP APPLY SCALE" HorizontalAlignment="Left" Margin="33,164,0,0" VerticalAlignment="Top" Width="168"/>
+                            <ComboBox x:Name="customAMapApplyScale" SelectionChanged="customAMapApplyScale_SelectionChanged" HorizontalAlignment="Left" Margin="235,164,0,0" VerticalAlignment="Top" Width="35">
+                                <ComboBoxItem Content="0" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" />
+                                <ComboBoxItem Content="1" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"  />
+                                <ComboBoxItem Content="2" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"  />
+                            </ComboBox>
+                        </Grid>
+                        <Grid Grid.Column="1">
+                            <Label FontSize="10" Content="CUSTOM B MAP FROM" HorizontalAlignment="Left" Margin="26,12,0,0" VerticalAlignment="Top" Width="150"/>
+                            <ComboBox x:Name="customBMapFrom" SelectionChanged="customBMapFrom_SelectionChanged" HorizontalAlignment="Left" Margin="228,12,0,0" VerticalAlignment="Top" Width="36">
+                                <ComboBoxItem Content="0" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" />
+                                <ComboBoxItem Content="1" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"  />
+                                <ComboBoxItem Content="2" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"  />
+                                <ComboBoxItem Content="3" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"  />
+                                <ComboBoxItem Content="4" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"  />
+                                <ComboBoxItem Content="5" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"  />
+                                <ComboBoxItem Content="6" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"  />
+                                <ComboBoxItem Content="7" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"  />
+                                <ComboBoxItem Content="8" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"  />
+                                <ComboBoxItem Content="9" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"  />
+                            </ComboBox>
+                            <Label FontSize="10" Content="CUSTOM B MAP UV FLIP" HorizontalAlignment="Left" Margin="26,43,0,0" VerticalAlignment="Top" Width="144"/>
+                            <ComboBox x:Name="customBMapUVFlip" SelectionChanged="customBMapUVFlip_SelectionChanged" HorizontalAlignment="Left" Margin="228,43,0,0" VerticalAlignment="Top" Width="36">
+                                <ComboBoxItem Content="0" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" />
+                                <ComboBoxItem Content="1" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"  />
+                                <ComboBoxItem Content="2" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"  />
+                                <ComboBoxItem Content="3" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"  />
+                            </ComboBox>
+                            <Label FontSize="10" Content="CUSTOM B MAP COLOR FLIP" HorizontalAlignment="Left" Margin="26,73,0,0" VerticalAlignment="Top" Width="162"/>
+                            <ComboBox x:Name="customBMapColorFlip" SelectionChanged="customBMapColorFlip_SelectionChanged" HorizontalAlignment="Left" Margin="228,73,0,0" VerticalAlignment="Top" Width="36">
+                                <ComboBoxItem Content="0" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" />
+                                <ComboBoxItem Content="1" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"  />
+                            </ComboBox>
+                            <Label FontSize="10" Content="CUSTOM B MAP FILE" HorizontalAlignment="Left" Margin="27,133,0,0" VerticalAlignment="Top" Width="128"/>
+                            <Button x:Name="customBMapFileButton" Content="..." Click="customBMapFile_Click" HorizontalAlignment="Left" Margin="229,133,0,0" VerticalAlignment="Top" Width="36"/>
+                            <Label FontSize="10" x:Name="customBMapFile" FlowDirection="RightToLeft" HorizontalContentAlignment="Right" Content="customB.png" HorizontalAlignment="Left" Margin="147,132,0,0" VerticalAlignment="Top" Width="78"/>
+                            <Label FontSize="10" Content="CUSTOM B" HorizontalAlignment="Left" Margin="27,178,0,0" VerticalAlignment="Top" Width="78"/>
+                            <Slider  Orientation="Horizontal" Minimum="0" Maximum="1" Thumb.DragCompleted="customBLinearColor_DragCompleted" Visibility="Visible" x:Name="customBLinearColor" TickFrequency="0.05" IsSnapToTickEnabled="True" HorizontalAlignment="Left" Margin="35,208,0,0" VerticalAlignment="Top" Width="190"/>
+                            <TextBox x:Name="customB" FontSize="10" HorizontalAlignment="Left" PreviewTextInput="customB_PreviewTextInput" KeyUp="customB_KeyUp" TextAlignment="Center" VerticalContentAlignment="Center" IsEnabled="True" Height="23" Margin="90,180,0,0" TextWrapping="Wrap" Text="{Binding ElementName=customBLinearColor, Mode=TwoWay, Path=Value, StringFormat=N2,UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="72"/>
+                            <ComboBox x:Name="customBMode" SelectionChanged="customBMode_SelectionChanged" HorizontalAlignment="Left" Margin="168,180,0,0" VerticalAlignment="Top" Width="127">
+                                <ComboBoxItem Content="Linear Color"  HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"/>
+                                <ComboBoxItem Content="sRGB"  HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"/>
+                                <ComboBoxItem Content="Linear sRGB"  HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"/>
+                            </ComboBox>
+                            <xctk:ColorPicker Visibility="Hidden" UsingAlphaChannel="False"  Closed="customBRGB_Closed" Name="customBRGB" HorizontalAlignment="Left" Margin="90,180,0,0" VerticalAlignment="Top" Width="72" Height="23"/>
+                            <Label FontSize="10" Content="CUSTOM B LOOP NUM" HorizontalAlignment="Left" Margin="27,235,0,0" VerticalAlignment="Top" Width="114"/>
+                            <TextBox  Name="customBLoopNum" IsEnabled="False" FontSize="10" HorizontalAlignment="Left" Height="23" Margin="147,235,0,0" TextWrapping="Wrap" Text="" TextAlignment="Center" VerticalContentAlignment="Center" VerticalAlignment="Top" Width="90"/>
+                            <CheckBox Name="customBLoopNumLock" Checked="customBLoopNumLock_Checked" Unchecked="customBLoopNumLock_Unchecked" Content="&#xf023;" FontFamily="{StaticResource FontAwesome}" HorizontalAlignment="Left" Margin="261,235,0,0" VerticalAlignment="Top" Width="34" RenderTransformOrigin="-0.167,0.644"/>
+                            <Slider  Orientation="Horizontal" Minimum="-24" Maximum="24" Thumb.DragCompleted="customBLoopNumX_DragCompleted" Name="customBLoopNumX" ValueChanged="customBLoopNumX_ValueChanged"  HorizontalAlignment="Left" TickFrequency="0.05" IsSnapToTickEnabled="True" Margin="35,266,0,0" VerticalAlignment="Top" Width="202"/>
+                            <Slider  Orientation="Horizontal" Minimum="-24" Maximum="24" Thumb.DragCompleted="customBLoopNumY_DragCompleted" Name="customBLoopNumY" ValueChanged="customBLoopNumY_ValueChanged" HorizontalAlignment="Left" TickFrequency="0.05" IsSnapToTickEnabled="True" Margin="35,289,0,0" VerticalAlignment="Top" Width="202"/>
+                            <Button Name="customBLoopNumReset" Click="customBLoopNumReset_Click" Content="&#xf0e2;" FontFamily="{StaticResource FontAwesome}" HorizontalAlignment="Left" Margin="261,260,0,0" VerticalAlignment="Top" Width="28" Height="28"/>
+                            <Button  HorizontalAlignment="Left" Content="&#xf129;" FontFamily="{StaticResource FontAwesome}" Margin="268,363,0,0" VerticalAlignment="Top" Width="26" Height="22">
+                            </Button>
+                            <Label FontSize="10" Content="CUSTOM B MAP APPLY SCALE" HorizontalAlignment="Left" Margin="27,103,0,0" VerticalAlignment="Top" Width="168"/>
+                            <ComboBox x:Name="customBMapApplyScale" SelectionChanged="customBMapApplyScale_SelectionChanged" HorizontalAlignment="Left" Margin="229,103,0,0" VerticalAlignment="Top" Width="36">
+                                <ComboBoxItem Content="0" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" />
+                                <ComboBoxItem Content="1" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"  />
+                                <ComboBoxItem Content="2" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"  />
+                            </ComboBox>
+                        </Grid>
+                    </Grid>
                 </TabItem>
             </TabControl>
         </Grid>

@@ -1,19 +1,9 @@
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using Microsoft.Win32;
 using REghZyFramework.Themes;
 using RMT.Model;
@@ -21,10 +11,10 @@ using RMT.View;
 using Path = System.IO.Path;
 namespace RMT
 {
-	/// <summary>
-	/// Interaction logic for MainWindow.xaml
-	/// </summary>
-	public partial class MainWindow : Window
+    /// <summary>
+    /// Interaction logic for MainWindow.xaml
+    /// </summary>
+    public partial class MainWindow : Window
 	{
 		private const String APP_NAME = "Ray-mmd Material Tool v2.0";
 		private enum MAP_MODES : int {LINEAR_COLOR =0, SRGB = 1, LINEAR_SRGB = 2 };
@@ -42,6 +32,7 @@ namespace RMT
 		private String albedoSubSelectedColor =	null;
 		private String emissiveSelectedColor =	null;
 		private String specularSelectedColor =	null;
+		private String customBSelectedColor =	null;
 
 		public MainWindow()
 		{
@@ -227,6 +218,29 @@ namespace RMT
 			this.specularLoopNumY.Value = handleLoopNums(this.material.SpecularLoopNum)[1];
 			this.specularLoopNum.Text = assignLoopNum(this.specularLoopNumX.Value, this.specularLoopNumY.Value);
 			ChangeMapScaleMode(this.material.Specular, this.specularMode);
+			//CUSTOM A
+			this.customEnable.SelectedIndex = this.material.CustomEnable;
+			this.customAMapFrom.SelectedIndex = this.material.CustomAMapFrom;
+			this.customAMapColorFlip.SelectedIndex = this.material.CustomAMapColorFlip;
+			this.customAMapUVFlip.SelectedIndex = this.material.CustomAMapUVFlip;
+			this.customAMapSwizzle.SelectedIndex = this.material.CustomAMapSwizzle;
+			this.customAMapApplyScale.SelectedIndex = this.material.CustomAMapApplyScale;
+			this.customAMapFile.Content = this.material.CustomAMapFile;
+			this.customA.Text = this.material.CustomA.ToString();
+			this.customALoopNumX.Value = handleLoopNums(this.material.CustomALoopNum)[0];
+			this.customALoopNumY.Value = handleLoopNums(this.material.CustomALoopNum)[1];
+			this.customALoopNum.Text = assignLoopNum(this.customALoopNumX.Value, this.customALoopNumY.Value);
+			//CUSTOM B
+			this.customBMapFrom.SelectedIndex = this.material.CustomBMapFrom;
+			this.customBMapColorFlip.SelectedIndex = this.material.CustomBMapColorFlip;
+			this.customBMapUVFlip.SelectedIndex = this.material.CustomBMapUVFlip;
+			this.customBMapApplyScale.SelectedIndex = this.material.CustomBMapApplyScale;
+			this.customBMapFile.Content = this.material.CustomBMapFile;
+			this.customB.Text = this.material.CustomB.ToString();
+			this.customBLoopNumX.Value = handleLoopNums(this.material.CustomBLoopNum)[0];
+			this.customBLoopNumY.Value = handleLoopNums(this.material.CustomBLoopNum)[1];
+			this.customBLoopNum.Text = assignLoopNum(this.customBLoopNumX.Value, this.customBLoopNumY.Value);
+			ChangeMapScaleMode(this.material.CustomB, this.customBMode);
 		}
 
 		/*
@@ -272,7 +286,7 @@ namespace RMT
 
 		/*
 		 * Function that gets called everytime that there's a change in the material
-		 * bool write parameter is used to disable this write feature, mainly when values are initialized
+		 * bool initializationEnded parameter is used to disable this write feature, mainly when values are initialized
 		 */
 		private void handleChanges()
 		{
@@ -2078,5 +2092,313 @@ namespace RMT
 			handleChanges();
 		}
 		/*END SPECULAR*/
+		/*CUSTOM*/
+		private void customEnable_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		{
+			this.material.CustomEnable = customEnable.SelectedIndex;
+			handleChanges();
+		}
+		/*END CUSTOM*/
+		/*CUSTOM A*/
+		private void customAMapFrom_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		{
+			this.material.CustomAMapFrom = customAMapFrom.SelectedIndex;
+			handleChanges();
+		}
+
+		private void customAMapUVFlip_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		{
+			this.material.CustomAMapUVFlip = customAMapUVFlip.SelectedIndex;
+			handleChanges();
+		}
+
+		private void customAMapColorFlip_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		{
+			this.material.CustomAMapColorFlip = customAMapColorFlip.SelectedIndex;
+			handleChanges();
+		}
+
+		private void customAMapSwizzle_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		{
+			this.material.CustomAMapSwizzle = customAMapSwizzle.SelectedIndex;
+			handleChanges();
+		}
+
+		private void customAMapApplyScale_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		{
+			this.material.CustomAMapApplyScale = customAMapApplyScale.SelectedIndex;
+			handleChanges();
+		}
+
+		private void customAMapFile_Click(object sender, RoutedEventArgs e)
+		{
+			String mapFile = handleOpenDialog(imageFilters);
+			if (!mapFile.Equals(""))
+			{
+				this.material.CustomAMapFile = Util.GetRelativePath(this.material.FilePath, mapFile);
+				this.customAMapFile.Content = this.material.CustomAMapFile;
+				handleChanges();
+			}
+		}
+
+		private void customA_PreviewTextInput(object sender, TextCompositionEventArgs e)
+		{
+			handleTextInput(ref sender, ref e);
+		}
+
+
+		private void customA_KeyUp(object sender, KeyEventArgs e)
+		{
+			if (this.material.CustomA != float.Parse(this.customA.Text))
+			{
+				this.material.CustomA = float.Parse(this.customA.Text);
+				handleChanges();
+			}
+		}
+
+		private void customALoopNumLock_Checked(object sender, RoutedEventArgs e)
+		{
+			if (customALoopNumY.IsEnabled)
+			{
+				customALoopNumY.IsEnabled = false;
+			}
+			this.customALoopNumY.Value = this.customALoopNumX.Value;
+			this.customALoopNum.Text = assignLoopNum(this.customALoopNumX.Value, this.customALoopNumY.Value);
+			this.material.CustomALoopNum = this.customALoopNum.Text;
+			handleChanges();
+		}
+
+		private void customALoopNumLock_Unchecked(object sender, RoutedEventArgs e)
+		{
+			if (!customALoopNumY.IsEnabled)
+			{
+				customALoopNumY.IsEnabled = true;
+			}
+			this.customALoopNumY.Value = this.customALoopNumX.Value;
+			this.material.CustomALoopNum = this.customALoopNum.Text;
+			handleChanges();
+		}
+
+		private void customALoopNumX_DragCompleted(object sender, System.Windows.Controls.Primitives.DragCompletedEventArgs e)
+		{
+			if (customALoopNumLock.IsChecked == true)
+			{
+				this.customALoopNumY.Value = this.customALoopNumX.Value;
+			}
+			this.customALoopNum.Text = assignLoopNum(this.customALoopNumX.Value, this.customALoopNumY.Value);
+			this.material.CustomALoopNum = this.customALoopNum.Text;
+			handleChanges();
+		}
+
+		private void customALoopNumY_DragCompleted(object sender, System.Windows.Controls.Primitives.DragCompletedEventArgs e)
+		{
+			if (customALoopNumLock.IsChecked == false)
+			{
+				this.customALoopNum.Text = assignLoopNum(this.customALoopNumX.Value, this.customALoopNumY.Value);
+				this.material.CustomALoopNum = this.customALoopNum.Text;
+			}
+			handleChanges();
+		}
+
+		private void customALinearColor_DragCompleted(object sender, System.Windows.Controls.Primitives.DragCompletedEventArgs e)
+		{
+			this.material.CustomA = float.Parse(customA.Text);
+			handleChanges();
+		}
+
+		private void customALoopNumX_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+		{
+			if (customALoopNumLock.IsChecked == true)
+			{
+				this.customALoopNumY.Value = this.customALoopNumX.Value;
+			}
+			this.customALoopNum.Text = assignLoopNum(this.customALoopNumX.Value, this.customALoopNumY.Value);
+		}
+
+		private void customALoopNumY_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+		{
+			if (customALoopNumLock.IsChecked == false)
+			{
+				this.customALoopNum.Text = assignLoopNum(this.customALoopNumX.Value, this.customALoopNumY.Value);
+			}
+		}
+
+		private void customALoopNumReset_Click(object sender, RoutedEventArgs e)
+		{
+			this.material.CustomALoopNum = resetLoopNum(this.customALoopNum, this.customALoopNumX, this.customALoopNumY);
+			handleChanges();
+		}
+
+		/*END CUSTOM A*/
+		/*CUSTOM B*/
+		private void customBMapFrom_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		{
+			this.material.CustomBMapFrom = customBMapFrom.SelectedIndex;
+			handleChanges();
+		}
+
+		private void customBMapUVFlip_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		{
+			this.material.CustomBMapUVFlip = customBMapUVFlip.SelectedIndex;
+			handleChanges();
+		}
+
+		private void customBMapColorFlip_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		{
+			this.material.CustomBMapColorFlip = customBMapColorFlip.SelectedIndex;
+			handleChanges();
+		}
+
+		private void customBMapApplyScale_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		{
+			this.material.CustomBMapApplyScale = customBMapApplyScale.SelectedIndex;
+			handleChanges();
+		}
+
+		private void customBMapFile_Click(object sender, RoutedEventArgs e)
+		{
+			String mapFile = handleOpenDialog(imageFilters);
+			if (!mapFile.Equals(""))
+			{
+				this.material.CustomBMapFile = Util.GetRelativePath(this.material.FilePath, mapFile);
+				this.customBMapFile.Content = this.material.CustomBMapFile;
+				handleChanges();
+			}
+		}
+
+
+		private void customBMode_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		{
+			if (this.customBMode.SelectedIndex == (int)MAP_MODES.LINEAR_COLOR)
+			{
+				customBLinearColor.Visibility = Visibility.Visible;
+				customBRGB.Visibility = Visibility.Hidden;
+				customB.Visibility = Visibility.Visible;
+				if (this.customB.Text.Contains("float"))
+				{
+					this.customB.Text = "1.0";
+				}
+				this.material.CustomB = this.customB.Text;
+			}
+			else
+			{
+				customBLinearColor.Visibility = Visibility.Hidden;
+				customBRGB.Visibility = Visibility.Visible;
+				customB.Visibility = Visibility.Hidden;
+
+				if (this.customBSelectedColor != null)
+				{
+					this.material.CustomB = this.UpdateRGBColor(this.customBMode.SelectedIndex, this.customBSelectedColor);
+				}
+				else
+				{
+					byte[] rgbValues = this.fetchRGBFromString(this.material.CustomB);
+					Color color = Color.FromRgb(rgbValues[0], rgbValues[1], rgbValues[2]);
+					customBRGB.SelectedColor = color;
+				}
+			}
+			handleChanges();
+		}
+
+		private void customB_PreviewTextInput(object sender, TextCompositionEventArgs e)
+		{
+			handleTextInput(ref sender, ref e);
+		}
+
+
+		private void customB_KeyUp(object sender, KeyEventArgs e)
+		{
+			if (this.material.CustomB != this.customB.Text)
+			{
+				this.material.CustomB = this.customB.Text;
+				handleChanges();
+			}
+		}
+
+		private void customBRGB_Closed(object sender, RoutedEventArgs e)
+		{
+			if ((customBRGB.SelectedColor.HasValue) && (!customBRGB.SelectedColor.ToString().Equals(this.customBSelectedColor)))
+			{
+				this.customBSelectedColor = customBRGB.SelectedColor.Value.ToString();
+				this.material.CustomB = this.UpdateRGBColor(this.customBMode.SelectedIndex, this.customBSelectedColor);
+				handleChanges();
+			}
+		}
+
+		private void customBLinearColor_DragCompleted(object sender, System.Windows.Controls.Primitives.DragCompletedEventArgs e)
+		{
+			this.material.CustomB = customB.Text;
+			handleChanges();
+		}
+
+
+		private void customBLoopNumLock_Checked(object sender, RoutedEventArgs e)
+		{
+			if (customBLoopNumY.IsEnabled)
+			{
+				customBLoopNumY.IsEnabled = false;
+			}
+			this.customBLoopNumY.Value = this.customBLoopNumX.Value;
+			this.customBLoopNum.Text = assignLoopNum(this.customBLoopNumX.Value, this.customBLoopNumY.Value);
+			this.material.CustomBLoopNum = this.customBLoopNum.Text;
+			handleChanges();
+		}
+
+		private void customBLoopNumLock_Unchecked(object sender, RoutedEventArgs e)
+		{
+			if (!customBLoopNumY.IsEnabled)
+			{
+				customBLoopNumY.IsEnabled = true;
+			}
+			this.customBLoopNumY.Value = this.customBLoopNumX.Value;
+			this.material.CustomBLoopNum = this.customBLoopNum.Text;
+			handleChanges();
+		}
+
+		private void customBLoopNumX_DragCompleted(object sender, System.Windows.Controls.Primitives.DragCompletedEventArgs e)
+		{
+			if (customBLoopNumLock.IsChecked == true)
+			{
+				this.customBLoopNumY.Value = this.customBLoopNumX.Value;
+			}
+			this.customBLoopNum.Text = assignLoopNum(this.customBLoopNumX.Value, this.customBLoopNumY.Value);
+			this.material.CustomBLoopNum = this.customBLoopNum.Text;
+			handleChanges();
+		}
+
+		private void customBLoopNumY_DragCompleted(object sender, System.Windows.Controls.Primitives.DragCompletedEventArgs e)
+		{
+			if (customBLoopNumLock.IsChecked == false)
+			{
+				this.customBLoopNum.Text = assignLoopNum(this.customBLoopNumX.Value, this.customBLoopNumY.Value);
+				this.material.CustomBLoopNum = this.customBLoopNum.Text;
+			}
+			handleChanges();
+		}
+
+		private void customBLoopNumX_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+		{
+			if (customBLoopNumLock.IsChecked == true)
+			{
+				this.customBLoopNumY.Value = this.customBLoopNumX.Value;
+			}
+			this.customBLoopNum.Text = assignLoopNum(this.customBLoopNumX.Value, this.customBLoopNumY.Value);
+		}
+
+		private void customBLoopNumY_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+		{
+			if (customBLoopNumLock.IsChecked == false)
+			{
+				this.customBLoopNum.Text = assignLoopNum(this.customBLoopNumX.Value, this.customBLoopNumY.Value);
+			}
+		}
+
+		private void customBLoopNumReset_Click(object sender, RoutedEventArgs e)
+		{
+			this.material.CustomBLoopNum = resetLoopNum(this.customBLoopNum, this.customBLoopNumX, this.customBLoopNumY);
+			handleChanges();
+		}
+		/*END CUSTOM B*/
+
 	}
 }
