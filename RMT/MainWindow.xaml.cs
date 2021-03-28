@@ -41,6 +41,7 @@ namespace RMT
 		private String albedoSelectedColor =	null;
 		private String albedoSubSelectedColor =	null;
 		private String emissiveSelectedColor =	null;
+		private String specularSelectedColor =	null;
 
 		public MainWindow()
 		{
@@ -214,6 +215,18 @@ namespace RMT
 			this.emissiveLoopNumY.Value = handleLoopNums(this.material.EmissiveLoopNum)[1];
 			this.emissiveLoopNum.Text = assignLoopNum(this.emissiveLoopNumX.Value, this.emissiveLoopNumY.Value);
 			ChangeMapScaleMode(this.material.Emissive, this.emissiveMode);
+			//SPECULAR
+			this.specularMapFrom.SelectedIndex = this.material.SpecularMapFrom;
+			this.specularMapType.SelectedIndex = this.material.SpecularMapType;
+			this.specularMapUVFlip.SelectedIndex = this.material.SpecularMapUVFlip;
+			this.specularMapSwizzle.SelectedIndex = this.material.SpecularMapSwizzle;
+			this.specularMapApplyScale.SelectedIndex = this.material.SpecularMapApplyScale;
+			this.specularMapFile.Content = this.material.SpecularMapFile;
+			this.specular.Text = this.material.Specular;
+			this.specularLoopNumX.Value = handleLoopNums(this.material.SpecularLoopNum)[0];
+			this.specularLoopNumY.Value = handleLoopNums(this.material.SpecularLoopNum)[1];
+			this.specularLoopNum.Text = assignLoopNum(this.specularLoopNumX.Value, this.specularLoopNumY.Value);
+			ChangeMapScaleMode(this.material.Specular, this.specularMode);
 		}
 
 		/*
@@ -558,6 +571,12 @@ namespace RMT
 			}
 		}
 
+		private void albedoLinearColor_DragCompleted(object sender, System.Windows.Controls.Primitives.DragCompletedEventArgs e)
+		{
+			this.material.Albedo = albedo.Text;
+			handleChanges();
+		}
+
 		private void albedoLoopNumLock_Checked(object sender, RoutedEventArgs e)
 		{
 			if (albedoLoopNumY.IsEnabled)
@@ -599,12 +618,6 @@ namespace RMT
 				this.albedoLoopNum.Text = assignLoopNum(this.albedoLoopNumX.Value, this.albedoLoopNumY.Value);
 				this.material.AlbedoLoopNum = this.albedoLoopNum.Text;
 			}
-			handleChanges();
-		}
-
-		private void albedoLinearColor_DragCompleted(object sender, System.Windows.Controls.Primitives.DragCompletedEventArgs e)
-		{
-			this.material.Albedo = albedo.Text;
 			handleChanges();
 		}
 
@@ -1891,5 +1904,179 @@ namespace RMT
 			this.material.EmissiveIntensity = float.Parse(emissiveMapIntensity.Text);
 			handleChanges();
 		}
-    }
+		/*END EMISSIVE*/
+		/*SPECULAR*/
+		private void specularMapFrom_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		{
+			this.material.SpecularMapFrom = specularMapFrom.SelectedIndex;
+			handleChanges();
+		}
+
+		private void specularMapUVFlip_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		{
+			this.material.SpecularMapUVFlip = specularMapUVFlip.SelectedIndex;
+			handleChanges();
+		}
+
+		private void specularMapType_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		{
+			this.material.SpecularMapType = specularMapType.SelectedIndex;
+			handleChanges();
+		}
+
+		private void specularMapSwizzle_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		{
+			this.material.SpecularMapSwizzle = specularMapSwizzle.SelectedIndex;
+			handleChanges();
+		}
+
+		private void specularMapApplyScale_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		{
+			this.material.SpecularMapApplyScale = specularMapApplyScale.SelectedIndex;
+			handleChanges();
+		}
+
+		private void specularMapFile_Click(object sender, RoutedEventArgs e)
+		{
+			String mapFile = handleOpenDialog(imageFilters);
+			if (!mapFile.Equals(""))
+			{
+				this.material.SpecularMapFile = Util.GetRelativePath(this.material.FilePath, mapFile);
+				this.specularMapFile.Content = this.material.SpecularMapFile;
+				handleChanges();
+			}
+		}
+
+		private void specularMode_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		{
+			if (this.specularMode.SelectedIndex == (int)MAP_MODES.LINEAR_COLOR)
+			{
+				specularLinearColor.Visibility = Visibility.Visible;
+				specularRGB.Visibility = Visibility.Hidden;
+				specular.Visibility = Visibility.Visible;
+				if (this.specular.Text.Contains("float"))
+				{
+					this.specular.Text = "1.0";
+				}
+				this.material.Specular = this.specular.Text;
+			}
+			else
+			{
+				specularLinearColor.Visibility = Visibility.Hidden;
+				specularRGB.Visibility = Visibility.Visible;
+				specular.Visibility = Visibility.Hidden;
+
+				if (this.specularSelectedColor != null)
+				{
+					this.material.Specular = this.UpdateRGBColor(this.specularMode.SelectedIndex, this.specularSelectedColor);
+				}
+				else
+				{
+					byte[] rgbValues = this.fetchRGBFromString(this.material.Specular);
+					Color color = Color.FromRgb(rgbValues[0], rgbValues[1], rgbValues[2]);
+					specularRGB.SelectedColor = color;
+				}
+			}
+			handleChanges();
+		}
+
+		private void specular_PreviewTextInput(object sender, TextCompositionEventArgs e)
+		{
+			handleTextInput(ref sender, ref e);
+		}
+
+
+		private void specular_KeyUp(object sender, KeyEventArgs e)
+		{
+			if (this.material.Specular != this.specular.Text)
+			{
+				this.material.Specular = this.specular.Text;
+				handleChanges();
+			}
+		}
+
+		private void specularRGB_Closed(object sender, RoutedEventArgs e)
+		{
+			if ((specularRGB.SelectedColor.HasValue) && (!specularRGB.SelectedColor.ToString().Equals(this.specularSelectedColor)))
+			{
+				this.specularSelectedColor = specularRGB.SelectedColor.Value.ToString();
+				this.material.Specular = this.UpdateRGBColor(this.specularMode.SelectedIndex, this.specularSelectedColor);
+				handleChanges();
+			}
+		}
+
+		private void specularLinearColor_DragCompleted(object sender, System.Windows.Controls.Primitives.DragCompletedEventArgs e)
+		{
+			this.material.Specular = specular.Text;
+			handleChanges();
+		}
+
+		private void specularLoopNumLock_Checked(object sender, RoutedEventArgs e)
+		{
+			if (specularLoopNumY.IsEnabled)
+			{
+				specularLoopNumY.IsEnabled = false;
+			}
+			this.specularLoopNumY.Value = this.specularLoopNumX.Value;
+			this.specularLoopNum.Text = assignLoopNum(this.specularLoopNumX.Value, this.specularLoopNumY.Value);
+			this.material.SpecularLoopNum = this.specularLoopNum.Text;
+			handleChanges();
+		}
+
+		private void specularLoopNumLock_Unchecked(object sender, RoutedEventArgs e)
+		{
+			if (!specularLoopNumY.IsEnabled)
+			{
+				specularLoopNumY.IsEnabled = true;
+			}
+			this.specularLoopNumY.Value = this.specularLoopNumX.Value;
+			this.material.SpecularLoopNum = this.specularLoopNum.Text;
+			handleChanges();
+		}
+
+		private void specularLoopNumX_DragCompleted(object sender, System.Windows.Controls.Primitives.DragCompletedEventArgs e)
+		{
+			if (specularLoopNumLock.IsChecked == true)
+			{
+				this.specularLoopNumY.Value = this.specularLoopNumX.Value;
+			}
+			this.specularLoopNum.Text = assignLoopNum(this.specularLoopNumX.Value, this.specularLoopNumY.Value);
+			this.material.SpecularLoopNum = this.specularLoopNum.Text;
+			handleChanges();
+		}
+
+		private void specularLoopNumY_DragCompleted(object sender, System.Windows.Controls.Primitives.DragCompletedEventArgs e)
+		{
+			if (specularLoopNumLock.IsChecked == false)
+			{
+				this.specularLoopNum.Text = assignLoopNum(this.specularLoopNumX.Value, this.specularLoopNumY.Value);
+				this.material.SpecularLoopNum = this.specularLoopNum.Text;
+			}
+			handleChanges();
+		}
+
+		private void specularLoopNumX_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+		{
+			if (specularLoopNumLock.IsChecked == true)
+			{
+				this.specularLoopNumY.Value = this.specularLoopNumX.Value;
+			}
+			this.specularLoopNum.Text = assignLoopNum(this.specularLoopNumX.Value, this.specularLoopNumY.Value);
+		}
+
+		private void specularLoopNumY_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+		{
+			if (specularLoopNumLock.IsChecked == false)
+			{
+				this.specularLoopNum.Text = assignLoopNum(this.specularLoopNumX.Value, this.specularLoopNumY.Value);
+			}
+		}
+
+		private void specularLoopNumReset_Click(object sender, RoutedEventArgs e)
+		{
+			this.material.SpecularLoopNum = resetLoopNum(this.specularLoopNum, this.specularLoopNumX, this.specularLoopNumY);
+			handleChanges();
+		}
+		/*END SPECULAR*/
+	}
 }
