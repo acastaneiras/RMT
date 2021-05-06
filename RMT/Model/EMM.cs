@@ -1,15 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Diagnostics;
-using System.Text.RegularExpressions;
 using System.IO;
+using Microsoft.WindowsAPICodePack.Dialogs;
 
 namespace RMT.Model
 {
-	class Subset 
+    class Subset 
 	{
 		private int num;
 		private bool shown;
@@ -101,7 +98,7 @@ namespace RMT.Model
 							//everything before " = "
 							codeType = s2.Substring(code.Length, s2.IndexOf('=') - 1);
 							//everything after " = "
-							codeData = s2.Substring(s2.IndexOf('=') + 1, s2.Length - (s2.IndexOf('=') + 1));
+							codeData = s2.Substring(s2.IndexOf('=') + 2, s2.Length - (s2.IndexOf('=') +2));
 							
 							switch (codeType) {
 								
@@ -162,6 +159,25 @@ namespace RMT.Model
 			if (!Path.IsPathRooted(filePath)) {
 				//if mmd filepath is specified then return it
 				//else ask for it
+				String MMDPath = Properties.Settings.Default.MMDPath;
+				if (MMDPath == null || !Directory.Exists(MMDPath))
+                {
+					CommonOpenFileDialog dialog = new CommonOpenFileDialog();
+					dialog.InitialDirectory = "C:\\";
+					dialog.IsFolderPicker = true;
+					dialog.Title = "Select MMD's root folder";
+					CommonFileDialogResult folderResult = CommonFileDialogResult.None;
+					do
+					{
+						folderResult = dialog.ShowDialog();
+					} while (folderResult != CommonFileDialogResult.Ok);
+
+					//Save path as property
+					Properties.Settings.Default.MMDPath = dialog.FileName;
+					Properties.Settings.Default.Save();
+					MMDPath = Properties.Settings.Default.MMDPath;
+				}
+				filePath = MMDPath + Path.DirectorySeparatorChar + filePath;
 			}
 			return filePath;
 		}
