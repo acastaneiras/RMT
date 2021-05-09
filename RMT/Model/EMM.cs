@@ -146,7 +146,7 @@ namespace RMT.Model
 										subsetMaterial = new RayMaterial();
 									} else {
 										
-										if (subsetCodeType == ".show") {
+										if (subsetCodeType[0] == '.') {
 											subsetShown = (codeData[0] == 't');
 										} else {
 											subsetMaterial.FilePath = checkMMDRelativePath(codeData);
