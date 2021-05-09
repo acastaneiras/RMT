@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.IO;
 using Microsoft.WindowsAPICodePack.Dialogs;
+using System.Diagnostics;
 
 namespace RMT.Model
 {
@@ -11,7 +12,12 @@ namespace RMT.Model
 		private int num;
 		private bool shown;
 		private RayMaterial material;
-		
+
+		public RayMaterial Material { get => material; }
+		public int Num { get => num; }
+		public bool IsShown { get => shown; }
+
+
 		public Subset(int num, bool shown, RayMaterial material){
 			this.num = num;
 			this.shown = shown;
@@ -28,8 +34,14 @@ namespace RMT.Model
 		private Subset[] subsets;
 		
 		public string Code { get => code; }
-		
-		public PMD(string code, string filePath, RayMaterial mainMaterial, bool shown, Subset[] subsets){
+		public Subset[] Subsets { get => subsets; }
+		public RayMaterial MainMaterial { get => mainMaterial; }
+		private String FilePath { get => filePath; }
+		public bool IsShown { get => shown; }
+
+
+		public PMD(string code, string filePath, RayMaterial mainMaterial, bool shown, Subset[] subsets)
+        {
 			this.code = code;
 			this.filePath = filePath;
 			this.mainMaterial = mainMaterial;
@@ -94,12 +106,9 @@ namespace RMT.Model
 					
 					foreach (String s2 in EMMMaterials) {
 						if (s2.StartsWith(code)) {
-							
-							//everything before " = "
 							codeType = s2.Substring(code.Length, s2.IndexOf('=') - 1);
 							//everything after " = "
-							codeData = s2.Substring(s2.IndexOf('=') + 2, s2.Length - (s2.IndexOf('=') +2));
-							
+							codeData = s2.Substring(s2.IndexOf('=') + 1, s2.Length - (s2.IndexOf('=') +1));
 							switch (codeType) {
 								
 								//"PmdXX " 
@@ -177,6 +186,8 @@ namespace RMT.Model
 					Properties.Settings.Default.Save();
 					MMDPath = Properties.Settings.Default.MMDPath;
 				}
+                if (filePath[0] == ' ')
+					filePath = filePath.Substring(1);
 				filePath = MMDPath + Path.DirectorySeparatorChar + filePath;
 			}
 			return filePath;
