@@ -356,7 +356,9 @@ namespace RMT
 			{
 				project.FilePath = System.IO.Path.GetFullPath(fileName);
 				project.FetchEMM();
-				MessageBox.Show("Project successfully loaded.\nThis currently means jack shit though.");
+				ProjectWindow projectWindow = new ProjectWindow(project);
+				projectWindow.Show();
+				//MessageBox.Show("Project successfully loaded.\nThis currently means jack shit though.");
 			}
 		}
 

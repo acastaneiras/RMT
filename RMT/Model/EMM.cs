@@ -50,13 +50,13 @@ namespace RMT.Model
 		}
 	}
 	
-    class EMM
+    public class EMM
     {
         private String filePath;
 		private PMD[] PMDs;
 
         public string FilePath { get => filePath; set => filePath = value; }
-		public PMD[] Pmds { get => PMDs; }
+        internal PMD[] Pmds { get => PMDs; }
 
         public EMM(string filePath = "")
         {
