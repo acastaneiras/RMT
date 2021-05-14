@@ -88,7 +88,7 @@ namespace RMT.Model
 			string filePath = "";								//either "UserFile\xyz" or "C:/xyz"
 			RayMaterial mainMaterial = new RayMaterial();
 			bool shown = false;
-			
+
 			foreach (String s1 in EMMObjects) {
 				//if s1 is a model Object
 				if (s1.StartsWith("Pmd")) {
@@ -116,7 +116,7 @@ namespace RMT.Model
 									//treat as filepath & make a RayMaterial
 								case string a when (a[0] == ' ') : 
 									if (!codeData.Contains("none")) {
-										mainMaterial.FilePath = checkMMDRelativePath(codeData);
+										mainMaterial.FilePath = checkMMDRelativePath(codeData.Substring(1));
 										mainMaterial.FetchMaterial();
 									}
 									break;
@@ -149,7 +149,7 @@ namespace RMT.Model
 										if (subsetCodeType[0] == '.') {
 											subsetShown = (codeData[0] == 't');
 										} else {
-											subsetMaterial.FilePath = checkMMDRelativePath(codeData);
+											subsetMaterial.FilePath = checkMMDRelativePath(codeData.Substring(1));
 											subsetMaterial.FetchMaterial();
 										}
 									}
@@ -187,8 +187,6 @@ namespace RMT.Model
 					Properties.Settings.Default.Save();
 					MMDPath = Properties.Settings.Default.MMDPath;
 				}
-                if (filePath[0] == ' ')
-					filePath = filePath.Substring(1);
 				filePath = MMDPath + Path.DirectorySeparatorChar + filePath;
 			}
 			return filePath;
