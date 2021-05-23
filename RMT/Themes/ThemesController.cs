@@ -7,7 +7,7 @@ namespace REghZyFramework.Themes
     {
         public enum ThemeTypes
         {
-             ColourfulLight, ColourfulDark
+            ColourfulLight, ColourfulDark
         }
 
         public static ThemeTypes CurrentTheme { get; set; }
