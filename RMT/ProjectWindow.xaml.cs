@@ -54,8 +54,8 @@ namespace RMT
             for (int i = 0; i < pmds.Length; i++)
             {
                 ProjectItem pmdX = new ProjectItem() { Title = pmds[i].Code+ " | " + pmds[i].MainMaterial.FilePath };
-
                 Subset[] subs = pmds[i].Subsets;
+
                 for (int j = 0; j < subs.Length; j++)
                 {
                     ProjectItem pmdXItem = new ProjectItem() { Title = subs[j].IsShown + " | " + subs[j].Num + " | " + subs[j].Material.FilePath };
