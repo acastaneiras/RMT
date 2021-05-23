@@ -42,12 +42,14 @@ namespace RMT
             {
                 ProjectItem pmdX = new ProjectItem() { Title = pmds[i].Code + " | " + pmds[i].MainMaterial.FilePath };
                 Subset[] subs = pmds[i].Subsets;
-
-                for (int j = 0; j < subs.Length; j++)
+                if (subs != null)
                 {
-                    ProjectItem pmdXItem = new ProjectItem() { Title = subs[j].IsShown + " | " + subs[j].Num + " | " + subs[j].Material.FilePath };
+                    for (int j = 0; j < subs.Length; j++)
+                    {
+                        ProjectItem pmdXItem = new ProjectItem() { Title = subs[j].IsShown + " | " + subs[j].Num + " | " + subs[j].Material.FilePath };
 
-                    pmdX.Items.Add(pmdXItem);
+                        pmdX.Items.Add(pmdXItem);
+                    }
                 }
                 root.Items.Add(pmdX);
             }

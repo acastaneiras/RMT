@@ -25,7 +25,7 @@ namespace RMT.Model
         private Subset[] subsets;
 
         public string Code { get; }
-        public Subset[] Subsets { get; }
+        public Subset[] Subsets { get => subsets; }
         public RayMaterial MainMaterial { get; }
         private string FilePath { get; }
         public bool IsShown { get; }
