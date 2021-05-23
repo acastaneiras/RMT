@@ -1,19 +1,6 @@
 ﻿using RMT.Model;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace RMT
 {
@@ -53,7 +40,7 @@ namespace RMT
 
             for (int i = 0; i < pmds.Length; i++)
             {
-                ProjectItem pmdX = new ProjectItem() { Title = pmds[i].Code+ " | " + pmds[i].MainMaterial.FilePath };
+                ProjectItem pmdX = new ProjectItem() { Title = pmds[i].Code + " | " + pmds[i].MainMaterial.FilePath };
                 Subset[] subs = pmds[i].Subsets;
 
                 for (int j = 0; j < subs.Length; j++)
