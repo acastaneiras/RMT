@@ -8,12 +8,12 @@ RMT (Red's Material Tool for ray-mmd) is a tool which allows you to create and e
 
 ## How to Use
 
-* [Download RMT latest version](https://github.com/Syloid/RMT/releases).
+* [Download RMT latest version](https://github.com/acastaneiras/RMT/releases).
 * Place the .zip file into your **/Extension** Folder from ray-mmd and then **Extract to \RMT**.
 ```
 Example: F:\MikuMikuDanceE_v926\UserFile\Accessory\ray-mmd-1.5.0\Extension\RMT
 ```
-* **Read** the [Wiki Page](https://github.com/Syloid/RMT/wiki).
+* **Read** the [Wiki Page](https://github.com/acastaneiras/RMT/wiki).
 * Have fun.
 
 ## Prerequisites
@@ -31,10 +31,6 @@ That's my first 'useful' and also my first GUI application so If you notice some
 ### Credits
 
 * Thanks to [Rui](https://github.com/ray-cast) for creating such an amazing shader for MikuMikuDance.
-
-### Authors
-
-* **[RedEyedJealousy/Syloid](https://github.com/Syloid).**
 
 ### License
 
